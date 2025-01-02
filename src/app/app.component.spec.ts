@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'space-time' title`, () => {
+  it(`should have the correct title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('space-time');
+    expect(app.title).toEqual('Space & Time');
   });
 
-  it('should render title', () => {
+  it('should render the correct title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, space-time');
+    expect(compiled.querySelector('div')?.textContent).toContain('Space & Time');
   });
 });
