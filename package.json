@@ -6,9 +6,21 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --code-coverage",
+    "test": "ng test --watch --code-coverage",
     "cypress:open": "npx cypress open",
-    "cypress:run": "npx cypress run"
+    "cypress:run": "npx cypress run",
+    "ngrs": "ng g s services/three/renderer",
+    "nguis": "ng g s services/utilities/recyclableSequence",
+    "irenderer": "ng g i interfaces/renderer",
+    "icamera": "ng g i interfaces/st/camera/stCamera",
+    "iposition": "ng g i interfaces/st/position/stPosition",
+    "igeometry": "ng g i interfaces/st/geometry/stGeometry",
+    "imaterial": "ng g i interfaces/st/material/stMaterial",
+    "imesh": "ng g i interfaces/st/mesh/stMesh",
+    "iscene": "ng g i interfaces/st/scene/stScene",
+    "ianimation": "ng g i interfaces/st/animation/stAnimation",
+    "sanimation": "ng g s services/three/animation"
+ 
   },
   "private": true,
   "dependencies": {

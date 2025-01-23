@@ -24,14 +24,12 @@ describe('RecyclableSequenceServiceService', () => {
   it('should recycle an id', () => {
 
     const id1 = service.generateId();
-    console.log("gen1", id1);
 
     expect(id1).toBeGreaterThan(0);
 
     service.recycleId(id1);
 
     const id2 = service.generateId();
-    console.log("gen2", id2);
 
     expect(id2).toEqual(id1);
   })
