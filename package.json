@@ -20,7 +20,6 @@
     "iscene": "ng g i interfaces/st/scene/stScene",
     "ianimation": "ng g i interfaces/st/animation/stAnimation",
     "sanimation": "ng g s services/three/animation"
- 
   },
   "private": true,
   "dependencies": {
@@ -39,7 +38,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.0.6",
-    "@angular/cli": "^19.0.6",
+    "@angular/cli": "^19.1.4",
     "@angular/compiler-cli": "^19.0.0",
     "@types/jasmine": "~5.1.0",
     "@types/three": "^0.171.0",
