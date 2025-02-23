@@ -1,43 +1,42 @@
 import { Component, inject } from '@angular/core';
-import * as THREE from 'three';
-import { RendererService } from './services/three/renderer.service';
+
+import { RendererService } from './services/three/renderer/renderer.service';
 import { StAnimation, StCamera, StRenderer, StScene } from './interfaces/st';
-import { AnimationService } from './services/three/animation.service';
+import { AnimationService } from './services/animations/animation.service';
+import { VizComponent } from './components/viz/viz.component';
+import { StCameraService } from './services/st/camera/st-camera.service';
+
+import * as THREE from 'three';
+import { StRendererService } from './services/st/renderer/st-renderer.service';
+
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [
+    VizComponent
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   rendererService: RendererService = inject(RendererService);
   animationService: AnimationService = inject(AnimationService);
+  stCameraService: StCameraService = inject(StCameraService);
+  stRendererService: StRendererService = inject(StRendererService);
 
   title = 'Space & Time';
   width = window.innerWidth;
   height = window.innerHeight;
 
-  stCamera: StCamera = {
-    stAspectRatio: this.width/this.height,
-    stFrustrum: 50,
-    stNear: .01,
-    stFar: 100,
-    stPosition: {
-      stX: 0,
-      stY: 0,
-      stZ: 7
-    },
-    stLookat: {
-      stX: 0,
-      stY: -1,
-      stZ: 0
-    }
-  };
+  stCameraId = this.stCameraService.createBaseCamera(this.width/this.height);
 
-  stScene: StScene = {
+  stCamera: StCamera = this.stCameraService.getCameraById(this.stCameraId);
+
+  stScene: any = {
+    stSceneId: 0,
     stMeshes: [
       {
+        stMeshId: -1,
         stPosition: {
           stX: 0,
           stY: 0,
@@ -49,12 +48,14 @@ export class AppComponent {
           stZ: 0
         },
         stGeometry: { 
+          stGeometryId: -1,
           stWidth: .75,
           stHeight: .5,
           stDepth: 3,
           stType: 'box'
         },
         stMaterial: {
+          stMaterialId: -1,
           stType: 'normal',
           stSide: THREE.DoubleSide
         },
@@ -85,15 +86,19 @@ export class AppComponent {
     ]
   };
 
+
+  rendererId = this.stRendererService.getBaseStRenderer();
+  val = this.rendererService.createRenderer(this.rendererId);
+  renderer: THREE.WebGLRenderer = this.rendererService.getRendererById(this.rendererId);
+
   stRenderer: StRenderer = { 
+    stRendererId: this.rendererId,
     stWidth: this.width, 
     stHeight: this.height,
     stCamera: this.stCamera,
-    stScene: this.stScene
+    stScene: this.stScene,
+    threeRenderer: this.renderer
   };
-
-  rendererId = this.rendererService.createRenderer();
-  renderer: THREE.WebGLRenderer = this.rendererService.getRendererForId(this.rendererId);
 
   constructor() {
     const animate: (time: number) => void = ( time: number ) => {
@@ -129,9 +134,9 @@ export class AppComponent {
     const scene = new THREE.Scene();
 
     const geometry = new THREE.BoxGeometry( 
-      this.stRenderer.stScene.stMeshes[0].stGeometry.stWidth, 
-      this.stRenderer.stScene.stMeshes[0].stGeometry.stHeight, 
-      this.stRenderer.stScene.stMeshes[0].stGeometry.stDepth
+      .75, 
+      .5, 
+      3
     );
     const material = new THREE.MeshNormalMaterial({side: THREE.FrontSide});
     const mesh = new THREE.Mesh( geometry, material );

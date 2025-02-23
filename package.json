@@ -19,7 +19,20 @@
     "imesh": "ng g i interfaces/st/mesh/stMesh",
     "iscene": "ng g i interfaces/st/scene/stScene",
     "ianimation": "ng g i interfaces/st/animation/stAnimation",
-    "sanimation": "ng g s services/three/animation"
+    "sanimation": "ng g s services/three/animation",
+    "cviz": "ng g c comonents/viz",
+    "sstRenderer": "ng g s services/st/renderer/stRenderer",
+    "ivisualization": "ng g i interfaces/st/visualization/stVisualization",
+    "sstCamera": "ng g s services/st/camera/stCamera",
+    "sThreeCamera": "ng g s services/three/camera/camera",
+    "sstScene": "ng g s services/st/scene/stScene",
+    "sThreeScene": "ng g s services/three/scene/scene",
+    "sstGeometry": "ng g s services/st/geometry/stGeometry",
+    "sThreeGeometry": "ng g s services/three/geometry/geometry",
+    "sstMaterial": "ng g s services/st/material/stMaterial",
+    "sThreeMaterial": "ng g s services/three/material/material",
+    "sstMesh": "ng g s services/st/mesh/stMesh",
+    "sThreeMesh": "ng g s services/three/mesh/mesh"
   },
   "private": true,
   "dependencies": {

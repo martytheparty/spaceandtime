@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { RendererService } from './renderer.service';
-import { RecyclableSequenceService } from '../utilities/recyclable-sequence-service.service';
+import { RecyclableSequenceService } from '../../utilities/recyclable-sequence-service.service';
 
 describe('RendererService', () => {
   let service: RendererService;
@@ -16,13 +16,13 @@ describe('RendererService', () => {
   });
 
   it('should return a numeric id', () => {
-    const rendererId = service.createRenderer();
+    const rendererId = service.createRenderer(1);
     expect(!isNaN(Number(rendererId))).toBeTrue()
   })
 
   it('should return an object for a rendererId', () => {
-    const rendererId = service.createRenderer();
-    const renderer = service.getRendererForId(rendererId);
+    const rendererId = service.createRenderer(1);
+    const renderer = service.getRendererById(rendererId);
     expect(renderer).toBeTruthy()
   })
 
