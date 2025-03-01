@@ -20,6 +20,11 @@ export class RendererService {
     return this.renderersDict[id];
   }
 
+  setAnimationFunctionForStId(stId: number, fun: () => void) {
+    const renderer: THREE.WebGLRenderer = this.getRendererById(stId);
+    renderer.setAnimationLoop(fun);
+  }
+
   renderRenderer(
     id: number,
     scene: THREE.Scene,

@@ -12,6 +12,7 @@ import { RendererService } from '../../three/renderer/renderer.service'
 
 import * as THREE from 'three';
 import { StSceneService } from '../scene/st-scene.service';
+import { AnimationService } from '../../animations/animation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class StRendererService {
 
   private stCameraService: StCameraService = inject(StCameraService);
   private stSceneService: StSceneService = inject(StSceneService);
+  private animationService: AnimationService = inject(AnimationService);
 
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   private stRenderersDict: any = {};
@@ -29,9 +31,10 @@ export class StRendererService {
 
   getBaseStRenderer(): number
   {
-    const rendererId = this.recyclableSequenceService.generateId();
-    this.rendererService.createRenderer(rendererId);
-    const renderer: THREE.WebGLRenderer = this.rendererService.getRendererById(rendererId);
+    const stRendererId = this.recyclableSequenceService.generateId();
+    this.rendererService.createRenderer(stRendererId);
+    const renderer: THREE.WebGLRenderer = this.rendererService.getRendererById(stRendererId);
+
     const startWidth = 200;
     const startHeight = 200;
     const startAspect = 1;
@@ -46,17 +49,20 @@ export class StRendererService {
     const stScene: StScene = this.stSceneService.getSceneById(stSceneId);
 
     const stRenderer: StRenderer = { 
-      stRendererId: rendererId,
+      stRendererId,
       stWidth: startWidth, 
       stHeight: startHeight,
       stCamera: stCamera,
       stScene: stScene,
       threeRenderer: renderer
     };
+    
+    const rendererFunction: () => void = this.animationService.createAnimationFunctionForId(stRenderer);
+    this.rendererService.setAnimationFunctionForStId(stRendererId, rendererFunction);
 
-    this.stRenderersDict[rendererId] = stRenderer;
+    this.stRenderersDict[stRendererId] = stRenderer;
 
-    return rendererId;
+    return stRendererId;
   }
 
   getRendererById(id: number): StRenderer
@@ -64,12 +70,11 @@ export class StRendererService {
     return this.stRenderersDict[id];
   }
 
-  renderById(id: number): void
+  renderById(stRendererId: number): void
   {
-    const stRenderer: StRenderer = this.stRenderersDict[id]; 
+    const stRenderer: StRenderer = this.stRenderersDict[stRendererId]; 
     const threeScene: THREE.Scene = stRenderer.stScene.threeScene as THREE.Scene;
     const threeCamera: THREE.PerspectiveCamera = stRenderer.stCamera.threeCamera as THREE.PerspectiveCamera;
-
-    this.rendererService.renderRenderer(id, threeScene, threeCamera);
+    this.rendererService.renderRenderer(stRendererId, threeScene, threeCamera);
   }
 }

@@ -1,12 +1,32 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+
+import { AnimatableObjects, StAnimation, StMesh, StRenderer, StScene } from '../../interfaces/st';
+
+import { StRendererService } from '../st/renderer/st-renderer.service';
+
+import { RendererService } from '../three/renderer/renderer.service';
+import { SceneService } from '../three/scene/scene.service';
+import { CameraService } from '../three/camera/camera.service';
+
 import * as THREE from 'three';
-import { AnimatableObjects, StAnimation } from '../../interfaces/st';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnimationService {
+
+  // all rules are broken in this service because it interacts directly with the 
+  // st stuff and the three stuff.
+
+  // injecting the StRedererService causes a browser/runtime error
+
+  // try injecting StRendererService after the drawing logic is removed from app
+
+  // stRenderService: StRendererService = inject(StRendererService);
+  rendererService: RendererService = inject(RendererService);
+  sceneService: SceneService = inject(SceneService);
+  cameraService: CameraService = inject(CameraService);
 
   constructor() { }
 
@@ -29,5 +49,30 @@ export class AnimationService {
   updateMeshForAnimation(mesh: THREE.Mesh, animation: StAnimation) {
     this.updatePropertyForAnimation(mesh, animation);
     return mesh;  
+  }
+
+  createAnimationFunctionForId(stRenderer: StRenderer): () => void {
+
+    return (): void => {
+
+      const stScene: StScene = stRenderer.stScene;
+      const stMeshes: StMesh[] = stScene.stMeshes;
+      
+      stMeshes.forEach( (
+        stMesh: StMesh
+      ) => {
+        const animations: StAnimation[] = stMesh.stAnimations;
+        animations.forEach( (animation: StAnimation) => {
+          if (stMesh.threeMesh) {
+            this.updatePropertyForAnimation(stMesh.threeMesh, animation)
+          }
+        } );
+      } );
+
+      const scene: THREE.Scene = this.sceneService.getSceneById(stRenderer.stScene.stSceneId);
+      const camera: THREE.PerspectiveCamera = this.cameraService.getCameraById(stRenderer.stCamera.stCameraId); 
+
+      this.rendererService.renderRenderer(stRenderer.stRendererId, scene, camera)
+    }
   }
 }
