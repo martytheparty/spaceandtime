@@ -1,1 +1,6 @@
-<app-viz></app-viz>
+    @for(rendererId of stRendererIds; track rendererId; let i = $index) {
+        <app-viz 
+        [style.left.px]="i*130"
+            [stRendererInputId]="rendererId"
+        ></app-viz>
+    }

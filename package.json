@@ -32,7 +32,8 @@
     "sstMaterial": "ng g s services/st/material/stMaterial",
     "sThreeMaterial": "ng g s services/three/material/material",
     "sstMesh": "ng g s services/st/mesh/stMesh",
-    "sThreeMesh": "ng g s services/three/mesh/mesh"
+    "sThreeMesh": "ng g s services/three/mesh/mesh",
+    "cvizservice": "ng g s components/viz/visualization"
   },
   "private": true,
   "dependencies": {
