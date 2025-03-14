@@ -50,75 +50,63 @@ export class AppComponent {
         const stRenderer: StRenderer = this.stRendererService.getRendererById(stRendererId);
 
         if (index === 0) {
-          stRenderer.stScene.stMeshes.forEach(
-            (stMesh: StMesh) => {
-              const animation1: StAnimation =           { 
-                alias: "mesh-rotation-x",
-                temporal: 'infinite',
-                redraw: 'continous',
-                time: 0,
-                values: [.05]
-              };
-              stMesh.stAnimations.push(animation1);
-            }
-          );
+          const mesh = stRenderer.stScene.stMeshes[0];
+          this.animationService
+            .addAnimation(
+              mesh,
+              'mesh-rotation-x',
+              'infinite',
+              'continous',
+              0,
+              [.05]);
         } else if(index === 1) {
-          stRenderer.stScene.stMeshes.forEach(
-            (stMesh: StMesh) => {
-              const animation2: StAnimation =           { 
-                alias: "mesh-rotation-z",
-                temporal: 'infinite',
-                redraw: 'continous',
-                time: 0,
-                values: [.05]
-              };
-              stMesh.stAnimations.push(animation2);
-            }
-          );
+          const mesh = stRenderer.stScene.stMeshes[0];
+          this.animationService
+            .addAnimation(
+              mesh,
+              'mesh-rotation-y',
+              'infinite',
+              'continous',
+              0,
+              [.05]);
         } else if(index === 2) {
-          stRenderer.stScene.stMeshes.forEach(
-            (stMesh: StMesh) => {
-              const animation2: StAnimation =           { 
-                alias: "mesh-rotation-y",
-                temporal: 'infinite',
-                redraw: 'continous',
-                time: 0,
-                values: [.05]
-              };
-              stMesh.stAnimations.push(animation2);
-            }
-          );
+          const mesh = stRenderer.stScene.stMeshes[0];
+          this.animationService
+            .addAnimation(
+              mesh,
+              'mesh-rotation-z',
+              'infinite',
+              'continous',
+              0,
+              [.05]);
         } else if(index === 3) {
-          stRenderer.stScene.stMeshes.forEach(
-            (stMesh: StMesh) => {
-              const animation1: StAnimation =           { 
-                alias: "mesh-rotation-x",
-                temporal: 'infinite',
-                redraw: 'continous',
-                time: 0,
-                values: [.05]
-              };
-              stMesh.stAnimations.push(animation1);
-      
-              const animation2: StAnimation =           { 
-                alias: "mesh-rotation-y",
-                temporal: 'infinite',
-                redraw: 'continous',
-                time: 0,
-                values: [.05]
-              };
-              stMesh.stAnimations.push(animation2);
-      
-              const animation3: StAnimation =           { 
-                alias: "mesh-rotation-z",
-                temporal: 'infinite',
-                redraw: 'continous',
-                time: 0,
-                values: [.05]
-              };
-              stMesh.stAnimations.push(animation3);
-            }
-          );
+          const mesh = stRenderer.stScene.stMeshes[0];
+          this.animationService
+            .addAnimation(
+              mesh,
+              'mesh-rotation-x',
+              'infinite',
+              'continous',
+              0,
+              [.05]);
+
+            this.animationService
+              .addAnimation(
+                mesh,
+                'mesh-rotation-y',
+                'infinite',
+                'continous',
+                0,
+                [.05]);
+
+            this.animationService
+              .addAnimation(
+                mesh,
+                'mesh-rotation-z',
+                'infinite',
+                'continous',
+                0,
+                [.05]);
         }
 
       }

@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import * as THREE from 'three';
 
 import { AnimationService } from './animation.service';
-import { StAnimation, StGeometry, StMesh, StRenderer } from '../../interfaces/st';
+import { RedrawTypes, StAnimation, StGeometry, StMesh, StRenderer, TemporalTypes, ThreePathAliasType } from '../../interfaces/st';
 import { StMeshService } from '../st/mesh/st-mesh.service';
 import { StGeometryService } from '../st/geometry/st-geometry.service';
 import { StRendererService } from '../st/renderer/st-renderer.service';
@@ -48,6 +48,7 @@ describe('AnimationService', () => {
 
     const stAnimations: StAnimation[] = [
         { 
+          stId: 1,
           alias: "mesh-rotation-x",
           temporal: 'infinite',
           redraw: 'continous',
@@ -55,6 +56,7 @@ describe('AnimationService', () => {
           values: [.05]
         },
         { 
+          stId: 2,
           alias: "mesh-rotation-y",
           temporal: 'infinite',
           redraw: 'continous',
@@ -62,6 +64,7 @@ describe('AnimationService', () => {
           values: [.05]
         },
         { 
+          stId: 2,
           alias: "mesh-rotation-z",
           temporal: 'infinite',
           redraw: 'continous',
@@ -84,7 +87,8 @@ describe('AnimationService', () => {
 
    stRenderer.stScene.stMeshes.forEach(
       (stMesh: StMesh) => {
-        const animation1: StAnimation =           { 
+        const animation1: StAnimation =           {
+          stId: 1, 
           alias: "mesh-rotation-x",
           temporal: 'infinite',
           redraw: 'continous',
@@ -92,7 +96,8 @@ describe('AnimationService', () => {
           values: [.05]
         };
         stMesh.stAnimations.push(animation1);
-        const animation2: StAnimation =           { 
+        const animation2: StAnimation =           {
+          stId: 2, 
           alias: "mesh-rotation-y",
           temporal: 'infinite',
           redraw: 'continous',
@@ -108,6 +113,30 @@ describe('AnimationService', () => {
     fun();
 
     expect(typeof fun).toEqual("function")
+
+  });
+
+  it('should be able to add an animation', () => {
+   
+    const stRendererId: number = stRendererService.getBaseStRenderer();
+    const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
+
+    const stMesh: StMesh = stRenderer.stScene.stMeshes[0];
+    const alias: ThreePathAliasType = "mesh-rotation-x";
+    const temporal: TemporalTypes = "infinite";
+    const redraw: RedrawTypes = "continous";
+    const time: number = 0;
+    const values: number[] = [1];
+
+    expect(stMesh.stAnimations.length).toEqual(0);
+
+    service.addAnimation(stMesh, alias,temporal,redraw, time, values);
+
+    expect(stMesh.stAnimations.length).toEqual(1);
+
+    service.addAnimation(stMesh, alias,temporal,redraw);
+
+    expect(stMesh.stAnimations.length).toEqual(2);
 
   });
 

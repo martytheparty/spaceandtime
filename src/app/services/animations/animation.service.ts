@@ -1,14 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 
-import { AnimatableObjects, StAnimation, StMesh, StRenderer, StScene } from '../../interfaces/st';
-
-import { StRendererService } from '../st/renderer/st-renderer.service';
+import { AnimatableObjects, RedrawTypes, StAnimation, StMesh, StRenderer, StScene, SupportedStTypes, TemporalTypes, ThreePathAliasType } from '../../interfaces/st';
 
 import { RendererService } from '../three/renderer/renderer.service';
 import { SceneService } from '../three/scene/scene.service';
 import { CameraService } from '../three/camera/camera.service';
 
 import * as THREE from 'three';
+import { RecyclableSequenceService } from '../utilities/recyclable-sequence-service.service';
 
 
 @Injectable({
@@ -27,6 +26,7 @@ export class AnimationService {
   rendererService: RendererService = inject(RendererService);
   sceneService: SceneService = inject(SceneService);
   cameraService: CameraService = inject(CameraService);
+  recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
 
   constructor() { }
 
@@ -74,5 +74,29 @@ export class AnimationService {
 
       this.rendererService.renderRenderer(stRenderer.stRendererId, scene, camera)
     }
+  }
+
+  addAnimation(
+    stObject: SupportedStTypes,
+    alias: ThreePathAliasType, 
+    temporal: TemporalTypes,
+    redraw: RedrawTypes,
+    time: number = 0,
+    values: number[] = []
+  ): number
+  {
+    const stRendererId = this.recyclableSequenceService.generateId();
+    const animation: StAnimation = {
+      stId: 1, 
+      alias,
+      temporal,
+      redraw,
+      time,
+      values
+    };
+
+    stObject.stAnimations.push(animation)
+
+    return stRendererId;
   }
 }
