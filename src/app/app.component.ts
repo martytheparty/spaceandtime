@@ -6,9 +6,6 @@ import { RendererService } from './services/three/renderer/renderer.service';
 import { StRendererService } from './services/st/renderer/st-renderer.service';
 import { StRenderer } from './interfaces/st/three/renderer/st-renderer';
 
-import * as THREE from 'three';
-import { StAnimation, StMesh, StVisualization } from './interfaces/st';
-
 @Component({
   selector: 'app-root',
   imports: [
