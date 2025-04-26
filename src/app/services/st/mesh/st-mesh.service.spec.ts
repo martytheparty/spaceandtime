@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { StMeshService } from './st-mesh.service';
+import { StMesh } from '../../../interfaces/st';
 
 describe('StMeshService', () => {
   let service: StMeshService;
@@ -13,4 +14,11 @@ describe('StMeshService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should create a base mesh', () => {
+    const meshId = service.createBaseMesh();
+    const stMesh: StMesh = service.getMeshById(meshId);
+
+    expect(stMesh.stMeshId).toEqual(meshId);
+  })
 });

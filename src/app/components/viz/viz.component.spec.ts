@@ -12,8 +12,6 @@ class TestHostComponent {}
 describe('VizComponent', () => {
   let fixture: ComponentFixture<TestHostComponent>;
 
-
-
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [],

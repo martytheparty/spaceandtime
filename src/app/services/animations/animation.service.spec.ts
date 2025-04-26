@@ -3,10 +3,11 @@ import { TestBed } from '@angular/core/testing';
 import * as THREE from 'three';
 
 import { AnimationService } from './animation.service';
-import { RedrawTypes, StAnimation, StGeometry, StMesh, StRenderer, TemporalTypes, ThreePathAliasType } from '../../interfaces/st';
+import { RedrawTypes, StAnimation, StGeometry, StMesh, StRenderer, StVisualization, TemporalTypes, ThreePathAliasType } from '../../interfaces/st';
 import { StMeshService } from '../st/mesh/st-mesh.service';
 import { StGeometryService } from '../st/geometry/st-geometry.service';
 import { StRendererService } from '../st/renderer/st-renderer.service';
+import { VisualizationService } from '../visualization/visualization.service';
 
 
 describe('AnimationService', () => {
@@ -16,9 +17,10 @@ describe('AnimationService', () => {
 
   let stRendererService: StRendererService;
 
+  let visualizationService: VisualizationService;
+
   let stMesh: StMesh;
   let stGeometry: StGeometry;
-
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -26,6 +28,7 @@ describe('AnimationService', () => {
     stMeshService = TestBed.inject(StMeshService);
     stGeometryService = TestBed.inject(StGeometryService);
     stRendererService = TestBed.inject(StRendererService);
+    visualizationService = TestBed.inject(VisualizationService);
 
     const meshId = stMeshService.createBaseMesh();
     stMesh = stMeshService.getMeshById(meshId);
@@ -140,4 +143,60 @@ describe('AnimationService', () => {
 
   });
 
+  it('should execute visualizationsLayout with a hash change', async () => {
+    const id = stRendererService.getBaseStRenderer();
+
+    service.visualizationsLayout();
+    const originalHashValue = service.visualizationService.visualizationHashValue;
+    expect(originalHashValue).toEqual('');
+    await service.visualizationService.resetHash(1,1);
+    service.visualizationsLayout();
+
+    // this is what we expect to get back from the crypto.subtle.digest service
+    const expectedHashValue = '0fdedecf9e186e041488d2cfbea60a15742f5dc5ca2bd6272a11e13c9afc7ed7';
+    const newHashValue = service.visualizationService.visualizationHashValue;
+
+    expect(newHashValue).toEqual(expectedHashValue);
+
+    // there is an async call so we need to move the following code into the next cycle
+
+  });
+
+  it('should use visualizationLayout to process visualization changes', async () => {
+    service.visualizationsLayout();
+    const originalHashValue = service.visualizationService.visualizationHashValue;
+    expect(originalHashValue).toEqual('');
+    
+    await visualizationService.resetHash(1,1);
+    service.visualizationsLayout();
+
+  });
+
+  it('should set the position style of the visualization element', () =>{ 
+    const mockElement = {
+      style: { left: '', top: '' },
+    } as unknown as HTMLDivElement;
+
+    const mockViz: StVisualization = {
+      stLeft: 100,
+      stTop: 200,
+      vizComponent: {
+        rendererViewChild: {
+          nativeElement: {
+            parentElement: mockElement
+          }
+        }
+      }
+    } as unknown as StVisualization;
+    
+    service.setPosition(mockViz);
+
+    expect(mockElement.style.left).toBe('100px');
+    expect(mockElement.style.top).toBe('200px');
+  });
+
+  
+
 });
+
+

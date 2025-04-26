@@ -27,4 +27,27 @@ describe('MeshService', () => {
     service.updateMeshMaterial(id, material);
     expect(service).toBeTruthy();
   });
+
+  it('should dispose of a material that is not an array', () => {
+    const meshId = 1;
+    service.createMesh(meshId);
+    const mesh: THREE.Mesh = service.getMeshById(meshId);
+
+    const material = new THREE.MeshNormalMaterial();
+    const rId = service.updateMeshMaterial(1, material);
+
+    expect(rId).toEqual(meshId);
+  });
+
+  it('should update a mesh geometry', () => {
+    const meshId = 1;
+    service.createMesh(meshId);
+
+    const mesh = service.getMeshById(meshId);
+    const boxGeometry: THREE.BoxGeometry = new THREE.BoxGeometry();
+
+    service.updateMeshGeometry(meshId, boxGeometry);
+
+    expect(mesh.geometry).toEqual(boxGeometry);
+  });
 });

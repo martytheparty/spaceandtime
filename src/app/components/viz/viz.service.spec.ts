@@ -4,7 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { StRendererService } from '../../services/st/renderer/st-renderer.service';
 import { RendererService } from '../../services/three/renderer/renderer.service';
 
-import { ComponentVisualizationService } from './visualization.service';
+import { ComponentVisualizationService } from './viz.service';
 
 
 describe('VisualizationService', () => {

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 
-import { AnimatableObjects, RedrawTypes, StAnimation, StMesh, StRenderer, StScene, SupportedStTypes, TemporalTypes, ThreePathAliasType } from '../../interfaces/st';
+import { AnimatableObjects, RedrawTypes, StAnimation, StMesh, StRenderer, StScene, StVisualization, SupportedStTypes, TemporalTypes, ThreePathAliasType } from '../../interfaces/st';
 
 import { RendererService } from '../three/renderer/renderer.service';
 import { SceneService } from '../three/scene/scene.service';
@@ -8,6 +8,7 @@ import { CameraService } from '../three/camera/camera.service';
 
 import * as THREE from 'three';
 import { RecyclableSequenceService } from '../utilities/recyclable-sequence-service.service';
+import { VisualizationService } from '../visualization/visualization.service';
 
 
 @Injectable({
@@ -27,6 +28,7 @@ export class AnimationService {
   sceneService: SceneService = inject(SceneService);
   cameraService: CameraService = inject(CameraService);
   recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
+  visualizationService: VisualizationService = inject(VisualizationService);
 
   constructor() { }
 
@@ -98,5 +100,24 @@ export class AnimationService {
     stObject.stAnimations.push(animation)
 
     return stRendererId;
+  }
+
+  visualizationsLayout(): void
+  {
+    if (this.visualizationService.visualizationHashValue !== this.visualizationService.renderedLayoutHash) {
+      // this function runs around 60 times per second
+      // avoid doing any calculations in this function
+      this.visualizationService.visualizations.forEach(this.setPosition);
+      this.visualizationService.renderedLayoutHash = this.visualizationService.visualizationHashValue;
+    }
+  }
+
+  setPosition(viz: StVisualization): void
+  {
+    if (viz.vizComponent?.rendererViewChild?.nativeElement) {
+      const ele: HTMLDivElement = viz.vizComponent?.rendererViewChild?.nativeElement.parentElement;
+      ele.style.left = viz.stLeft.toString() + 'px';
+      ele.style.top = viz.stTop.toString() + 'px';
+    }
   }
 }

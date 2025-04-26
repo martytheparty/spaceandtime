@@ -13,4 +13,11 @@ describe('StSceneService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should create a base scene', () => {
+    const sceneId = service.createBaseScene();
+    const stScene = service.getSceneById(sceneId);
+
+    expect(stScene.stSceneId).toEqual(sceneId);
+  })
 });
