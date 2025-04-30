@@ -35,7 +35,8 @@
     "sThreeMesh": "ng g s services/three/mesh/mesh",
     "cvizservice": "ng g s components/viz/visualization",
     "layoutservice": "ng g s services/layout/layout",
-    "hash": "ng g s services/utilities/hash"
+    "hash": "ng g s services/utilities/hash",
+    "platform": "ng g s services/utilities/platform" 
   },
   "private": true,
   "dependencies": {

@@ -96,6 +96,7 @@ describe('VisualizationService', () => {
         }
       } as unknown as StVisualization;
       const vizComponent: VizComponent = fixture.debugElement.children[0].componentInstance;
+      service.viewPortWidth = service.viewPortWidth + 1;
       const visualizationId = service.createVisualization(rendererId, vizComponent);
 
       expect(visualizationId).not.toEqual(rendererId);

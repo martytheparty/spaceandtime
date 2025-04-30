@@ -12,6 +12,9 @@ import { StRenderer } from './interfaces/st/three/renderer/st-renderer';
 import { AnimationService } from './services/animations/animation.service';
 import { VisualizationService } from './services/visualization/visualization.service';
 
+// utility libs
+import { PlatformService } from './services/utilities/platform.service';
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -28,16 +31,18 @@ export class AppComponent implements AfterViewInit
   rendererService: RendererService = inject(RendererService);
   stRendererService: StRendererService = inject(StRendererService);
   visualizationService: VisualizationService = inject(VisualizationService);
+  platformService: PlatformService = inject(PlatformService);
 
   stRendererIds: number[] = [];
 
   constructor() {
     this.setupAnimationDrawingLoop();
+    this.platformService.setEvents();
 
-    this.createAndAnimateRenderers(4);
-    this.waitCreateAndAnimateRenderers(4, 500);
-    this.waitCreateAndAnimateRenderers(4, 1000);
-    this.waitCreateAndAnimateRenderers(4, 1500);
+    this.createAndAnimateRenderers(16);
+    // this.waitCreateAndAnimateRenderers(4, 0);
+    // this.waitCreateAndAnimateRenderers(4, 1);
+    // this.waitCreateAndAnimateRenderers(4, 2);
 
 
     // this.animateVisualizations();
@@ -84,6 +89,7 @@ export class AppComponent implements AfterViewInit
   setupAnimationDrawingLoop(): void
   {
     const layoutLoop = () => {
+      // note: RequestAnimationFrame is browser specific.
       requestAnimationFrame(()=> {
         this.animationService.visualizationsLayout();
         layoutLoop();

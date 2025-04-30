@@ -67,7 +67,11 @@ export class VisualizationService {
     // 1) this can't handle a single viz that is wider than the view port
     // 2) hard coded to 200px height per row.  So when we have configurable
     // viz heights this will break (vert overlap);
-    
+    if (this.viewPortWidth !== window.innerWidth) {
+      this.viewPortWidth = window.innerWidth; // possible reflow
+      this.resetHash(this.viewPortWidth, this.viewPortHeight);
+    }
+
     this.setCalculatedPositions(this.isTooWide, this.viewPortWidth, this.visualizations);
   }
 
@@ -107,7 +111,7 @@ export class VisualizationService {
     return (left + width > viewportWidth);
   }
 
-  resetHash(vizWidth: number, vizHeight: number): Promise<void>
+  resetHash(width: number, height: number): Promise<void>
   {
     // create hash string
     const data: any[] = this.visualizations.map( 
@@ -124,7 +128,7 @@ export class VisualizationService {
     );
 
 
-    const hashString = vizWidth.toString() + vizHeight.toString() + JSON.stringify(data);
+    const hashString = width.toString() + height.toString() + JSON.stringify(data);
     return this.hashService.getHashString(hashString).then(
       (hash: string) => {
         this.visualizationHashValue = hash;
