@@ -72,9 +72,9 @@ export class AppComponent implements AfterViewInit
     this.setupDomVisualizations();
   }
 
-  waitCreateAndAnimateRenderers(count: number, ms: number): void {
-    setTimeout( () => { this.createAndAnimateRenderers(count); }, ms);
-  }
+  // waitCreateAndAnimateRenderers(count: number, ms: number): void {
+  //   setTimeout( () => { this.createAndAnimateRenderers(count); }, ms);
+  // }
 
 
 

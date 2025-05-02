@@ -29,6 +29,10 @@ export class VisualizationService {
     return this.visualizationIds;
   }
 
+  getVisualizations(): StVisualization[] {
+    return this.visualizations;
+  }
+
   createVisualization(stRendererId: number, vizComponent: VizComponent): number {
     
     const visualizationId = this.recyclableSequenceService.generateId();

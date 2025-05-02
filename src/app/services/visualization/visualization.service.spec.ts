@@ -103,4 +103,10 @@ describe('VisualizationService', () => {
       expect(service.getVisualizationIds().length).toBeGreaterThan(0);
 
   });
+
+  it('should get the current visualizations', () => {
+    const visualizations = service.getVisualizations();
+
+    expect(visualizations.length).toEqual(0);
+  })
 });

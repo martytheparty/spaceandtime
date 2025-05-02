@@ -36,7 +36,9 @@
     "cvizservice": "ng g s components/viz/visualization",
     "layoutservice": "ng g s services/layout/layout",
     "hash": "ng g s services/utilities/hash",
-    "platform": "ng g s services/utilities/platform" 
+    "platform": "ng g s services/utilities/platform",
+    "iappmodel": "ng g i interfaces/st/appmodel/stAppModel",
+    "sappmodelservice": "ng g s services/appmodel/appmodel"
   },
   "private": true,
   "dependencies": {
