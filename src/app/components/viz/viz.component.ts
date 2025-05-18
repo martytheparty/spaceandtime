@@ -19,7 +19,7 @@ export class VizComponent implements AfterViewInit {
 
   stRendererInputId = input.required<number>();
 
-  hasBeenInitialized = false;
+  private hasBeenInitialized = false;
 
   componentVisualizationService: ComponentVisualizationService = inject(ComponentVisualizationService);
   
@@ -31,8 +31,15 @@ export class VizComponent implements AfterViewInit {
     }
   }
 
-  setAsInitialized(): void
+  setAsInitialized(): boolean
   {
     this.hasBeenInitialized = true;
+
+    return this.isInitialized();
+  }
+
+  isInitialized(): boolean
+  {
+    return this.hasBeenInitialized;
   }
 }

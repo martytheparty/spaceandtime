@@ -35,33 +35,37 @@ export class VisualizationService {
 
   createVisualization(stRendererId: number, vizComponent: VizComponent): number {
     
-    const visualizationId = this.recyclableSequenceService.generateId();
-    const visualization: StVisualization = {
-      stVisualizationId: visualizationId,
-      stLeft: 0,
-      stTop: 0,
-      stWidth: 0,
-      stHeight: 0,
-      stRendererId,
-      manualPlacement: false,
-      vizComponent
-    };
+    let visualizationId = 0;
     const ele: HTMLDivElement = vizComponent.rendererViewChild?.nativeElement;
 
-    const vizPosition = this.visualizations.length;
-    const vizWidth = ele.offsetWidth;
-    const vizHeight = ele.offsetHeight;
+    if (ele) {
+      visualizationId = this.recyclableSequenceService.generateId();
+      const visualization: StVisualization = {
+        stVisualizationId: visualizationId,
+        stLeft: 0,
+        stTop: 0,
+        stWidth: 0,
+        stHeight: 0,
+        stRendererId,
+        manualPlacement: false,
+        vizComponent
+      };
 
-    // push viz into array
-    this.visualizations.push(visualization);
-    this.visualizationIds.push(visualizationId);
+      const vizPosition = this.visualizations.length;
+      const vizWidth = ele.offsetWidth;
+      const vizHeight = ele.offsetHeight;
 
-    visualization.stWidth = vizWidth;
-    visualization.stHeight = vizHeight;
+      // push viz into array
+      this.visualizations.push(visualization);
+      this.visualizationIds.push(visualizationId);
+
+      visualization.stWidth = vizWidth;
+      visualization.stHeight = vizHeight;
 
 
-    this.calculatePositions();
-    this.resetHash(vizWidth, vizHeight);
+      this.calculatePositions();
+      this.resetHash(vizWidth, vizHeight);
+    }
 
     return visualizationId;
   }

@@ -1,8 +1,15 @@
-import { AfterViewInit, Component, ElementRef, inject, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  QueryList,
+  ViewChildren
+} from '@angular/core';
 
 // three libs
-import { VizComponent } from './components/viz/viz.component';
+import { AppMenuComponent } from './components/app-menu/app-menu.component';
 import { RendererService } from './services/three/renderer/renderer.service';
+import { VizComponent } from './components/viz/viz.component';
 
 // st libs
 import { StRendererService } from './services/st/renderer/st-renderer.service';
@@ -15,15 +22,19 @@ import { VisualizationService } from './services/visualization/visualization.ser
 // utility libs
 import { PlatformService } from './services/utilities/platform.service';
 
+// ui lib
+import { UiService } from './services/ui/ui.service';
+
 @Component({
   selector: 'app-root',
   imports: [
-    VizComponent
+    VizComponent,
+    AppMenuComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements AfterViewInit
+export class AppComponent
  {
   @ViewChildren('visualizationItem') visualizationItems!: QueryList<VizComponent>;
 
@@ -32,6 +43,7 @@ export class AppComponent implements AfterViewInit
   stRendererService: StRendererService = inject(StRendererService);
   visualizationService: VisualizationService = inject(VisualizationService);
   platformService: PlatformService = inject(PlatformService);
+  uiService: UiService = inject(UiService);
 
   stRendererIds: number[] = [];
 
@@ -39,44 +51,12 @@ export class AppComponent implements AfterViewInit
     this.setupAnimationDrawingLoop();
     this.platformService.setEvents();
 
-    this.createAndAnimateRenderers(16);
-    // this.waitCreateAndAnimateRenderers(4, 0);
-    // this.waitCreateAndAnimateRenderers(4, 1);
-    // this.waitCreateAndAnimateRenderers(4, 2);
-
-
-    // this.animateVisualizations();
-
-    // this code does nothing... it is for future growth
-    // const stVisualization: StVisualization = {
-    //   stWidth: 200,
-    //   stHeight: 200,
-    //   stRenderer: stRenderer01
-    // };
-    // this code does nothing... it is for future growth
-
-
+    effect(() => {
+      this.stRendererIds = this.uiService.stRendererIdsSignal();
+      this.animateVisualizations();
+      this.setupDomVisualizations();
+    });
   }
-
-  ngAfterViewInit(): void {
-   this.setupVisualizations();
-  }
-
-  createAndAnimateRenderers(count: number): void {
-    // at this time browsers are limited to 16 renderers
-    for(let i = 0; i < count; i++) {
-      this.createRenderer();
-    }
-
-    this.animateVisualizations();
-    this.setupDomVisualizations();
-  }
-
-  // waitCreateAndAnimateRenderers(count: number, ms: number): void {
-  //   setTimeout( () => { this.createAndAnimateRenderers(count); }, ms);
-  // }
-
-
 
   setupDomVisualizations(): void
   {
@@ -101,41 +81,82 @@ export class AppComponent implements AfterViewInit
 
   setupVisualizations(): void {
     const vizComponents: VizComponent[] = this.visualizationItems.toArray();
+
+    this.setupVisualizationItems(vizComponents);
+  }
+
+  setupVisualizationItems(vizComponents: VizComponent[]): number {
+
     vizComponents.forEach(
-      (vizComponent: VizComponent) => {
+      this.createVizForComponent.bind(this)
+    );
+
+    return vizComponents.length;
+  }
+
+  createVizForComponent(vizComponent: VizComponent): boolean {
         // create a stLayout with a reference to this layout component
-        if (!vizComponent.hasBeenInitialized) {
+        if (!vizComponent.isInitialized()) {
           this.visualizationService.createVisualization(vizComponent.stRendererInputId(), vizComponent);
         }
 
-        vizComponent.setAsInitialized();
-        
-      }
-    );
-  }
-
-  createRenderer(): void {
-    const id = this.stRendererService.getBaseStRenderer();
-    this.stRendererIds.push(id);
+        return vizComponent.setAsInitialized();
   }
 
   animateVisualizations(): void {
-    this.stRendererIds.forEach(
-      (stRendererId: number, index: number) => {
-        const stRenderer: StRenderer = this.stRendererService.getRendererById(stRendererId);
-        const modulus = index%4;
-        if (modulus === 0) {
-          const mesh = stRenderer.stScene.stMeshes[0];
-          this.animationService
-            .addAnimation(
-              mesh,
-              'mesh-rotation-x',
-              'infinite',
-              'continous',
-              0,
-              [.05]);
-        } else if(modulus === 1) {
-          const mesh = stRenderer.stScene.stMeshes[0];
+    this.stRendererIds.forEach(this.animatateVisualization.bind(this));
+  }
+
+  animatateVisualization(stRendererId: number, index: number): boolean {
+    const modulus = index%4;
+    this.animateMesh(stRendererId, modulus);
+    return true;
+  }
+
+  animateMesh(stRendererId: number, modulus: number): boolean {
+      const stRenderer: StRenderer = this.stRendererService.getRendererById(stRendererId);
+
+      if (modulus === 0) {
+        const mesh = stRenderer.stScene.stMeshes[0];
+        this.animationService
+          .addAnimation(
+            mesh,
+            'mesh-rotation-x',
+            'infinite',
+            'continous',
+            0,
+            [.05]);
+      } else if(modulus === 1) {
+        const mesh = stRenderer.stScene.stMeshes[0];
+        this.animationService
+          .addAnimation(
+            mesh,
+            'mesh-rotation-y',
+            'infinite',
+            'continous',
+            0,
+            [.05]);
+      } else if(modulus === 2) {
+        const mesh = stRenderer.stScene.stMeshes[0];
+        this.animationService
+          .addAnimation(
+            mesh,
+            'mesh-rotation-z',
+            'infinite',
+            'continous',
+            0,
+            [.05]);
+      } else if(modulus === 3) {
+        const mesh = stRenderer.stScene.stMeshes[0];
+        this.animationService
+          .addAnimation(
+            mesh,
+            'mesh-rotation-x',
+            'infinite',
+            'continous',
+            0,
+            [.05]);
+
           this.animationService
             .addAnimation(
               mesh,
@@ -144,8 +165,7 @@ export class AppComponent implements AfterViewInit
               'continous',
               0,
               [.05]);
-        } else if(modulus === 2) {
-          const mesh = stRenderer.stScene.stMeshes[0];
+
           this.animationService
             .addAnimation(
               mesh,
@@ -154,37 +174,8 @@ export class AppComponent implements AfterViewInit
               'continous',
               0,
               [.05]);
-        } else if(modulus === 3) {
-          const mesh = stRenderer.stScene.stMeshes[0];
-          this.animationService
-            .addAnimation(
-              mesh,
-              'mesh-rotation-x',
-              'infinite',
-              'continous',
-              0,
-              [.05]);
-
-            this.animationService
-              .addAnimation(
-                mesh,
-                'mesh-rotation-y',
-                'infinite',
-                'continous',
-                0,
-                [.05]);
-
-            this.animationService
-              .addAnimation(
-                mesh,
-                'mesh-rotation-z',
-                'infinite',
-                'continous',
-                0,
-                [.05]);
-        }
-
       }
-    );
-  }
+
+      return true;
+    }
 }

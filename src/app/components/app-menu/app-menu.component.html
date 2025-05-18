@@ -1,0 +1,21 @@
+<button
+    #menuTrigger="matMenuTrigger"
+    mat-icon-button
+    aria-label="More options"
+    class="icon-button-dark"
+    tabindex="1"
+    (click)="showMenu($event, menuTrigger)"
+    [matMenuTriggerFor]="menu"
+>
+    <mat-icon>more_vert</mat-icon>
+</button>
+  
+<mat-menu #menu="matMenu">
+    <button
+    (click)="addClickVizHandler($event)"
+    mat-menu-item
+    >
+    <mat-icon>add</mat-icon>
+    <span>Add Viz</span>
+    </button>
+</mat-menu>

@@ -27,4 +27,13 @@ describe('VizComponent', () => {
     expect(vizComponent).toBeTruthy();
   });
 
+  it('should initialize the component', () => {
+    const component: VizComponent = fixture.debugElement.children[0].componentInstance;
+
+    const isInitialized = component.setAsInitialized();
+    
+    expect(isInitialized).toBeTrue();
+
+  });
+
 });
