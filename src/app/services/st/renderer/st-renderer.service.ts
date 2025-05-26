@@ -77,4 +77,14 @@ export class StRendererService {
     const threeCamera: THREE.PerspectiveCamera = stRenderer.stCamera.threeCamera as THREE.PerspectiveCamera;
     this.rendererService.renderRenderer(stRendererId, threeScene, threeCamera);
   }
+
+  getRendererIds(): number[]
+  {
+    return Object.keys(this.stRenderersDict).map(Number);
+  }
+
+  getRenderers(): StRenderer[]
+  {
+    return Object.values(this.stRenderersDict);
+  }
 }

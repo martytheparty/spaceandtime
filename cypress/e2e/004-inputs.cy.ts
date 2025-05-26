@@ -1,6 +1,6 @@
 describe('template spec', () => {
   it('passes', () => {
-      const waitTime = 2000;
+      const waitTime = 500;
     
       cy.visit('/');
 

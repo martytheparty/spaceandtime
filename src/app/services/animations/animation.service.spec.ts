@@ -195,6 +195,18 @@ describe('AnimationService', () => {
     expect(mockElement.style.top).toBe('200px');
   });
 
+  it('should animate a visualization', () => {
+    
+    const stRendererId: number = stRendererService.getBaseStRenderer();
+    const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
+
+    service. animateVisualizations([]);
+    expect(service.animatateVisualization(stRenderer, 0)).toBeTrue();
+    expect(service.animatateVisualization(stRenderer, 1)).toBeTrue();
+    expect(service.animatateVisualization(stRenderer, 2)).toBeTrue();
+    expect(service.animatateVisualization(stRenderer, 3)).toBeTrue();
+  })
+
   
 
 });

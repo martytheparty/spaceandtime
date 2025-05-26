@@ -1,9 +1,3 @@
 <app-menu class="app-menu"></app-menu>
 
-@for(rendererId of stRendererIds; track rendererId; let i = $index) {
-    <app-viz 
-    #visualizationItem
-    tabindex="2"
-    [stRendererInputId]="rendererId"
-    ></app-viz>
-}
+<app-custom-layout></app-custom-layout>

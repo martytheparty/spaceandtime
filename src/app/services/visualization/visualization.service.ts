@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, QueryList } from '@angular/core';
 import { StVisualization } from '../../interfaces/st/visualization/st-visualization';
 import { VizComponent } from '../../components/viz/viz.component';
 import { RecyclableSequenceService } from '../utilities/recyclable-sequence-service.service';
@@ -68,6 +68,45 @@ export class VisualizationService {
     }
 
     return visualizationId;
+  }
+
+  setupDomVisualizations(visualizationItems: QueryList<VizComponent>): number
+  {
+    let count = 0;
+    if (visualizationItems) {
+      const vizArrary = visualizationItems.toArray();
+      count = vizArrary.length;
+      console.log("count", count);
+      // wait for angular to build dom elements
+//      setTimeout( () => {
+        this.setupVisualizations(vizArrary);
+ //     }, 0 );
+    }
+
+    return count;
+  }
+
+  setupVisualizations(vizComponents: VizComponent[]): void {
+    // const vizComponents: VizComponent[] = this.visualizationItems.toArray();
+
+    this.setupVisualizationItems(vizComponents);
+  }
+
+  setupVisualizationItems(vizComponents: VizComponent[]): number {
+    vizComponents.forEach(
+      this.createVizForComponent.bind(this)
+    );
+
+    return vizComponents.length;
+  }
+
+  createVizForComponent(vizComponent: VizComponent): boolean {
+        // create a stLayout with a reference to this layout component
+        if (!vizComponent.isInitialized()) {
+          this.createVisualization(vizComponent.stRendererInputId(), vizComponent);
+        }
+
+        return vizComponent.setAsInitialized();
   }
 
   calculatePositions(): void

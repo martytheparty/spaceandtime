@@ -120,4 +120,80 @@ export class AnimationService {
       ele.style.top = viz.stTop.toString() + 'px';
     }
   }
+
+  animatateVisualization(stRenderer: StRenderer, index: number): boolean {
+    const modulus = index%4;
+    this.animateMesh(stRenderer, modulus);
+
+    return true;
+  }
+
+  animateVisualizations(stRenderers: StRenderer[]): void {
+    stRenderers.forEach(this.animatateVisualization.bind(this));
+  }
+
+  animateMesh(stRenderer: StRenderer, modulus: number): boolean {
+
+    if (modulus === 0) {
+      const mesh = stRenderer.stScene.stMeshes[0];
+      this
+        .addAnimation(
+          mesh,
+          'mesh-rotation-x',
+          'infinite',
+          'continous',
+          0,
+          [.05]);
+    } else if(modulus === 1) {
+      const mesh = stRenderer.stScene.stMeshes[0];
+      this
+        .addAnimation(
+          mesh,
+          'mesh-rotation-y',
+          'infinite',
+          'continous',
+          0,
+          [.05]);
+    } else if(modulus === 2) {
+      const mesh = stRenderer.stScene.stMeshes[0];
+      this
+        .addAnimation(
+          mesh,
+          'mesh-rotation-z',
+          'infinite',
+          'continous',
+          0,
+          [.05]);
+    } else if(modulus === 3) {
+      const mesh = stRenderer.stScene.stMeshes[0];
+      this
+        .addAnimation(
+          mesh,
+          'mesh-rotation-x',
+          'infinite',
+          'continous',
+          0,
+          [.05]);
+
+        this
+          .addAnimation(
+            mesh,
+            'mesh-rotation-y',
+            'infinite',
+            'continous',
+            0,
+            [.05]);
+
+        this
+          .addAnimation(
+            mesh,
+            'mesh-rotation-z',
+            'infinite',
+            'continous',
+            0,
+            [.05]);
+    }
+
+    return true;
+  }
 }

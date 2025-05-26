@@ -1,0 +1,7 @@
+@for(stRenderer of stRenderers; track stRenderer.stRendererId; let i = $index) {
+    <app-viz 
+    #visualizationItem
+    tabindex="2"
+    [stRendererInputId]="stRenderer.stRendererId"
+    ></app-viz>
+}

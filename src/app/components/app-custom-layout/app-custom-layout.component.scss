@@ -1,0 +1,10 @@
+app-viz {
+    position: absolute;
+    overflow: visible;
+}
+app-viz:focus {
+    outline: none; /* remove default if replacing */
+    box-shadow: 0 0 0 3px rgba(100, 150, 250, 0.5);
+    border-color: #6496fa;
+    background-color: #eef3ff;
+}

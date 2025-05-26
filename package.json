@@ -41,7 +41,8 @@
     "iappmodel": "ng g i interfaces/st/appmodel/stAppModel",
     "sappmodelservice": "ng g s services/appmodel/appmodel",
     "cappMenu": "ng g c components/appMenu",
-    "suiservice": "ng g s services/ui/ui"
+    "suiservice": "ng g s services/ui/ui",
+    "cappCustomLayout": "ng g c components/appCustomLayout"
   },
   "private": true,
   "dependencies": {

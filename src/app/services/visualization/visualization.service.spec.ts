@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, QueryList } from '@angular/core';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
@@ -108,5 +108,16 @@ describe('VisualizationService', () => {
     const visualizations = service.getVisualizations();
 
     expect(visualizations.length).toEqual(0);
-  })
+  });
+
+  it('should setup DOM visualization', () => {
+    const vizComponent: VizComponent = fixture.debugElement.children[0].componentInstance;
+
+    const queryList = new QueryList<VizComponent>();
+    queryList.reset([vizComponent]);
+
+    const vizCount = service.setupDomVisualizations(queryList);
+
+    expect(vizCount).toEqual(1);
+  });
 });
