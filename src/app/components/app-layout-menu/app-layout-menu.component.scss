@@ -1,0 +1,14 @@
+.icon-button-dark {
+    background-color: black;
+    color: #E0E0E0;
+    border: 1px solid #000;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    transition: background-color 0.3s ease;
+}
+
+.icon-button-dark:hover {
+    background-color: #444444;
+}

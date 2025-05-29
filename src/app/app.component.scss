@@ -4,3 +4,10 @@
     right: 20px;
     z-index: 1000; /* make sure it's above other content */
 }
+
+.app-layout-menu {
+    position: fixed;
+    top: 20px;
+    right: 65px;
+    z-index: 1000; /* make sure it's above other content */
+}

@@ -76,11 +76,7 @@ export class VisualizationService {
     if (visualizationItems) {
       const vizArrary = visualizationItems.toArray();
       count = vizArrary.length;
-      console.log("count", count);
-      // wait for angular to build dom elements
-//      setTimeout( () => {
-        this.setupVisualizations(vizArrary);
- //     }, 0 );
+      this.setupVisualizations(vizArrary);
     }
 
     return count;

@@ -42,7 +42,8 @@
     "sappmodelservice": "ng g s services/appmodel/appmodel",
     "cappMenu": "ng g c components/appMenu",
     "suiservice": "ng g s services/ui/ui",
-    "cappCustomLayout": "ng g c components/appCustomLayout"
+    "cappCustomLayout": "ng g c components/appCustomLayout",
+    "cappLayoutMenu": "ng g c components/appLayoutMenu"
   },
   "private": true,
   "dependencies": {

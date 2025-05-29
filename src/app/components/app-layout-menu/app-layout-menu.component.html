@@ -1,0 +1,17 @@
+<button
+    mat-icon-button
+    aria-label="toggle layout"
+    class="icon-button-dark"
+    tabindex="1"
+    (click)="toggle()"
+>
+    @if(layout ==='custom') {
+        <mat-icon>apps</mat-icon>
+    }
+
+    @if(layout ==='tabular') {
+    <mat-icon>table_rows</mat-icon>
+    }
+
+
+</button>

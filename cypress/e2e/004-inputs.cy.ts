@@ -1,5 +1,5 @@
 describe('template spec', () => {
-  it('passes', () => {
+  it('adds viz with keyboards', () => {
       const waitTime = 500;
     
       cy.visit('/');
@@ -29,9 +29,13 @@ describe('template spec', () => {
 
       // Wait for the page to be fully loaded
       cy.get('body').should('be.visible');
-
+      cy.log("**** TAB 1 ****");
       // Press Tab (focus must start somewhere)
       cy.get('body').tab(); // requires cypress-plugin-tab
+      cy.log("**** TAB 2 ****");
+      cy.tab();
+      // cy.get('body').tab(); // requires cypress-plugin-tab
+      // cy.get('body').tab(); // requires cypress-plugin-tab
       //cy.focused().should('have.attr', 'mat-menu-trigger');
 
       // first enter opens the menu
@@ -50,15 +54,19 @@ describe('template spec', () => {
       cy.wait(waitTime);
       cy.reload();
 
+      cy.log("********* start testing space key *************");
       // Wait for the page to be fully loaded
       cy.get('body').should('be.visible');
 
       // Press Tab (focus must start somewhere)
       cy.get('body').tab(); // requires cypress-plugin-tab
+      cy.tab();
       //cy.focused().should('have.attr', 'mat-menu-trigger');
 
       // first enter opens the menu
       cy.focused().type(' '); // sends keydown, keypress, and keyup
+
+      cy.log("********* end testing space key *************");
 
       // second enter clicks the menu item
       cy.focused().type(' '); // sends keydown, keypress, and keyup

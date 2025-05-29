@@ -18,20 +18,20 @@ import { PlatformService } from './services/utilities/platform.service';
 // components
 import { VizComponent } from './components/viz/viz.component';
 import { AppCustomLayoutComponent } from './components/app-custom-layout/app-custom-layout.component';
+import { AppLayoutMenuComponent } from './components/app-layout-menu/app-layout-menu.component';
 
 @Component({
   selector: 'app-root',
   imports: [
     AppCustomLayoutComponent,
-    AppMenuComponent
+    AppMenuComponent,
+    AppLayoutMenuComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent
  {
-  @ViewChildren('visualizationItem') visualizationItems!: QueryList<VizComponent>;
-
   animationService: AnimationService = inject(AnimationService);
   platformService: PlatformService = inject(PlatformService);
 

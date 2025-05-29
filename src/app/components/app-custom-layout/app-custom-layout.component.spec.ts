@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AppCustomLayoutComponent } from './app-custom-layout.component';
 
-fdescribe('AppCustomLayoutComponent', () => {
+describe('AppCustomLayoutComponent', () => {
   let component: AppCustomLayoutComponent;
   let fixture: ComponentFixture<AppCustomLayoutComponent>;
 
