@@ -45,7 +45,8 @@
     "cappCustomLayout": "ng g c components/appCustomLayout",
     "cappLayoutMenu": "ng g c components/appLayoutMenu",
     "clicore20": "ng update @angular/core@20 @angular/cli@20",
-    "mat20": "ng update @angular/material@20"
+    "mat20": "ng update @angular/material@20",
+    "cappTabularLayout": "ng g c components/layouts/appTabularLayout"
   },
   "private": true,
   "dependencies": {

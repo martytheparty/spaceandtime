@@ -1,5 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ActivatedRoute,  NavigationEnd } from '@angular/router';
+import { of } from 'rxjs';
+
+
 import { AppLayoutMenuComponent } from './app-layout-menu.component';
 import { LayoutType } from '../../interfaces/layout/layout-types';
 
@@ -9,7 +13,17 @@ describe('AppLayoutMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppLayoutMenuComponent]
+      imports: [AppLayoutMenuComponent],
+      providers: [{
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: { paramMap: new Map() },
+            params: of({}),
+            queryParams: of({}),
+            data: of({})
+          }
+        }
+      ]
     })
     .compileComponents();
 
@@ -22,12 +36,14 @@ describe('AppLayoutMenuComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should toggle layout', () => {
-    let layout: LayoutType = component.toggle();
+   it('should call setLayout with the url if event is NavigationEnd', () => {
+    const eventCustomToTabular = new NavigationEnd(1, '/custom', '/tabular');
+    const eventTabularToCustom = new NavigationEnd(1, '/tabular', '/custom');
+    let result = component.handleRouterEvents(eventCustomToTabular);
 
-    expect(layout).toEqual('tabular');
+    result = component.handleRouterEvents(eventTabularToCustom);
 
-    layout = component.toggle();
-    expect(layout).toEqual('custom');
-  })
+    expect(result).toBeTrue();
+  });
+
 });

@@ -16,8 +16,7 @@ import { AnimationService } from './services/animations/animation.service';
 import { PlatformService } from './services/utilities/platform.service';
 
 // components
-import { VizComponent } from './components/viz/viz.component';
-import { AppCustomLayoutComponent } from './components/app-custom-layout/app-custom-layout.component';
+import { AppCustomLayoutComponent } from './components/layouts/app-custom-layout/app-custom-layout.component';
 import { AppLayoutMenuComponent } from './components/app-layout-menu/app-layout-menu.component';
 
 @Component({
@@ -35,6 +34,16 @@ export class AppComponent
   animationService: AnimationService = inject(AnimationService);
   platformService: PlatformService = inject(PlatformService);
 
+  layoutLoop = () => {
+      // note: RequestAnimationFrame is browser specific.
+      requestAnimationFrame(this.requestAnimationFrameHandler);
+  }
+
+  requestAnimationFrameHandler = () => {
+      this.animationService.visualizationsLayout();
+      this.layoutLoop();
+  }
+
   constructor() {
     this.setupAnimationDrawingLoop();
     this.platformService.setEvents();
@@ -42,14 +51,7 @@ export class AppComponent
 
   setupAnimationDrawingLoop(): void
   {
-    const layoutLoop = () => {
-      // note: RequestAnimationFrame is browser specific.
-      requestAnimationFrame(()=> {
-        this.animationService.visualizationsLayout();
-        layoutLoop();
-      });
-    }
-
-    layoutLoop();
+    this.layoutLoop();
   }
+  
 }

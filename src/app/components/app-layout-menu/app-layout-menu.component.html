@@ -1,16 +1,24 @@
+
+
 <button
     mat-icon-button
     aria-label="toggle layout"
     class="icon-button-dark"
     tabindex="1"
-    (click)="toggle()"
+    [routerLink]="layout === 'custom' ? '/tabular' : '/custom'"
 >
-    @if(layout ==='custom') {
-        <mat-icon>apps</mat-icon>
+    @if(layout === 'custom') {
+        <mat-icon
+        data-cy="apps-icon">
+        apps
+        </mat-icon>
     }
 
-    @if(layout ==='tabular') {
-    <mat-icon>table_rows</mat-icon>
+    @if(layout === 'tabular') {
+        <mat-icon
+        data-cy="table_rows-icon">
+        table_rows
+        </mat-icon>
     }
 
 

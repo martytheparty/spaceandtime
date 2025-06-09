@@ -1,12 +1,12 @@
 import { Component, effect, inject, QueryList, ViewChildren } from '@angular/core';
 
-import { StRenderer } from '../../interfaces/st';
+import { StRenderer } from '../../../interfaces/st';
 
-import { UiService } from '../../services/ui/ui.service';
-import { AnimationService } from '../../services/animations/animation.service';
-import { VisualizationService } from '../../services/visualization/visualization.service';
+import { UiService } from '../../../services/ui/ui.service';
+import { AnimationService } from '../../../services/animations/animation.service';
+import { VisualizationService } from '../../../services/visualization/visualization.service';
 
-import { VizComponent } from '../viz/viz.component';
+import { VizComponent } from '../../viz/viz.component';
 
 @Component({
   selector: 'app-custom-layout',
