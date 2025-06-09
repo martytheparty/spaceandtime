@@ -26,8 +26,6 @@ export class AppLayoutMenuComponent implements OnDestroy {
 
   routerSubscription: Subscription;
 
-
-
   constructor() {
     this.routerSubscription = this.router
                                   .events
@@ -57,5 +55,4 @@ export class AppLayoutMenuComponent implements OnDestroy {
         this.layout = 'tabular';
     }
   }
-
 }
