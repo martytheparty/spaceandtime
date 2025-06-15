@@ -1,10 +1,9 @@
 import {
   Component,
-  effect,
-  inject,
-  QueryList,
-  ViewChildren
+  inject
 } from '@angular/core';
+
+import { RouterModule } from '@angular/router';
 
 // three libs
 import { AppMenuComponent } from './components/app-menu/app-menu.component';
@@ -16,15 +15,14 @@ import { AnimationService } from './services/animations/animation.service';
 import { PlatformService } from './services/utilities/platform.service';
 
 // components
-import { AppCustomLayoutComponent } from './components/layouts/app-custom-layout/app-custom-layout.component';
 import { AppLayoutMenuComponent } from './components/app-layout-menu/app-layout-menu.component';
 
 @Component({
   selector: 'app-root',
   imports: [
-    AppCustomLayoutComponent,
     AppMenuComponent,
-    AppLayoutMenuComponent
+    AppLayoutMenuComponent,
+    RouterModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

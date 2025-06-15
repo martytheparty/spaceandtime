@@ -120,4 +120,24 @@ describe('VisualizationService', () => {
 
     expect(vizCount).toEqual(1);
   });
+
+  it('should test upsert for empty visualization', () => {
+    const mockComponent = jasmine.createSpyObj('VizComponent', ['setAsInitialized']);
+    const mockEmptyViz = { vizComponent: null } as unknown as StVisualization;
+
+    spyOn(service, 'getFirstEmptyVisualization').and.returnValue(mockEmptyViz);
+
+    const result = service.upsertVizForComponent(mockComponent);
+
+    expect(result).toEqual(true);
+  });
+
+  it('should getFirstEmptyVisualization', ()=> {
+    const mockEmptyViz = { vizComponent: null } as unknown as StVisualization;
+    
+    service.visualizations = [ mockEmptyViz ];
+
+    const result = service.getFirstEmptyVisualization();
+    expect(result).toBe(mockEmptyViz);
+  });
 });

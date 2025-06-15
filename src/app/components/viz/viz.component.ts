@@ -4,10 +4,12 @@ import {
   ElementRef,
   inject,
   input,
+  OnDestroy,
   ViewChild
 } from '@angular/core';
 
 import { ComponentVisualizationService } from './viz.service';
+import { VisualizationService } from '../../services/visualization/visualization.service';
 
 @Component({
   selector: 'app-viz',
@@ -15,13 +17,17 @@ import { ComponentVisualizationService } from './viz.service';
   templateUrl: './viz.component.html',
   styleUrl: './viz.component.scss'
 })
-export class VizComponent implements AfterViewInit {
+export class VizComponent implements AfterViewInit, OnDestroy {
+
+
+  componentVisualizationService: ComponentVisualizationService = inject(ComponentVisualizationService);
+  visualizationService: VisualizationService = inject(VisualizationService);
 
   stRendererInputId = input.required<number>();
 
   private hasBeenInitialized = false;
 
-  componentVisualizationService: ComponentVisualizationService = inject(ComponentVisualizationService);
+
   
   @ViewChild('viz') rendererViewChild: ElementRef | undefined;
 
@@ -29,6 +35,10 @@ export class VizComponent implements AfterViewInit {
     if (this.rendererViewChild?.nativeElement) {
       this.componentVisualizationService.renderInNativeElement(this.rendererViewChild, this.stRendererInputId());
     }
+  }
+
+  ngOnDestroy(): void {
+    this.visualizationService.deleteComponentForId(this.stRendererInputId());
   }
 
   setAsInitialized(): boolean

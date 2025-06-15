@@ -24,15 +24,23 @@ export class AppCustomLayoutComponent {
     stRenderers: StRenderer[] = [];
 
     constructor() {
-
       effect(() => {
         this.stRenderers = this.uiService.stRenderersSignal();
         this.animationService.animateVisualizations( this.stRenderers);
         setTimeout( () => {
-          this.visualizationService.setupDomVisualizations(this.visualizationItems);
+          const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
+
+          this.updateVisualizationLayout(vizCount);
         });
       });
+    }
 
+    updateVisualizationLayout(vizCount: number): number
+    {
+      if(vizCount > 0) {
+        this.animationService.visualizationsLayout(true);
+      }
+      return vizCount;
     }
 
 

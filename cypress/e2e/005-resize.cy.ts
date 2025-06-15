@@ -32,5 +32,9 @@ describe('template spec', () => {
     cy.wait(waitTime);
     cy.viewport(830, 800);
     cy.get('app-viz').eq(4).should('have.css', 'top', '200px');
+    cy.get('[data-cy=apps-icon]').click();
+    cy.wait(waitTime);
+    cy.get('[data-cy=table_rows-icon]').click();
+    cy.get('app-viz').eq(4).should('have.css', 'top', '200px');
   })
 })

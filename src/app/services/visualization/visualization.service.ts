@@ -90,10 +90,40 @@ export class VisualizationService {
 
   setupVisualizationItems(vizComponents: VizComponent[]): number {
     vizComponents.forEach(
-      this.createVizForComponent.bind(this)
+      this.upsertVizForComponent.bind(this)
     );
 
     return vizComponents.length;
+  }
+
+  upsertVizForComponent(vizComponent: VizComponent): boolean {
+    // determine if a viz for this component already exists
+    const emptyVisualization = this.getFirstEmptyVisualization();
+    let hadEmpty = false;
+
+    if (emptyVisualization) {
+      emptyVisualization.vizComponent = vizComponent;
+      vizComponent.setAsInitialized();
+      hadEmpty = true;
+    } else {
+      this.createVizForComponent(vizComponent);
+    }
+
+    return hadEmpty;
+  }
+
+  getFirstEmptyVisualization(): StVisualization | undefined {
+    let stVisualization: StVisualization | undefined;
+
+    this.visualizations.forEach(
+      (visualization: StVisualization) => {
+        if (!visualization.vizComponent && stVisualization === undefined) {
+          stVisualization = visualization;
+        }
+      }
+    );
+
+    return stVisualization;
   }
 
   createVizForComponent(vizComponent: VizComponent): boolean {
@@ -177,5 +207,21 @@ export class VisualizationService {
         this.visualizationHashValue = hash;
       }
     );
+  }
+
+  deleteComponentForId(id: number): boolean
+  {
+    let found = false;
+
+    this.visualizations.forEach(
+      (visualization: StVisualization) => {
+        if (visualization.stRendererId === id) {
+          found = true;
+          delete visualization.vizComponent;
+        }
+      }
+    );
+
+    return found;
   }
 }
