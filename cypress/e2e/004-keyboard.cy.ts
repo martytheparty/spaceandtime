@@ -81,5 +81,8 @@ describe('template spec', () => {
       viz.should('exist');
       canvas.should('exist');
 
+      cy.focused().type('{esc}');
+      cy.get('[data-cy=apps-icon]').click();
+
   })
 })

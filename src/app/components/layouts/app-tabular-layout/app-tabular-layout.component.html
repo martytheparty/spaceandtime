@@ -1,1 +1,14 @@
-<p>app-tabular-layout works!</p>
+@for(stRenderer of stRenderers; track stRenderer.stRendererId; let i = $index) {
+    <table>
+        <tr>
+            <td>
+                <app-viz 
+                #visualizationItem
+                tabindex="2"
+                [stRendererInputId]="stRenderer.stRendererId"
+                ></app-viz>
+            </td>
+            <td></td>
+        </tr>
+    </table>
+}

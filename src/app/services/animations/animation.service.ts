@@ -220,4 +220,12 @@ export class AnimationService {
 
     return true;
   }
+
+  updateVisualizationLayout(vizCount: number): number
+  {
+    if(vizCount > 0) {
+      this.visualizationsLayout(true);
+    }
+    return vizCount;
+  }
 }

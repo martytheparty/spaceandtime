@@ -207,8 +207,12 @@ describe('AnimationService', () => {
     expect(service.animatateVisualization(stRenderer, 3)).toBeTrue();
   })
 
-  
+    it('should update the visualization layouts', () => {
+    const vizCount = 5;
+    const result = service.updateVisualizationLayout(vizCount);
 
+    expect(vizCount).toEqual(result);
+  });
 });
 
 

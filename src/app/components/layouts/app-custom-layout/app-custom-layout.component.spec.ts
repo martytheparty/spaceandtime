@@ -21,10 +21,4 @@ describe('AppCustomLayoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should update the visualization layout', () => {
-    const vizCount = 5;
-    const result = component.updateVisualizationLayout(vizCount);
-
-    expect(vizCount).toEqual(result);
-  });
 });

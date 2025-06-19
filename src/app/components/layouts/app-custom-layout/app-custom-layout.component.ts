@@ -30,20 +30,8 @@ export class AppCustomLayoutComponent {
         setTimeout( () => {
           const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
 
-          this.updateVisualizationLayout(vizCount);
+          this.animationService.updateVisualizationLayout(vizCount);
         });
       });
     }
-
-    updateVisualizationLayout(vizCount: number): number
-    {
-      if(vizCount > 0) {
-        this.animationService.visualizationsLayout(true);
-      }
-      return vizCount;
-    }
-
-
-
-
 }
