@@ -54,7 +54,8 @@ export class StRendererService {
       stHeight: startHeight,
       stCamera: stCamera,
       stScene: stScene,
-      threeRenderer: renderer
+      threeRenderer: renderer,
+      deleted: false
     };
     
     const rendererFunction: () => void = this.animationService.createAnimationFunctionForId(stRenderer);
@@ -78,13 +79,22 @@ export class StRendererService {
     this.rendererService.renderRenderer(stRendererId, threeScene, threeCamera);
   }
 
-  getRendererIds(): number[]
-  {
-    return Object.keys(this.stRenderersDict).map(Number);
-  }
-
   getRenderers(): StRenderer[]
   {
     return Object.values(this.stRenderersDict);
+  }
+
+  deleteRenderer(stRendererId: number): boolean
+  {
+    let deleted = false;
+
+    if (this.stRenderersDict[stRendererId]) {
+      this.stRenderersDict[stRendererId].deleted = true;
+      delete this.stRenderersDict[stRendererId];
+      deleted = true;
+    }
+
+
+    return deleted;
   }
 }

@@ -15,3 +15,10 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     background-color: black;
 }
+
+.warn-button {
+    mat-icon {
+        color: #e57373;
+    }
+}
+

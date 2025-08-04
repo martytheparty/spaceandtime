@@ -34,7 +34,7 @@ export class VizComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     if (this.rendererViewChild?.nativeElement) {
       this.componentVisualizationService.renderInNativeElement(this.rendererViewChild, this.stRendererInputId());
-    }
+     }
   }
 
   ngOnDestroy(): void {

@@ -6,6 +6,9 @@ import {
   ViewChildren
 } from '@angular/core';
 
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 import { VizComponent } from '../../viz/viz.component';
 
 import { UiService } from '../../../services/ui/ui.service';
@@ -15,7 +18,11 @@ import { StRenderer } from '../../../interfaces/st';
 
 @Component({
   selector: 'app-app-tabular-layout',
-  imports: [VizComponent],
+  imports: [
+    VizComponent,
+    MatButtonModule,
+    MatIconModule
+  ],
   templateUrl: './app-tabular-layout.component.html',
   styleUrl: './app-tabular-layout.component.scss'
 })
@@ -40,5 +47,12 @@ export class AppTabularLayoutComponent {
       });
     }
 
+    deleteRendererItem(stRendererId: number): boolean
+    {      
+      let deleted = this.uiService.deleteRenderer(stRendererId);
+      this.visualizationService.deleteVisualizationForRendererId(stRendererId);
+
+      return deleted;
+    }
 
 }

@@ -1,4 +1,4 @@
-describe('template spec', () => {
+describe('keyboard', () => {
   it('adds viz with keyboards', () => {
       const waitTime = 500;
     
@@ -9,7 +9,7 @@ describe('template spec', () => {
       cy.get('app-menu').click();
 
       // Step 2: Wait for the mat-menu-item to appear in the overlay and click it
-      cy.get('button[mat-menu-item]')
+      cy.get('[data-cy="add-button"]')
       .should('be.visible')
       .click();
       cy.focused().click();

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AppMenuComponent } from './app-menu.component';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { ReflowType } from '../../interfaces/layout/reflow-types';
 
 describe('AppMenuComponent', () => {
   let component: AppMenuComponent;
@@ -59,5 +60,17 @@ describe('AppMenuComponent', () => {
     const vizAdded = component.addClickVizHandler(mockEvent);
 
     expect(vizAdded).toBeTruthy();
+  });
+
+  it('should toggle reflow', () => {
+    let reflow: ReflowType = 'always';
+
+    reflow = component.toggleReflow(reflow);
+
+    expect(reflow).toEqual("never");
+
+    reflow = component.toggleReflow(reflow);
+
+    expect(reflow).toEqual("always");
   });
 });

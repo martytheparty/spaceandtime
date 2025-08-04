@@ -1,26 +1,23 @@
 import { Injectable, inject } from '@angular/core';
 import { StVisualization } from '../../interfaces/st';
 import { VisualizationService } from '../visualization/visualization.service';
+import { ReflowType } from '../../interfaces/layout/reflow-types';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AppmodelService {
+export class AppModelService {
 
-  editVisualization: StVisualization | undefined;
-  stVisualizationService: VisualizationService = inject(VisualizationService);
+  reflow: ReflowType = 'always';
 
-  constructor() { }
+  setReflow(reflow: ReflowType): boolean
+  {
+    this.reflow = reflow;
+    return true;
+  } 
 
-  getVisualizations(): StVisualization[] {
-    return this.stVisualizationService.getVisualizations();
-  }
-
-  setEditVisualization(stVisualization: StVisualization): void {
-    this.editVisualization = stVisualization;
-  }
-
-  clearEditVisualization(): void {
-    this.editVisualization = undefined;
+  getReflow(): ReflowType
+  {
+    return this.reflow;
   }
 }

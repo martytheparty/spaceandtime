@@ -5,6 +5,7 @@
     aria-label="toggle layout"
     class="icon-button-dark"
     tabindex="1"
+    data-cy="toggle-layout-button"
     [routerLink]="layout === 'custom' ? '/tabular' : '/custom'"
 >
     @if(layout === 'custom') {

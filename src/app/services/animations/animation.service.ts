@@ -3,14 +3,6 @@ import {
           inject
         } from '@angular/core';
 
-import { 
-          NavigationEnd,
-          Router,
-          Event as RouterEventTypes
-        } from '@angular/router';
-
-import { Subscription } from 'rxjs';
-
 import * as THREE from 'three';
 
 import { 
@@ -77,25 +69,26 @@ export class AnimationService {
   createAnimationFunctionForId(stRenderer: StRenderer): () => void {
 
     return (): void => {
-
-      const stScene: StScene = stRenderer.stScene;
-      const stMeshes: StMesh[] = stScene.stMeshes;
-      
-      stMeshes.forEach( (
-        stMesh: StMesh
-      ) => {
-        const animations: StAnimation[] = stMesh.stAnimations;
-        animations.forEach( (animation: StAnimation) => {
-          if (stMesh.threeMesh) {
-            this.updatePropertyForAnimation(stMesh.threeMesh, animation)
-          }
+      if(!stRenderer.deleted) {
+        const stScene: StScene = stRenderer.stScene;
+        const stMeshes: StMesh[] = stScene.stMeshes;
+        
+        stMeshes.forEach( (
+          stMesh: StMesh
+        ) => {
+          const animations: StAnimation[] = stMesh.stAnimations;
+          animations.forEach( (animation: StAnimation) => {
+            if (stMesh.threeMesh) {
+              this.updatePropertyForAnimation(stMesh.threeMesh, animation)
+            }
+          } );
         } );
-      } );
 
-      const scene: THREE.Scene = this.sceneService.getSceneById(stRenderer.stScene.stSceneId);
-      const camera: THREE.PerspectiveCamera = this.cameraService.getCameraById(stRenderer.stCamera.stCameraId); 
+        const scene: THREE.Scene = this.sceneService.getSceneById(stRenderer.stScene.stSceneId);
+        const camera: THREE.PerspectiveCamera = this.cameraService.getCameraById(stRenderer.stCamera.stCameraId); 
 
-      this.rendererService.renderRenderer(stRenderer.stRendererId, scene, camera)
+        this.rendererService.renderRenderer(stRenderer.stRendererId, scene, camera);
+      }
     }
   }
 
@@ -131,7 +124,10 @@ export class AnimationService {
     ) {
       // this function runs around 60 times per second
       // avoid doing any calculations in this function
-      this.visualizationService.visualizations.forEach(this.setPosition);
+      this.visualizationService
+            .getVisualizations()
+              .forEach(this.setPosition);
+      
       this.visualizationService.renderedLayoutHash = this.visualizationService.visualizationHashValue;
     }
   }

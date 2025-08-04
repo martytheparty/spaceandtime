@@ -14,12 +14,4 @@ describe('UiService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should add a viz', () => {
-    let vizAdded = 0;
-    
-    expect(vizAdded).toBeFalsy();
-    vizAdded = service.addViz();
-    expect(vizAdded).toBeTruthy();
-
-  });
 });

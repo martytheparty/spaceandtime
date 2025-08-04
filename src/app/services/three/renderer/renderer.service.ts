@@ -33,6 +33,24 @@ export class RendererService {
   {
     const renderer: THREE.WebGLRenderer = this.renderersDict[id];
 
-    renderer.render(scene, camera);
+    if(renderer) {
+      renderer.render(scene, camera);
+    }
+
+  }
+
+  deleteRendererById(stId: number): boolean {
+    const renderer: THREE.WebGLRenderer = this.renderersDict[stId];
+
+    if (renderer) {
+      // stops animation
+      renderer.setAnimationLoop(null);
+      renderer.dispose();
+    }
+
+
+    const result =  delete this.renderersDict[stId]; 
+    return result;
+
   }
 }

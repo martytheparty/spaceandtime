@@ -8,7 +8,15 @@
                 [stRendererInputId]="stRenderer.stRendererId"
                 ></app-viz>
             </td>
-            <td></td>
+            <td>
+                <button
+                    data-cy="delete-viz-button"
+                    (click)="deleteRendererItem(stRenderer.stRendererId)"
+                    mat-stroked-button class="warn-button"
+                >
+                    <mat-icon>delete</mat-icon> Delete
+                </button>
+            </td>
         </tr>
     </table>
 }

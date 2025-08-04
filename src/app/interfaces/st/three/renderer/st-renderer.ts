@@ -12,4 +12,5 @@ export interface StRenderer {
     stVisualization?: StVisualization;
     rendererId?: number;
     threeRenderer?: THREE.WebGLRenderer;  // do not require three objects due to future import export
+    deleted: boolean;
 }

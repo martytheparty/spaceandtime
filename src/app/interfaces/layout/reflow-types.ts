@@ -1,0 +1,1 @@
+export type ReflowType = 'always' | 'never';

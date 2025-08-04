@@ -20,4 +20,10 @@ describe('AppTabularLayoutComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should delete a render item', () => {
+    let deleted = component.deleteRendererItem(1);
+    // Deleted should be false because the renderer does not exist.
+    expect(deleted).toBeFalse();
+  })
 });

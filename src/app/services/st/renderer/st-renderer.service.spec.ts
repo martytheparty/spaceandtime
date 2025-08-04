@@ -30,4 +30,13 @@ describe('StRendererService', () => {
 
     expect(stId).toEqual(stRenderer.stRendererId);
   });
+
+  it('should delete an id', () => {
+    let deleteResult = service.deleteRenderer(1);
+    expect(deleteResult).toBeFalse();
+
+    const stId: number = service.getBaseStRenderer();
+    deleteResult = service.deleteRenderer(stId);
+    expect(deleteResult).toBeTrue();
+  });
 });

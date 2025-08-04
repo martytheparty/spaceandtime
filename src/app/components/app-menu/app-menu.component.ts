@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule, MatMenuTrigger } from '@angular/material/menu';
 
 import { UiService } from '../../services/ui/ui.service';
+import { AppModelService } from '../../services/appmodel/appmodel.service';
+import { ReflowType } from '../../interfaces/layout/reflow-types';
 
 
 @Component({
@@ -24,9 +26,12 @@ export class AppMenuComponent implements AfterViewInit
 {
   @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
 
-  isOpen = false;
-
   uiService: UiService = inject(UiService);
+  appModelService: AppModelService = inject(AppModelService);
+
+  isOpen = false;
+  reflow: ReflowType = this.appModelService.getReflow();
+
 
   ngAfterViewInit() {
     this.menuTrigger.menuClosed.subscribe(this.closeHandler.bind(this));
@@ -47,7 +52,7 @@ export class AppMenuComponent implements AfterViewInit
 
   addVisualization(): number
   {
-    const stId = this.uiService.addViz();
+    const stId = this.uiService.addRenderer();
     return stId;
   }
  
@@ -57,5 +62,17 @@ export class AppMenuComponent implements AfterViewInit
     event.stopPropagation();
 
     return this.addVisualization();
+  }
+
+  toggleReflow(reflow: ReflowType): ReflowType {
+
+    if(reflow === 'never') {
+      this.appModelService.setReflow('always');
+    } else {
+      this.appModelService.setReflow('never');
+    }
+    this.reflow = this.appModelService.getReflow();
+
+    return this.reflow;
   }
 }

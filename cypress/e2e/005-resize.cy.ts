@@ -1,4 +1,4 @@
-describe('template spec', () => {
+describe('resize UI', () => {
   it('passes', () => {
     const waitTime = 2000;
     const vizCount = 16;
@@ -12,7 +12,7 @@ describe('template spec', () => {
     // vizCount times.
 
     for (let i = 0; i < vizCount; i++) {
-      cy.get('button[mat-menu-item]')
+      cy.get('[data-cy="add-button"]')
       .should('be.visible')
       .click();
     }

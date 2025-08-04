@@ -9,13 +9,13 @@ describe('viz spacing spec', () => {
     cy.get('app-menu').click();
 
     // Step 2: Wait for the mat-menu-item to appear in the overlay and click it
-    cy.get('button[mat-menu-item]')
+    cy.get('[data-cy="add-button"]')
     .should('be.visible')
     .click();
 
     cy.wait(waitTime);
 
-    cy.get('button[mat-menu-item]')
+    cy.get('[data-cy="add-button"]')
     .should('be.visible')
     .click();
 

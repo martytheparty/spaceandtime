@@ -14,8 +14,24 @@
     <button
     (click)="addClickVizHandler($event)"
     mat-menu-item
+    data-cy="add-button"
     >
     <mat-icon>add</mat-icon>
     <span>Add Viz</span>
+    </button>
+
+    <button
+    (click)="toggleReflow(reflow)"
+    mat-menu-item
+    data-cy="reflow-button"
+    >
+    @if(reflow === 'never'){
+        <mat-icon data-cy="unchecked">check_box_outline_blank</mat-icon>
+    } @else if (reflow === 'always') {
+        <mat-icon data-cy="checked">check-circle-outline</mat-icon>
+    }
+
+
+    <span>Reflow</span>
     </button>
 </mat-menu>
