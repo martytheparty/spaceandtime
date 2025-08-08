@@ -26,4 +26,12 @@ describe('AppTabularLayoutComponent', () => {
     // Deleted should be false because the renderer does not exist.
     expect(deleted).toBeFalse();
   })
+
+  it('should edit a render item', () => {
+    const fakeRendererId = 1;
+    const edit = component.editRendererItem(fakeRendererId);
+
+    expect(edit).toBeTrue();
+    
+  })
 });

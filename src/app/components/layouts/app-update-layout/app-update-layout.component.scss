@@ -1,0 +1,16 @@
+.outer {
+  height: 100vh; // Or 100% if the parent also has height set
+  display: flex;
+  flex-direction: column;
+
+  .visualization,
+  .editors {
+    flex: 1; // Each takes equal height
+  }
+
+  .editors {
+    background-color: #FAF0E6;
+  }
+}
+
+

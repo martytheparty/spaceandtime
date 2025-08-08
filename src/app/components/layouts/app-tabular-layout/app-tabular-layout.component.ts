@@ -6,6 +6,8 @@ import {
   ViewChildren
 } from '@angular/core';
 
+import { Router } from '@angular/router';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -32,6 +34,7 @@ export class AppTabularLayoutComponent {
     uiService: UiService = inject(UiService);
     animationService: AnimationService = inject(AnimationService);
     visualizationService: VisualizationService = inject(VisualizationService);
+    router: Router = inject(Router);
 
     stRenderers: StRenderer[] = [];
 
@@ -53,6 +56,12 @@ export class AppTabularLayoutComponent {
       this.visualizationService.deleteVisualizationForRendererId(stRendererId);
 
       return deleted;
+    }
+
+    editRendererItem(stRendererId: number): boolean
+    {      
+      this.router.navigate(['/update', stRendererId]);
+      return true;
     }
 
 }

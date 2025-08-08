@@ -10,6 +10,13 @@
             </td>
             <td>
                 <button
+                    data-cy="update-viz-button"
+                    (click)="editRendererItem(stRenderer.stRendererId)"
+                    mat-stroked-button
+                >
+                    <mat-icon>edit</mat-icon> Update
+                </button>
+                <button
                     data-cy="delete-viz-button"
                     (click)="deleteRendererItem(stRenderer.stRendererId)"
                     mat-stroked-button class="warn-button"

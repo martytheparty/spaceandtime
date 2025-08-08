@@ -2,6 +2,12 @@ import { Route, Routes } from '@angular/router';
 
 import { AppCustomLayoutComponent } from "./components/layouts/app-custom-layout/app-custom-layout.component";
 import { AppTabularLayoutComponent } from './components/layouts/app-tabular-layout/app-tabular-layout.component';
+import { AppUpdateLayoutComponent } from './components/layouts/app-update-layout/app-update-layout.component';
+
+const updateRoute: Route = {
+    path: "update/:id",
+    component: AppUpdateLayoutComponent
+};
 
 const customRoute: Route = {
     path: "custom",
@@ -28,6 +34,7 @@ const wildcardRoute: Route = {
 
 export const routes: Routes = [];
 
+routes.push(updateRoute);
 routes.push(customRoute);
 routes.push(tabularRoute);
 routes.push(defaultRoute);
