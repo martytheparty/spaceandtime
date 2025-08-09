@@ -1,4 +1,4 @@
-describe('template spec', () => {
+describe('update spec', () => {
   it('passes', () => {
     cy.visit('/');
 
@@ -28,6 +28,9 @@ describe('template spec', () => {
     .click();
 
     cy.location('pathname').should('contain', '/update');
+
+    cy.get('[data-cy="table_update-icon"]').should('be.visible');
+    
 
 
   })

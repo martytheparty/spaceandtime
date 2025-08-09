@@ -53,6 +53,8 @@ export class AppLayoutMenuComponent implements OnDestroy {
         this.layout = 'custom';
     } else if (url.includes('tabular')) {
         this.layout = 'tabular';
+    } else if (url.includes('update')) {
+        this.layout = 'update';
     }
   }
 }

@@ -20,4 +20,10 @@ describe('check for the menu app on the route route', () => {
       cy.get('[data-cy=table_rows-icon]').click();
       cy.location('pathname').should('eq', '/custom');
     });
+
+    it('should go to update route', () => {
+      cy.visit('/update/1');
+      cy.get('[data-cy=table_update-icon]').click();
+      cy.location('pathname').should('eq', '/custom');
+    });
 })

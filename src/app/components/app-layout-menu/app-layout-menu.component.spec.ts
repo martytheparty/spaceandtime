@@ -39,9 +39,11 @@ describe('AppLayoutMenuComponent', () => {
    it('should call setLayout with the url if event is NavigationEnd', () => {
     const eventCustomToTabular = new NavigationEnd(1, '/custom', '/tabular');
     const eventTabularToCustom = new NavigationEnd(1, '/tabular', '/custom');
-    let result = component.handleRouterEvents(eventCustomToTabular);
+    const eventTabularToUpdate = new NavigationEnd(1, '/tabular', '/update/1');
 
+    let result = component.handleRouterEvents(eventCustomToTabular);
     result = component.handleRouterEvents(eventTabularToCustom);
+    result = component.handleRouterEvents(eventTabularToUpdate);
 
     expect(result).toBeTrue();
   });

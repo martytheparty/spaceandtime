@@ -1,5 +1,3 @@
-
-
 <button
     mat-icon-button
     aria-label="toggle layout"
@@ -22,5 +20,10 @@
         </mat-icon>
     }
 
-
+    @if(layout === 'update') {
+        <mat-icon
+        data-cy="table_update-icon">
+        stop
+        </mat-icon>
+    }
 </button>

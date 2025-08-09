@@ -1,1 +1,1 @@
-export type LayoutType = 'custom' | 'tabular';
+export type LayoutType = 'custom' | 'tabular' | 'update';
