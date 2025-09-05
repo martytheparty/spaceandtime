@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { RecyclableSequenceService } from '../../utilities/recyclable-sequence-service.service';
 import { GeometryService } from '../../three/geometry/geometry.service';
-import { StGeometry, StTriple } from '../../../interfaces/st';
+import { StGeometry } from '../../../interfaces/st';
 
 import * as THREE from 'three';
+import { StTriple } from '../../../interfaces/base/triple/st-triple';
 
 @Injectable({
   providedIn: 'root'

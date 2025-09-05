@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { StRendererService } from './st-renderer.service';
-import { StRenderer } from '../../../interfaces/st';
+import { CalculatedValues, StRenderer } from '../../../interfaces/st';
+import { Component } from '@angular/core';
 
 describe('StRendererService', () => {
   let service: StRendererService;
@@ -26,7 +27,13 @@ describe('StRendererService', () => {
   it('should renderer by id', () => {
     const stId: number = service.getBaseStRenderer();
     const stRenderer: StRenderer = service.getRendererById(stId);
-    service.renderById(stId);
+
+    const mockDiv = {
+      offsetWidth: 800,
+      offsetHeight: 600
+    } as unknown as HTMLDivElement;
+
+    service.renderById(stId, mockDiv);
 
     expect(stId).toEqual(stRenderer.stRendererId);
   });
@@ -38,5 +45,16 @@ describe('StRendererService', () => {
     const stId: number = service.getBaseStRenderer();
     deleteResult = service.deleteRenderer(stId);
     expect(deleteResult).toBeTrue();
+  });
+
+  it('should set the calculated aspect ratio', () => {
+    let calculated: CalculatedValues = { aspectRatio: 0 };
+
+    expect(calculated.aspectRatio).toEqual(0);
+
+    calculated = service.getCalculatedValuesObjectForCalculatedArChange(calculated, 1);
+
+    expect(calculated.aspectRatio).toEqual(1);
+
   });
 });

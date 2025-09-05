@@ -47,7 +47,10 @@
     "clicore20": "ng update @angular/core@20 @angular/cli@20",
     "mat20": "ng update @angular/material@20",
     "cappTabularLayout": "ng g c components/layouts/appTabularLayout",
-    "cappUpdateLayout": "ng g c components/layouts/appUpdateLayout"
+    "cappUpdateLayout": "ng g c components/layouts/appUpdateLayout",
+    "sStPublish": "ng g s services/st/publish/stPublisher",
+    "iCaculatedAspectRationDict": "ng g i interfaces/st/dictionaries/calculatedAspectRatioDict",
+    "sThreePublish": "ng g s services/three/publish/threePublisher"
   },
   "private": true,
   "dependencies": {

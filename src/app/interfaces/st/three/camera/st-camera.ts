@@ -1,6 +1,6 @@
-import { StTriple } from "../../triple/st-triple";
 
 import * as THREE from 'three';
+import { StTriple } from '../../../base/triple/st-triple';
 
 export interface StCamera {
     stCameraId: number;

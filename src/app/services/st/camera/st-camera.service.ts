@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { RecyclableSequenceService } from '../../utilities/recyclable-sequence-service.service';
-import { StCamera, StTriple } from '../../../interfaces/st';
+import { StCamera } from '../../../interfaces/st';
 import { CameraService } from '../../three/camera/camera.service';
+import { StTriple } from '../../../interfaces/base/triple/st-triple';
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +62,10 @@ export class StCameraService {
   getCameraById(id: number): StCamera
   {
     return this.stCameraDict[id];
+  }
+
+  getAspectRatio(width: number, height: number): number
+  {
+    return width/height;
   }
 }

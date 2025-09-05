@@ -5,6 +5,6 @@ export * from "./three/material/st-material";
 export * from "./three/mesh/st-mesh";
 export * from "./three/renderer/st-renderer";
 export * from "./three/scene/st-scene";
-export * from "./triple/st-triple";
 export * from "./visualization/st-visualization";
 export * from "./appmodel/st-app-model";
+export * from "./dictionaries/calculated-aspect-ratio-dict";

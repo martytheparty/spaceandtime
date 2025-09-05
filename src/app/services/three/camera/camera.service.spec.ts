@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import * as THREE from 'three';
 
 import { CameraService } from './camera.service';
-import { StTriple } from '../../../interfaces/st';
+import { StTriple } from '../../../interfaces/base/triple/st-triple';
 
 describe('CameraService', () => {
   let service: CameraService;

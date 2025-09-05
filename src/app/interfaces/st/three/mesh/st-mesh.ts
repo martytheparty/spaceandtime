@@ -1,5 +1,5 @@
+import { StTriple } from "../../../base/triple/st-triple";
 import { StAnimation } from "../../animation/st-animation";
-import { StTriple } from "../../triple/st-triple";
 
 import * as THREE from 'three';
 

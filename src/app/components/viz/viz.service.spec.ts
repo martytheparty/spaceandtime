@@ -30,8 +30,10 @@ describe('VisualizationService', () => {
   it('should render in a native element', () => {
     const mockElementRef: ElementRef = new ElementRef(document.createElement('div'));
     const stId = stRendererService.getBaseStRenderer();
+    const width = 100;
+    const height = 100;
 
-    service.renderInNativeElement(mockElementRef, stId);
+    service.renderInNativeElement(mockElementRef, stId, width, height);
 
     expect(1).toEqual(1);
   });

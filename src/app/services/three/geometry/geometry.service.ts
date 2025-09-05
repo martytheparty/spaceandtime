@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
-import { StTriple } from '../../../interfaces/st';
+import { StTriple } from '../../../interfaces/base/triple/st-triple';
 
 @Injectable({
   providedIn: 'root'

@@ -81,8 +81,30 @@ describe('keyboard', () => {
       viz.should('exist');
       canvas.should('exist');
 
+      // the actual UE is that the more options button autmatically gets focus
       cy.focused().type('{esc}');
-      cy.get('[data-cy=apps-icon]').click();
+      cy.get('[data-cy=more-options-button]').focus();
+
+      const vizList = cy.get('app-viz');
+
+      cy.get('app-viz').should('have.length', 3);
+
+      cy.tab();
+      cy.tab();
+      cy.tab();
+      cy.tab();
+
+      // GO TO TABULAR LAYOUT BY CLICKING ICON
+      cy.focused().click();
+
+      cy.tab();
+      cy.tab();
+      cy.tab();
+
+      // GO TO EDIT PAGE BY CLICKING UYPDATE
+      cy.focused().click();
+
+
 
   })
 })

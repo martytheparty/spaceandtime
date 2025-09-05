@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { 
+  CalculatedValues,
   StCamera,
   StRenderer,
   StScene
@@ -13,6 +14,8 @@ import { RendererService } from '../../three/renderer/renderer.service'
 import * as THREE from 'three';
 import { StSceneService } from '../scene/st-scene.service';
 import { AnimationService } from '../../animations/animation.service';
+import { CameraService } from '../../three/camera/camera.service';
+import { StPublisherService } from '../publish/st-publisher.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +29,8 @@ export class StRendererService {
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   private stRenderersDict: any = {};
   private rendererService: RendererService = inject(RendererService);
+  private threeCameraService: CameraService = inject(CameraService);
+  private stPublisherService: StPublisherService = inject(StPublisherService);
 
   constructor() { }
 
@@ -71,12 +76,68 @@ export class StRendererService {
     return this.stRenderersDict[id];
   }
 
-  renderById(stRendererId: number): void
+  renderById(stRendererId: number, element: HTMLDivElement): void
   {
     const stRenderer: StRenderer = this.stRenderersDict[stRendererId]; 
     const threeScene: THREE.Scene = stRenderer.stScene.threeScene as THREE.Scene;
     const threeCamera: THREE.PerspectiveCamera = stRenderer.stCamera.threeCamera as THREE.PerspectiveCamera;
+    // think about how to add logic that sends the stored ar instead fo the element
+    // width and height.
+    this.updateAspectRatioByIdForWidthAndHeight(stRendererId, element.offsetWidth, element.offsetHeight);
     this.rendererService.renderRenderer(stRendererId, threeScene, threeCamera);
+  }
+
+  updateAspectRatioByIdForWidthAndHeight(
+    stRendererId: number,
+    width: number,
+    height: number
+  ): boolean {
+    let updated = false;
+
+    const stRenderer: StRenderer | undefined = this.stRenderersDict[stRendererId];
+    const threeCamera = this.getThreeCamera(stRenderer);
+
+    if (stRenderer && threeCamera) {
+      const aspectRatio = this.stCameraService.getAspectRatio(width, height);
+
+      // #1 Publish to the Calculated AR to the UI 
+      // this.stPublisherService.setCalculatedAspectRatio(stRendererId, aspectRatio);
+      this.publishCalculatedAspectRation(stRendererId, aspectRatio)
+
+      // #2 Storing the Calcuated AR for ST
+      stRenderer.calculatedValues 
+      = this.getCalculatedValuesObjectForCalculatedArChange(stRenderer.calculatedValues, aspectRatio);
+
+      // #3 Telling ThreeJS to update the AR
+      this.threeCameraService.setAspectRatio(stRendererId, threeCamera, width/height);
+
+      updated = true;
+    }
+
+    return updated;
+  }
+
+  getCalculatedValuesObjectForCalculatedArChange(
+    calculatedValues: CalculatedValues | undefined,
+    aspectRatio: number
+  ): CalculatedValues 
+  {
+      if(calculatedValues) {
+        calculatedValues.aspectRatio = aspectRatio
+      } else {
+        calculatedValues = { aspectRatio };
+      }
+
+      return calculatedValues;
+  }
+
+  publishCalculatedAspectRation(stRendererId: number, aspectRatio: number): boolean {
+    this.stPublisherService.setCalculatedAspectRatio(stRendererId, aspectRatio);
+    return true;
+  }
+
+  getThreeCamera(stRenderer: StRenderer | undefined): THREE.PerspectiveCamera | undefined {
+    return stRenderer?.stCamera?.threeCamera;
   }
 
   getRenderers(): StRenderer[]

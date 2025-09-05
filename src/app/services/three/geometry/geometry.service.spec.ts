@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { GeometryService } from './geometry.service';
 
 import * as THREE from 'three';
-import { StTriple } from '../../../interfaces/st';
+import { StTriple } from '../../../interfaces/base/triple/st-triple';
 
 describe('GeometryService', () => {
   let service: GeometryService;
@@ -30,9 +30,6 @@ describe('GeometryService', () => {
     service.createGeometry(geometryId);
     const geometry: THREE.BoxGeometry = service.getGeometryById(geometryId);
     const dimensions: StTriple = {stX: 1, stY: 1, stZ: 1};
-    // stX = width
-    // stY = height
-    // stZ = depth
 
     service.setDimensions(geometryId, dimensions);
 

@@ -13,4 +13,9 @@ export interface StRenderer {
     rendererId?: number;
     threeRenderer?: THREE.WebGLRenderer;  // do not require three objects due to future import export
     deleted: boolean;
+    calculatedValues?: CalculatedValues
+}
+
+export interface CalculatedValues {
+    aspectRatio: number
 }

@@ -25,16 +25,24 @@ export class VizComponent implements AfterViewInit, OnDestroy {
 
   stRendererInputId = input.required<number>();
 
+  vizWidth = input<number>(200);
+  vizHeight = input<number>(200);
+
   private hasBeenInitialized = false;
-
-
   
   @ViewChild('viz') rendererViewChild: ElementRef | undefined;
 
   ngAfterViewInit(): void {
-    if (this.rendererViewChild?.nativeElement) {
-      this.componentVisualizationService.renderInNativeElement(this.rendererViewChild, this.stRendererInputId());
-     }
+        if (this.rendererViewChild?.nativeElement) {
+          this.rendererViewChild.nativeElement.style.width = `${this.vizWidth()}px`;
+          this.rendererViewChild.nativeElement.style.height = `${this.vizHeight()}px`;
+          this.componentVisualizationService.renderInNativeElement(
+            this.rendererViewChild,
+            this.stRendererInputId(),
+            this.vizWidth(),
+            this.vizHeight()
+          );
+        }
   }
 
   ngOnDestroy(): void {

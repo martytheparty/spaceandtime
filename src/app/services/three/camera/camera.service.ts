@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+
+import { StTriple } from '../../../interfaces/base/triple/st-triple';
+import { ThreePublisherService } from '../publish/three-publisher.service';
 
 import * as THREE from 'three';
-import { StTriple } from '../../../interfaces/st';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CameraService {
 
+  private threePublisherService: ThreePublisherService = inject(ThreePublisherService);
   private cameraDict: any = {};
 
   constructor() { }
@@ -39,6 +42,17 @@ export class CameraService {
     const camera: THREE.PerspectiveCamera = this.cameraDict[id];
 
     return camera;
+  }
+
+  setAspectRatio(stRendererId: number, camera: THREE.PerspectiveCamera, aspectRatio: number): boolean {
+    let set = false;
+    if (camera) {
+      camera.aspect = aspectRatio;
+      camera.updateProjectionMatrix();
+      set = true;
+      this.threePublisherService.setThreeAspectRatioForStRenderId(stRendererId, aspectRatio);
+    }
+    return set;
   }
 }
 
