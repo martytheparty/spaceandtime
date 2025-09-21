@@ -81,9 +81,6 @@ describe('Reflow spec', () => {
       .should('be.visible')
       .click();
 
-      // get a reference to the menu icon and click on it
-      cy.get('app-menu').click();
-
       // click the add-button for 1st viz
       cy.get('[data-cy="add-button"]')
       .should('be.visible')

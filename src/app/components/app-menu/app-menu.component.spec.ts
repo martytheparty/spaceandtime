@@ -24,18 +24,14 @@ describe('AppMenuComponent', () => {
   });
 
   it('should open the menu', () => {
-    const e: Event = {} as Event;
-    const mmt: MatMenuTrigger = {} as MatMenuTrigger;
-    const isOpen = component.showMenu(e, mmt);
+    const isOpen = component.showMenu();
 
     expect(isOpen).toBeTrue();
   } );
 
 
   it('should close the menu', () => {
-    const e: Event = {} as Event;
-    const mmt: MatMenuTrigger = {} as MatMenuTrigger;
-    let isOpen = component.showMenu(e, mmt);
+    let isOpen = component.showMenu();
 
     expect(isOpen).toBeTrue();
 
@@ -72,5 +68,10 @@ describe('AppMenuComponent', () => {
     reflow = component.toggleReflow(reflow);
 
     expect(reflow).toEqual("always");
+  });
+
+  it('should set the menu focus', () => {
+    const ranSuccessfully = component.setMenuFocus();
+    expect(ranSuccessfully).toEqual(true);
   });
 });

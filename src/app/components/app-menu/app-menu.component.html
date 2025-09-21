@@ -1,29 +1,26 @@
 <button
-    #menuTrigger="matMenuTrigger"
     mat-icon-button
     aria-label="More options"
     class="icon-button-dark"
     tabindex="1"
-    (click)="showMenu($event, menuTrigger)"
-    [matMenuTriggerFor]="menu"
+    (click)="showMenu()"
     data-cy="more-options-button"
 >
     <mat-icon>more_vert</mat-icon>
 </button>
   
-<mat-menu #menu="matMenu">
+<div class="menu" [ngClass]="{'hidden':!isOpen}">
     <button
+    #addMenu
     (click)="addClickVizHandler($event)"
-    mat-menu-item
     data-cy="add-button"
     >
     <mat-icon>add</mat-icon>
-    <span>Add Viz</span>
+    <span class="button-text">Add Viz</span>
     </button>
 
     <button
     (click)="toggleReflow(reflow)"
-    mat-menu-item
     data-cy="reflow-button"
     >
     @if(reflow === 'never'){
@@ -33,6 +30,6 @@
     }
 
 
-    <span>Reflow</span>
+    <span class="button-text">Reflow</span>
     </button>
-</mat-menu>
+</div>

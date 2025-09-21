@@ -13,3 +13,27 @@
     background-color: #444444;
 }
   
+.hidden {
+    display: none;
+}
+
+.menu {
+  position: absolute;
+  min-width: max-content;
+  right: 0;
+  
+  button {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    padding-right: 5px;
+
+    mat-icon {
+      margin-right: 5px;
+    }
+  }
+
+  button:focus {
+    outline: 1px solid #cccccc;
+  }
+}
