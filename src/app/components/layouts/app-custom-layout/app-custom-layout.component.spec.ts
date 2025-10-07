@@ -21,4 +21,11 @@ describe('AppCustomLayoutComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('shoud clear renderers if not custom view', () => {
+    component.getRenderers('');
+    const renderers = component.getRenderers('tabular');
+
+    expect(renderers.length).toEqual(0);
+  });
+
 });

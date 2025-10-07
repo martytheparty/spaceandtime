@@ -33,5 +33,11 @@ describe('AppTabularLayoutComponent', () => {
 
     expect(edit).toBeTrue();
     
+  });
+
+  it('should get renderers', () => {
+    const renderers = component.getRenderers('tabular');
+
+    expect(renderers.length).toEqual(0);
   })
 });

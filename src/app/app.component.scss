@@ -11,3 +11,54 @@
     right: 65px;
     z-index: 1000; /* make sure it's above other content */
 }
+
+
+#parent
+{
+    app-tabular-layout {
+        display: none;
+        position: absolute;
+    }
+
+    app-custom-layout {
+        display: block;
+        position: absolute;
+    }
+
+    app-update-layout {
+        display: none;
+    }
+
+    &.tabular {
+
+        app-custom-layout {
+            display: none;
+        }
+
+        app-tabular-layout {
+            display: block;
+        }
+
+        app-update-layout {
+            display: none;
+        }
+    }
+
+    &.update {
+
+        app-custom-layout {
+            display: none;
+        }
+
+        app-tabular-layout {
+            display: none;
+        }
+
+       app-update-layout {
+            display: block;
+        }
+
+    }
+
+
+}

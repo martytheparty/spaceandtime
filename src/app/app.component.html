@@ -1,4 +1,8 @@
 <app-layout-menu  class="app-layout-menu"></app-layout-menu>
 <app-menu class="app-menu"></app-menu>
 
-<router-outlet></router-outlet>
+<div id="parent" [ngClass]="currentRouteService.currentRoute()">
+    <app-custom-layout></app-custom-layout>
+    <app-tabular-layout></app-tabular-layout>
+    <app-update-layout></app-update-layout>
+</div>

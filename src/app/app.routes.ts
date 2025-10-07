@@ -1,27 +1,31 @@
+import { Component } from '@angular/core';
+
 import { Route, Routes } from '@angular/router';
 
-import { AppCustomLayoutComponent } from "./components/layouts/app-custom-layout/app-custom-layout.component";
-import { AppTabularLayoutComponent } from './components/layouts/app-tabular-layout/app-tabular-layout.component';
-import { AppUpdateLayoutComponent } from './components/layouts/app-update-layout/app-update-layout.component';
+@Component({
+  template: '' // nothing gets rendered
+})
+export class DummyComponent {}
+
 
 const updateRoute: Route = {
     path: "update/:id",
-    component: AppUpdateLayoutComponent
+    component: DummyComponent
 };
 
 const customRoute: Route = {
     path: "custom",
-    component: AppCustomLayoutComponent
+    component: DummyComponent
 };
 
 const tabularRoute: Route = {
     path: "tabular",
-    component: AppTabularLayoutComponent
+    component: DummyComponent
 };
 
 const defaultRoute: Route = {
     path: "",
-    component: AppCustomLayoutComponent
+    component: DummyComponent
 };
 
 const wildcardRoute: Route = {

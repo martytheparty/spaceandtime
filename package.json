@@ -50,7 +50,8 @@
     "cappUpdateLayout": "ng g c components/layouts/appUpdateLayout",
     "sStPublish": "ng g s services/st/publish/stPublisher",
     "iCaculatedAspectRationDict": "ng g i interfaces/st/dictionaries/calculatedAspectRatioDict",
-    "sThreePublish": "ng g s services/three/publish/threePublisher"
+    "sThreePublish": "ng g s services/three/publish/threePublisher",
+    "sCurrentRoute": "ng g s services/utilities/currentRoute"
   },
   "private": true,
   "dependencies": {

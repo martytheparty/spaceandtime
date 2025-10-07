@@ -1,30 +1,29 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   effect,
   inject,
-  OnInit,
   ViewChild
 } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
 
 import { VizComponent } from '../../viz/viz.component';
-import { StRenderer } from '../../../interfaces/st';
 import { StRendererService } from '../../../services/st/renderer/st-renderer.service';
 import { StPublisherService } from '../../../services/st/publish/st-publisher.service';
 import { ThreePublisherService } from '../../../services/three/publish/three-publisher.service';
+import { LayoutType } from '../../../interfaces/layout/layout-types';
+import { CurrentRouteService } from '../../../services/utilities/current-route.service';
 
 @Component({
-  selector: 'app-app-update-layout',
+  selector: 'app-update-layout',
   imports: [
     VizComponent
   ],
   templateUrl: './app-update-layout.component.html',
   styleUrl: './app-update-layout.component.scss'
 })
-export class AppUpdateLayoutComponent implements AfterViewInit, OnInit {
+export class AppUpdateLayoutComponent {
 
   @ViewChild('viewer') editorView : ElementRef | undefined;
 
@@ -32,6 +31,7 @@ export class AppUpdateLayoutComponent implements AfterViewInit, OnInit {
   stRendererService: StRendererService = inject(StRendererService);
   stPublisherService: StPublisherService = inject(StPublisherService);
   threePublisherService: ThreePublisherService = inject(ThreePublisherService);
+  currentRouteService: CurrentRouteService = inject(CurrentRouteService);
 
   id: number = 0;
   viewerWidth = 0;
@@ -45,21 +45,36 @@ export class AppUpdateLayoutComponent implements AfterViewInit, OnInit {
 
       this.setCalculatedAspectRation(ar);
 
+      // stRenderers should be empty unless we are in tabular view
+      const currentView: LayoutType = this.currentRouteService.currentRoute();
+
+      this.id = this.getCurrentVisualizationId(currentView, window.location.href);
+      this.processVisualization(this);
     });
   }
 
-  ngOnInit() {
-    this.id = Number(this.route.snapshot.paramMap.get('id'));
+  getCurrentVisualizationId(currentView: string, href: string): number {
+    let id = 0;
+
+    if (currentView === 'update') {
+        const url = new URL(href);
+        const segments = url.pathname.split('/');
+        id = Number(segments[segments.length - 1]);
+    }
+
+    return id;
   }
 
-  ngAfterViewInit(): void {
-    if (this.editorView?.nativeElement) {
-      this.viewerWidth = this.editorView.nativeElement.offsetWidth;
-      this.viewerHeight = this.editorView.nativeElement.offsetHeight;
-      setTimeout( 
-        this.finalizeInitialization.bind(this)
-      , 0 );
+
+  processVisualization(component: AppUpdateLayoutComponent): boolean {
+    if (component.id > 0 && component.editorView?.nativeElement) {
+      component.viewerWidth = component.editorView.nativeElement.offsetWidth;
+      component.viewerHeight = component.editorView.nativeElement.offsetHeight;
+
+      setTimeout(component.finalizeInitialization(component), 0 );
     }
+
+    return true;
   }
 
   setCalculatedAspectRation(ar: number | undefined): number | undefined {
@@ -69,12 +84,11 @@ export class AppUpdateLayoutComponent implements AfterViewInit, OnInit {
     return ar;
   }
 
-  finalizeInitialization(): boolean {
-    let updated = true;
-    const stRenderer: StRenderer = this.stRendererService.getRendererById(this.id);
-
-    this.afterInitComplete = true;
-    return updated;
+  finalizeInitialization(component: AppUpdateLayoutComponent): Function {
+    return () => {
+        // const stRenderer: StRenderer = component.stRendererService.getRendererById(component.id);
+        component.afterInitComplete = true;
+    };
   }
 
 

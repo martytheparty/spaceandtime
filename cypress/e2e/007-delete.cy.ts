@@ -4,6 +4,7 @@ describe('delete spec', () => {
 
       cy.get('app-menu').should('exist');      // get a reference to the menu icon and click on it
 
+      // open menu
       cy.get('app-menu').click();
 
       // check for the checked icon (default)
@@ -16,9 +17,9 @@ describe('delete spec', () => {
       .click().click().click();
 
       // close menu
-      cy.get('body').click();
+      cy.get('app-menu').click();
 
-      // open layout menu
+      // sets route the tabular
       cy.get('[data-cy="toggle-layout-button"]')
       .should('be.visible')
       .click()
@@ -31,11 +32,12 @@ describe('delete spec', () => {
       .eq(1)
       .click();
 
-      // open layout menu
+      // sets route to custom
       cy.get('[data-cy="toggle-layout-button"]')
       .should('be.visible')
       .click()
 
+      // open menu
       cy.get('app-menu').click();
 
       // check for the checked icon (default)
@@ -61,19 +63,16 @@ describe('delete spec', () => {
 
   it('deletes when reflow is off', () => {
       cy.visit('/');
-      cy.get('app-menu').should('exist').click();;
+      cy.get('app-menu').should('exist').click();
 
-            // check for the checked icon (default)
+      // check for the checked icon (default)
       cy.get('[data-cy="checked"]')
       .should('exist');
 
-            // click the reflow-button
+      // click the reflow-button
       cy.get('[data-cy="reflow-button"]')
       .should('be.visible')
       .click();
-
-      // get a reference to the menu icon and click on it
-      cy.get('app-menu').click();
 
       cy.get('[data-cy="unchecked"]')
       .should('exist');
@@ -83,10 +82,10 @@ describe('delete spec', () => {
       .should('be.visible')
       .click().click().click();
 
-            // close menu
-      cy.get('body').click();
+      // get a reference to the menu icon and click on it
+      cy.get('app-menu').click();
 
-      // open layout menu
+      // changes route to tabular
       cy.get('[data-cy="toggle-layout-button"]')
       .should('be.visible')
       .click()
@@ -99,7 +98,7 @@ describe('delete spec', () => {
       .eq(1)
       .click();
 
-            // open layout menu
+      // change route to custom
       cy.get('[data-cy="toggle-layout-button"]')
       .should('be.visible')
       .click()
