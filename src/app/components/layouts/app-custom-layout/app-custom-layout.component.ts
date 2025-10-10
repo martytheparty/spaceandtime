@@ -31,7 +31,7 @@ export class AppCustomLayoutComponent {
 
         // stRenderers should be empty unless we are in custom view
         const currentView: LayoutType = this.currentRouteService.currentRoute();
-        this.stRenderers = this.getRenderers(currentView);
+        this.stRenderers = [...this.getRenderers(currentView)];
 
         this.animationService.animateVisualizations( this.stRenderers);
         setTimeout( () => {

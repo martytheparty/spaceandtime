@@ -46,7 +46,8 @@ export class AppTabularLayoutComponent {
         // stRenderers should be empty unless we are in tabular view
         const currentView: LayoutType = this.currentRouteService.currentRoute();
 
-        this.stRenderers = this.getRenderers(currentView);
+        const newRenderers = this.getRenderers(currentView);
+        this.stRenderers = [...newRenderers];
 
         this.animationService.animateVisualizations( this.stRenderers);
         setTimeout( () => {
@@ -57,7 +58,7 @@ export class AppTabularLayoutComponent {
       });
     }
 
-    getRenderers(currentView: LayoutType):StRenderer[]
+    getRenderers(currentView: LayoutType): StRenderer[]
     {
       let stRenderers: StRenderer[] = [];
       if (currentView === 'tabular') {
