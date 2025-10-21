@@ -57,7 +57,7 @@ export class StRendererService {
       stRendererId,
       stWidth: startWidth, 
       stHeight: startHeight,
-      stCamera: stCamera,
+      stCameraId: stCamera.stCameraId,
       stScene: stScene,
       threeRenderer: renderer,
       deleted: false
@@ -76,15 +76,24 @@ export class StRendererService {
     return this.stRenderersDict[id];
   }
 
-  renderById(stRendererId: number, element: HTMLDivElement): void
+  renderById(stRendererId: number, element: HTMLDivElement): boolean
   {
+    let rendered = false;
+
     const stRenderer: StRenderer = this.stRenderersDict[stRendererId]; 
-    const threeScene: THREE.Scene = stRenderer.stScene.threeScene as THREE.Scene;
-    const threeCamera: THREE.PerspectiveCamera = stRenderer.stCamera.threeCamera as THREE.PerspectiveCamera;
-    // think about how to add logic that sends the stored ar instead fo the element
-    // width and height.
-    this.updateAspectRatioByIdForWidthAndHeight(stRendererId, element.offsetWidth, element.offsetHeight);
-    this.rendererService.renderRenderer(stRendererId, threeScene, threeCamera);
+
+    if (stRenderer) {
+      const threeScene: THREE.Scene = stRenderer.stScene.threeScene as THREE.Scene;
+      const threeCamera: THREE.PerspectiveCamera | undefined = this.getThreeCameraByStRendererId(stRendererId);
+      if (threeCamera) {
+        // think about how to add logic that sends the stored ar instead fo the element
+        // width and height.
+        this.updateAspectRatioByIdForWidthAndHeight(stRendererId, element.offsetWidth, element.offsetHeight);
+        this.rendererService.renderRenderer(stRendererId, threeScene, threeCamera);
+        rendered = true;
+      }
+    }
+    return rendered;
   }
 
   updateAspectRatioByIdForWidthAndHeight(
@@ -95,23 +104,27 @@ export class StRendererService {
     let updated = false;
 
     const stRenderer: StRenderer | undefined = this.stRenderersDict[stRendererId];
-    const threeCamera = this.getThreeCamera(stRenderer);
 
-    if (stRenderer && threeCamera) {
-      const aspectRatio = this.stCameraService.getAspectRatio(width, height);
+    if (stRenderer)
+    {
+      const threeCamera = this.getThreeCameraByStRendererId(stRenderer.stRendererId);
 
-      // #1 Publish to the Calculated AR to the UI 
-      // this.stPublisherService.setCalculatedAspectRatio(stRendererId, aspectRatio);
-      this.publishCalculatedAspectRation(stRendererId, aspectRatio)
+      if (threeCamera) {
+        const aspectRatio = this.stCameraService.getAspectRatio(width, height);
 
-      // #2 Storing the Calcuated AR for ST
-      stRenderer.calculatedValues 
-      = this.getCalculatedValuesObjectForCalculatedArChange(stRenderer.calculatedValues, aspectRatio);
+        // #1 Publish to the Calculated AR to the UI 
+        // this.stPublisherService.setCalculatedAspectRatio(stRendererId, aspectRatio);
+        this.publishCalculatedAspectRation(stRendererId, aspectRatio)
 
-      // #3 Telling ThreeJS to update the AR
-      this.threeCameraService.setAspectRatio(stRendererId, threeCamera, width/height);
+        // #2 Storing the Calcuated AR for ST
+        stRenderer.calculatedValues 
+        = this.getCalculatedValuesObjectForCalculatedArChange(stRenderer.calculatedValues, aspectRatio);
 
-      updated = true;
+        // #3 Telling ThreeJS to update the AR
+        this.threeCameraService.setAspectRatio(stRendererId, threeCamera, width/height);
+
+        updated = true;
+      }      
     }
 
     return updated;
@@ -136,8 +149,17 @@ export class StRendererService {
     return true;
   }
 
-  getThreeCamera(stRenderer: StRenderer | undefined): THREE.PerspectiveCamera | undefined {
-    return stRenderer?.stCamera?.threeCamera;
+  getThreeCameraByStRendererId(stRendererId: number): THREE.PerspectiveCamera | undefined {
+    let threeCamera: THREE.PerspectiveCamera | undefined = undefined;
+    const stRenderer: StRenderer | undefined = this.stRenderersDict[stRendererId]; 
+    
+    if (stRenderer) {
+      const stCameraId = stRenderer.stCameraId;
+      const stCamera = this.stCameraService.getCameraById(stCameraId);
+      threeCamera = stCamera?.threeCamera; // this will need to be updated when threeCamera does not exist any more.
+    }
+
+    return threeCamera;
   }
 
   getRenderers(): StRenderer[]
@@ -150,8 +172,10 @@ export class StRendererService {
     let deleted = false;
 
     if (this.stRenderersDict[stRendererId]) {
+      this.rendererService.deleteRendererById(stRendererId);
       this.stRenderersDict[stRendererId].deleted = true;
       delete this.stRenderersDict[stRendererId];
+
       deleted = true;
     }
 

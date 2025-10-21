@@ -426,7 +426,6 @@ export class VisualizationService {
     let updated = false;
     const newVisualizations: StVisualization[] = this.filterVisualizationForRendererId(stRendererId, this.visualizations);
 
-    this.rendererService.deleteRendererById(stRendererId);
     if (newVisualizations.length < this.visualizations.length) {
       this.visualizations = newVisualizations;
       updated = true;

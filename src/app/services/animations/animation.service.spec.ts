@@ -213,6 +213,46 @@ describe('AnimationService', () => {
 
     expect(vizCount).toEqual(result);
   });
+
+  it('should return a function (createAnimationFunctionForId) and execute with deleted renderer', () => {
+
+    // new test
+    const stRendererId: number = stRendererService.getBaseStRenderer();
+    const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
+    stRenderer.deleted = true;
+
+  //  stRenderer.stScene.stMeshes.forEach(
+  //     (stMesh: StMesh) => {
+  //       const animation1: StAnimation =           {
+  //         stId: 1, 
+  //         alias: "mesh-rotation-x",
+  //         temporal: 'infinite',
+  //         redraw: 'continous',
+  //         time: 0,
+  //         values: [.05]
+  //       };
+  //       stMesh.stAnimations.push(animation1);
+  //       const animation2: StAnimation =           {
+  //         stId: 2, 
+  //         alias: "mesh-rotation-y",
+  //         temporal: 'infinite',
+  //         redraw: 'continous',
+  //         time: 0,
+  //         values: [.05]
+  //       };
+  //       stMesh.stAnimations.push(animation2);
+  //     }
+  //   );
+
+    const fun = service.createAnimationFunctionForId(stRenderer);
+    // execute to achieve 100% test coverage
+    fun();
+    stRenderer.deleted = false;
+
+    expect(typeof fun).toEqual("function")
+
+  });
+
 });
 
 

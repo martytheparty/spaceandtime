@@ -1,5 +1,4 @@
 import { StVisualization } from "../../visualization/st-visualization";
-import { StCamera } from "../camera/st-camera";
 import { StScene } from "../scene/st-scene";
 import * as THREE from 'three';
 
@@ -7,7 +6,7 @@ export interface StRenderer {
     stRendererId: number;
     stWidth: number;
     stHeight: number;
-    stCamera: StCamera;
+    stCameraId: number;
     stScene: StScene;
     stVisualization?: StVisualization;
     rendererId?: number;

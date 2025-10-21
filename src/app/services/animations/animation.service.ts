@@ -69,7 +69,10 @@ export class AnimationService {
   createAnimationFunctionForId(stRenderer: StRenderer): () => void {
 
     return (): void => {
-      if(!stRenderer.deleted) {
+      if(stRenderer.deleted) {
+        // makes the unit test unusable
+        console.log("ERROR: Trying to render a deleted renderer");
+      } else {
         const stScene: StScene = stRenderer.stScene;
         const stMeshes: StMesh[] = stScene.stMeshes;
         
@@ -85,7 +88,7 @@ export class AnimationService {
         } );
 
         const scene: THREE.Scene = this.sceneService.getSceneById(stRenderer.stScene.stSceneId);
-        const camera: THREE.PerspectiveCamera = this.cameraService.getCameraById(stRenderer.stCamera.stCameraId); 
+        const camera: THREE.PerspectiveCamera = this.cameraService.getCameraById(stRenderer.stCameraId); 
 
         this.rendererService.renderRenderer(stRenderer.stRendererId, scene, camera);
       }
