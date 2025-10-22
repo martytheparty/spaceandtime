@@ -10,14 +10,14 @@ export class RendererService {
 
   constructor() { }
 
-  createRenderer(id: number): number
+  createRenderer(stRendererId: number): number
   {
-    this.renderersDict[id] = new THREE.WebGLRenderer( { antialias: true } );
-    return id;
+    this.renderersDict[stRendererId] = new THREE.WebGLRenderer( { antialias: true } );
+    return stRendererId;
   }
 
-  getRendererById(id: number): THREE.WebGLRenderer {
-    return this.renderersDict[id];
+  getRendererById(stRendererId: number): THREE.WebGLRenderer {
+    return this.renderersDict[stRendererId];
   }
 
   setAnimationFunctionForStId(stId: number, fun: () => void) {

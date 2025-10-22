@@ -9,7 +9,6 @@ export interface StRenderer {
     stCameraId: number;
     stScene: StScene;
     rendererId?: number;
-    threeRenderer?: THREE.WebGLRenderer;  // do not require three objects due to future import export
     deleted: boolean;
     calculatedValues?: CalculatedValues
 }

@@ -59,7 +59,6 @@ export class StRendererService {
       stHeight: startHeight,
       stCameraId: stCamera.stCameraId,
       stScene: stScene,
-      threeRenderer: renderer,
       deleted: false
     };
     
