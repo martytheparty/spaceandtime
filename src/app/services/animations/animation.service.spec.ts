@@ -3,11 +3,12 @@ import { TestBed } from '@angular/core/testing';
 import * as THREE from 'three';
 
 import { AnimationService } from './animation.service';
-import { RedrawTypes, StAnimation, StGeometry, StMesh, StRenderer, StVisualization, TemporalTypes, ThreePathAliasType } from '../../interfaces/st';
+import { RedrawTypes, StAnimation, StGeometry, StMesh, StRenderer, StScene, StVisualization, TemporalTypes, ThreePathAliasType } from '../../interfaces/st';
 import { StMeshService } from '../st/mesh/st-mesh.service';
 import { StGeometryService } from '../st/geometry/st-geometry.service';
 import { StRendererService } from '../st/renderer/st-renderer.service';
 import { VisualizationService } from '../visualization/visualization.service';
+import { StSceneService } from '../st/scene/st-scene.service';
 
 
 describe('AnimationService', () => {
@@ -16,8 +17,10 @@ describe('AnimationService', () => {
   let stGeometryService: StGeometryService;
 
   let stRendererService: StRendererService;
+  let stSceneService: StSceneService;
 
   let visualizationService: VisualizationService;
+
 
   let stMesh: StMesh;
   let stGeometry: StGeometry;
@@ -29,6 +32,7 @@ describe('AnimationService', () => {
     stGeometryService = TestBed.inject(StGeometryService);
     stRendererService = TestBed.inject(StRendererService);
     visualizationService = TestBed.inject(VisualizationService);
+    stSceneService = TestBed.inject(StSceneService);
 
     const meshId = stMeshService.createBaseMesh();
     stMesh = stMeshService.getMeshById(meshId);
@@ -87,8 +91,9 @@ describe('AnimationService', () => {
     // new test
     const stRendererId: number = stRendererService.getBaseStRenderer();
     const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
+    const stScene: StScene = stSceneService.getSceneById(stRenderer.stSceneId);
 
-   stRenderer.stScene.stMeshes.forEach(
+   stScene.stMeshes.forEach(
       (stMesh: StMesh) => {
         const animation1: StAnimation =           {
           stId: 1, 
@@ -123,8 +128,9 @@ describe('AnimationService', () => {
    
     const stRendererId: number = stRendererService.getBaseStRenderer();
     const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
+    const stScene: StScene = stSceneService.getSceneById(stRenderer.stSceneId);
 
-    const stMesh: StMesh = stRenderer.stScene.stMeshes[0];
+    const stMesh: StMesh = stScene.stMeshes[0];
     const alias: ThreePathAliasType = "mesh-rotation-x";
     const temporal: TemporalTypes = "infinite";
     const redraw: RedrawTypes = "continous";

@@ -58,7 +58,7 @@ export class StRendererService {
       stWidth: startWidth, 
       stHeight: startHeight,
       stCameraId: stCamera.stCameraId,
-      stScene: stScene,
+      stSceneId: stScene.stSceneId,
       deleted: false
     };
     
@@ -82,7 +82,8 @@ export class StRendererService {
     const stRenderer: StRenderer = this.stRenderersDict[stRendererId]; 
 
     if (stRenderer) {
-      const threeScene: THREE.Scene = stRenderer.stScene.threeScene as THREE.Scene;
+      const stScene = this.stSceneService.getSceneById(stRenderer.stSceneId);
+      const threeScene: THREE.Scene = stScene.threeScene as THREE.Scene;
       const threeCamera: THREE.PerspectiveCamera | undefined = this.getThreeCameraByStRendererId(stRendererId);
       if (threeCamera) {
         // think about how to add logic that sends the stored ar instead fo the element

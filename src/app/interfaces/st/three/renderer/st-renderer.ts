@@ -7,7 +7,7 @@ export interface StRenderer {
     stWidth: number;
     stHeight: number;
     stCameraId: number;
-    stScene: StScene;
+    stSceneId: number;
     rendererId?: number;
     deleted: boolean;
     calculatedValues?: CalculatedValues

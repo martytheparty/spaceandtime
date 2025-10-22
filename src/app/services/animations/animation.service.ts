@@ -23,6 +23,7 @@ import { SceneService } from '../three/scene/scene.service';
 import { CameraService } from '../three/camera/camera.service';
 import { RecyclableSequenceService } from '../utilities/recyclable-sequence-service.service';
 import { VisualizationService } from '../visualization/visualization.service';
+import { StSceneService } from '../st/scene/st-scene.service';
 
 
 
@@ -40,6 +41,7 @@ export class AnimationService {
 
   // stRenderService: StRendererService = inject(StRendererService);
   rendererService: RendererService = inject(RendererService);
+  stSceneService: StSceneService = inject(StSceneService);
   sceneService: SceneService = inject(SceneService);
   cameraService: CameraService = inject(CameraService);
   recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
@@ -69,11 +71,13 @@ export class AnimationService {
   createAnimationFunctionForId(stRenderer: StRenderer): () => void {
 
     return (): void => {
+      const stScene: StScene = this.stSceneService.getSceneById(stRenderer.stSceneId);
+
       if(stRenderer.deleted) {
         // makes the unit test unusable
         console.log("ERROR: Trying to render a deleted renderer");
       } else {
-        const stScene: StScene = stRenderer.stScene;
+
         const stMeshes: StMesh[] = stScene.stMeshes;
         
         stMeshes.forEach( (
@@ -87,7 +91,7 @@ export class AnimationService {
           } );
         } );
 
-        const scene: THREE.Scene = this.sceneService.getSceneById(stRenderer.stScene.stSceneId);
+        const scene: THREE.Scene = this.sceneService.getSceneById(stScene.stSceneId);
         const camera: THREE.PerspectiveCamera = this.cameraService.getCameraById(stRenderer.stCameraId); 
 
         this.rendererService.renderRenderer(stRenderer.stRendererId, scene, camera);
@@ -157,8 +161,10 @@ export class AnimationService {
 
   animateMesh(stRenderer: StRenderer, modulus: number): boolean {
 
+    const stScene: StScene = this.stSceneService.getSceneById(stRenderer.stSceneId);
+    
     if (modulus === 0) {
-      const mesh = stRenderer.stScene.stMeshes[0];
+      const mesh = stScene.stMeshes[0];
       this
         .addAnimation(
           mesh,
@@ -168,7 +174,7 @@ export class AnimationService {
           0,
           [.05]);
     } else if(modulus === 1) {
-      const mesh = stRenderer.stScene.stMeshes[0];
+      const mesh = stScene.stMeshes[0];
       this
         .addAnimation(
           mesh,
@@ -178,7 +184,7 @@ export class AnimationService {
           0,
           [.05]);
     } else if(modulus === 2) {
-      const mesh = stRenderer.stScene.stMeshes[0];
+      const mesh = stScene.stMeshes[0];
       this
         .addAnimation(
           mesh,
@@ -188,7 +194,7 @@ export class AnimationService {
           0,
           [.05]);
     } else if(modulus === 3) {
-      const mesh = stRenderer.stScene.stMeshes[0];
+      const mesh = stScene.stMeshes[0];
       this
         .addAnimation(
           mesh,

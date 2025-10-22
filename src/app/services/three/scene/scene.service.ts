@@ -10,23 +10,23 @@ export class SceneService {
 
   constructor() { }
 
-  createScene(id: number): number
+  createScene(stSceneId: number): number
   {
-    this.sceneDict[id] = new THREE.Scene();
-    return id;
+    this.sceneDict[stSceneId] = new THREE.Scene();
+    return stSceneId;
   }
 
-  addMeshToScene(id: number, mesh: THREE.Mesh): number
+  addMeshToScene(stSceneId: number, mesh: THREE.Mesh): number
   {
-    const scene: THREE.Scene = this.getSceneById(id);
+    const scene: THREE.Scene = this.getSceneById(stSceneId);
 
     scene.add(mesh);
 
-    return id;
+    return stSceneId;
   }
 
-  getSceneById(id: number): THREE.Scene {
-    const scene: THREE.Scene = this.sceneDict[id];
+  getSceneById(stSceneId: number): THREE.Scene {
+    const scene: THREE.Scene = this.sceneDict[stSceneId];
     return scene;
   }
 
