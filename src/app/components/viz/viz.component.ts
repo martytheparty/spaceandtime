@@ -15,7 +15,8 @@ import { VisualizationService } from '../../services/visualization/visualization
   selector: 'app-viz',
   imports: [],
   templateUrl: './viz.component.html',
-  styleUrl: './viz.component.scss'
+  styleUrl: './viz.component.scss',
+   providers: [ComponentVisualizationService]
 })
 export class VizComponent implements AfterViewInit, OnDestroy {
 
