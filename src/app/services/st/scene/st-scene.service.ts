@@ -40,7 +40,6 @@ export class StSceneService {
       this.sceneService.addMeshToScene(sceneId, mesh);
     }
 
-    stScene.threeScene = this.sceneService.getSceneById(sceneId);
     this.stSceneDict[sceneId] = stScene;
 
     return sceneId;

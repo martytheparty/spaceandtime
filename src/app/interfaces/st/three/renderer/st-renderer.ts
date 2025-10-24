@@ -1,7 +1,3 @@
-import { StVisualization } from "../../visualization/st-visualization";
-import { StScene } from "../scene/st-scene";
-import * as THREE from 'three';
-
 export interface StRenderer {
     stRendererId: number;
     stWidth: number;

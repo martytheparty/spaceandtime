@@ -16,6 +16,7 @@ import { StSceneService } from '../scene/st-scene.service';
 import { AnimationService } from '../../animations/animation.service';
 import { CameraService } from '../../three/camera/camera.service';
 import { StPublisherService } from '../publish/st-publisher.service';
+import { SceneService } from '../../three/scene/scene.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class StRendererService {
 
   private stCameraService: StCameraService = inject(StCameraService);
   private stSceneService: StSceneService = inject(StSceneService);
+  private sceneService: SceneService = inject(SceneService);
   private animationService: AnimationService = inject(AnimationService);
 
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
@@ -82,8 +84,8 @@ export class StRendererService {
     const stRenderer: StRenderer = this.stRenderersDict[stRendererId]; 
 
     if (stRenderer) {
-      const stScene = this.stSceneService.getSceneById(stRenderer.stSceneId);
-      const threeScene: THREE.Scene = stScene.threeScene as THREE.Scene;
+      const threeScene = this.sceneService.getSceneById(stRenderer.stSceneId);
+
       const threeCamera: THREE.PerspectiveCamera | undefined = this.getThreeCameraByStRendererId(stRendererId);
       if (threeCamera) {
         // think about how to add logic that sends the stored ar instead fo the element
