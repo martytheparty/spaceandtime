@@ -3,5 +3,5 @@ import * as THREE from 'three';
 
 export interface StScene {
     stSceneId: number;
-    stMeshes: StMesh[];
+    stMeshIds: number[];
 }

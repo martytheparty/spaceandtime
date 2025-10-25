@@ -26,12 +26,12 @@ export class StSceneService {
 
     const stScene: StScene = {
       stSceneId: sceneId,
-      stMeshes: []
+      stMeshIds: []
     };
 
     const baseMeshId: number = this.stMeshService.createBaseMesh();
     const baseMesh: StMesh = this.stMeshService.getMeshById(baseMeshId);
-    stScene.stMeshes.push(baseMesh);
+    stScene.stMeshIds.push(baseMeshId);
 
     this.sceneService.createScene(sceneId);
     if (baseMesh.threeMesh) {

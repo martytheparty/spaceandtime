@@ -24,6 +24,7 @@ import { CameraService } from '../three/camera/camera.service';
 import { RecyclableSequenceService } from '../utilities/recyclable-sequence-service.service';
 import { VisualizationService } from '../visualization/visualization.service';
 import { StSceneService } from '../st/scene/st-scene.service';
+import { StMeshService } from '../st/mesh/st-mesh.service';
 
 
 
@@ -44,6 +45,8 @@ export class AnimationService {
   stSceneService: StSceneService = inject(StSceneService);
   sceneService: SceneService = inject(SceneService);
   cameraService: CameraService = inject(CameraService);
+  stMeshService: StMeshService = inject(StMeshService);
+
   recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   visualizationService: VisualizationService = inject(VisualizationService);
 
@@ -78,11 +81,12 @@ export class AnimationService {
         console.log("ERROR: Trying to render a deleted renderer");
       } else {
 
-        const stMeshes: StMesh[] = stScene.stMeshes;
+        const stMeshIds: number[] = stScene.stMeshIds;
         
-        stMeshes.forEach( (
-          stMesh: StMesh
+        stMeshIds.forEach( (
+          stMeshId: number
         ) => {
+          const stMesh: StMesh = this.stMeshService.getMeshById(stMeshId);
           const animations: StAnimation[] = stMesh.stAnimations;
           animations.forEach( (animation: StAnimation) => {
             if (stMesh.threeMesh) {
@@ -162,9 +166,11 @@ export class AnimationService {
   animateMesh(stRenderer: StRenderer, modulus: number): boolean {
 
     const stScene: StScene = this.stSceneService.getSceneById(stRenderer.stSceneId);
-    
+    const stMeshId = stScene.stMeshIds[0];
+    const stMesh: StMesh = this.stMeshService.getMeshById(stMeshId);
+
     if (modulus === 0) {
-      const mesh = stScene.stMeshes[0];
+      const mesh = stMesh;
       this
         .addAnimation(
           mesh,
@@ -174,7 +180,7 @@ export class AnimationService {
           0,
           [.05]);
     } else if(modulus === 1) {
-      const mesh = stScene.stMeshes[0];
+      const mesh = stMesh;
       this
         .addAnimation(
           mesh,
@@ -184,7 +190,7 @@ export class AnimationService {
           0,
           [.05]);
     } else if(modulus === 2) {
-      const mesh = stScene.stMeshes[0];
+      const mesh = stMesh;
       this
         .addAnimation(
           mesh,
@@ -194,7 +200,7 @@ export class AnimationService {
           0,
           [.05]);
     } else if(modulus === 3) {
-      const mesh = stScene.stMeshes[0];
+      const mesh = stMesh;
       this
         .addAnimation(
           mesh,
