@@ -12,5 +12,4 @@ export interface StCamera {
     //Narrower FOV (e.g., 30): Ideal for close-up views or creating a "telephoto" effect. 
     stPosition: StTriple;
     stLookat: StTriple;
-    threeCamera?: THREE.PerspectiveCamera; // do not require three objects due to future import export
 }

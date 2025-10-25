@@ -21,9 +21,9 @@ export class StCameraService {
     const near = .01;
     const far = 100;
 
-    const cameraId = this.recyclableSequenceService.generateId();
+    const stCameraId = this.recyclableSequenceService.generateId();
     this.cameraService.createCamera(
-      cameraId, 
+      stCameraId, 
       frustrum, 
       aspectRatio,
       near,
@@ -36,10 +36,10 @@ export class StCameraService {
       stZ: 7
     };
 
-    this.cameraService.setCameraPosition(cameraId, stPosition);
+    this.cameraService.setCameraPosition(stCameraId, stPosition);
 
     const  stCamera: StCamera = {
-      stCameraId: cameraId,
+      stCameraId: stCameraId,
       stAspectRatio: aspectRatio,
       stFrustrum: frustrum,
       stNear: near,
@@ -49,13 +49,12 @@ export class StCameraService {
         stX: 0,
         stY: 0,
         stZ: 0
-      },
-      threeCamera: this.cameraService.getCameraById(cameraId)
+      }
     };
 
-    this.stCameraDict[cameraId] = stCamera;
+    this.stCameraDict[stCameraId] = stCamera;
 
-    return cameraId;
+    return stCameraId;
 
   }
 

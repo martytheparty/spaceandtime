@@ -96,7 +96,7 @@ export class AnimationService {
         } );
 
         const scene: THREE.Scene = this.sceneService.getSceneById(stScene.stSceneId);
-        const camera: THREE.PerspectiveCamera = this.cameraService.getCameraById(stRenderer.stCameraId); 
+        const camera: THREE.PerspectiveCamera = this.cameraService.getCameraByStCameraId(stRenderer.stCameraId); 
 
         this.rendererService.renderRenderer(stRenderer.stRendererId, scene, camera);
       }

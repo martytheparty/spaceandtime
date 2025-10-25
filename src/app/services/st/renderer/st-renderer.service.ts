@@ -157,8 +157,7 @@ export class StRendererService {
     
     if (stRenderer) {
       const stCameraId = stRenderer.stCameraId;
-      const stCamera = this.stCameraService.getCameraById(stCameraId);
-      threeCamera = stCamera?.threeCamera; // this will need to be updated when threeCamera does not exist any more.
+      threeCamera = this.threeCameraService.getCameraByStCameraId(stCameraId);
     }
 
     return threeCamera;

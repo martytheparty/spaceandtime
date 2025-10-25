@@ -16,7 +16,7 @@ export class CameraService {
   constructor() { }
 
   createCamera(
-    id: number,
+    stCameraId: number,
     frustrum: number,
     aspectRatio: number,
     near: number,
@@ -25,21 +25,21 @@ export class CameraService {
   {
     const camera = new THREE.PerspectiveCamera(frustrum, aspectRatio, near, far);
 
-    this.cameraDict[id] = camera;
-    return id;
+    this.cameraDict[stCameraId] = camera;
+    return stCameraId;
   }
 
-  setCameraPosition(id: number, stPosition: StTriple): number
+  setCameraPosition(stCameraId: number, stPosition: StTriple): number
   {
-    const camera: THREE.PerspectiveCamera = this.getCameraById(id);
+    const camera: THREE.PerspectiveCamera = this.getCameraByStCameraId(stCameraId);
 
     camera.position.set(stPosition.stX,stPosition.stY,stPosition.stZ);
     
-    return id;
+    return stCameraId;
   }
 
-  getCameraById(id: number): THREE.PerspectiveCamera {
-    const camera: THREE.PerspectiveCamera = this.cameraDict[id];
+  getCameraByStCameraId(stCameraId: number): THREE.PerspectiveCamera {
+    const camera: THREE.PerspectiveCamera = this.cameraDict[stCameraId];
 
     return camera;
   }

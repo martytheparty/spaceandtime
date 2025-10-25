@@ -20,9 +20,9 @@ describe('CameraService', () => {
   it('should create a threeJS camera', () => {
     const stId = 1;
     service.createCamera(stId, 1, 1, .1, 100);
-    const threeCamera: THREE.PerspectiveCamera = service.getCameraById(stId);
+    const threeCamera: THREE.PerspectiveCamera = service.getCameraByStCameraId(stId);
 
-    expect(threeCamera).toEqual(service.getCameraById(stId));
+    expect(threeCamera).toEqual(service.getCameraByStCameraId(stId));
 
   });
 
@@ -30,7 +30,7 @@ describe('CameraService', () => {
   it('should create a threeJS camera', () => {
     const stId = 1;
     service.createCamera(stId, 1, 1, .1, 100);
-    const threeCamera: THREE.PerspectiveCamera = service.getCameraById(stId);
+    const threeCamera: THREE.PerspectiveCamera = service.getCameraByStCameraId(stId);
 
     const position: StTriple = {stX: 1, stY: 1, stZ: 1};
     service.setCameraPosition(stId, position);

@@ -93,8 +93,9 @@ describe('AnimationService', () => {
     const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
     const stScene: StScene = stSceneService.getSceneById(stRenderer.stSceneId);
 
-   stScene.stMeshes.forEach(
-      (stMesh: StMesh) => {
+   stScene.stMeshIds.forEach(
+      (stMeshId: number) => {
+        const stMesh = stMeshService.getMeshById(stMeshId);
         const animation1: StAnimation =           {
           stId: 1, 
           alias: "mesh-rotation-x",
@@ -129,8 +130,8 @@ describe('AnimationService', () => {
     const stRendererId: number = stRendererService.getBaseStRenderer();
     const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
     const stScene: StScene = stSceneService.getSceneById(stRenderer.stSceneId);
-
-    const stMesh: StMesh = stScene.stMeshes[0];
+    const meshId = stScene.stMeshIds[0];
+    const stMesh: StMesh = stMeshService.getMeshById(meshId);;
     const alias: ThreePathAliasType = "mesh-rotation-x";
     const temporal: TemporalTypes = "infinite";
     const redraw: RedrawTypes = "continous";
