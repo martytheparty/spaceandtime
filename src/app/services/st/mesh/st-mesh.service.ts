@@ -51,7 +51,7 @@ export class StMeshService {
     this.meshService.createMesh(meshId);
     stMesh.threeMesh = this.meshService.getMeshById(meshId);
 
-    const geometry: THREE.BoxGeometry = this.geometryService.getGeometryById(stMesh.stGeometryId);
+    const geometry: THREE.BoxGeometry = this.geometryService.getGeometryByStGeometryId(stMesh.stGeometryId);
     this.meshService.updateMeshGeometry(meshId, geometry);
 
     const material: THREE.MeshNormalMaterial = this.materialService.getMaterialById(stMesh.stMaterialId);

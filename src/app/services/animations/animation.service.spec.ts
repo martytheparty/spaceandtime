@@ -49,7 +49,6 @@ describe('AnimationService', () => {
 
   it('should be modify rotation x (updateMeshForAnimation)', () => {
 
-    const geometry = stGeometry.threeGeometry;
     const material = new THREE.MeshNormalMaterial({side: THREE.FrontSide})
     const mesh = stMesh.threeMesh as THREE.Mesh;
 

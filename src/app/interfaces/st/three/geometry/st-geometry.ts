@@ -6,5 +6,4 @@ export interface StGeometry {
     stHeight: number;
     stDepth: number;
     stType: 'box';
-    threeGeometry?: THREE.BoxGeometry;   // do not require three objects due to future import export
 }

@@ -20,15 +20,15 @@ describe('GeometryService', () => {
   it('should create a geometry', () => {
     const geometryId = 1;
     service.createGeometry(geometryId);
-    const geometry: THREE.BoxGeometry = service.getGeometryById(geometryId);
+    const geometry: THREE.BoxGeometry = service.getGeometryByStGeometryId(geometryId);
     
-    expect(geometry).toEqual(service.getGeometryById(geometryId));
+    expect(geometry).toEqual(service.getGeometryByStGeometryId(geometryId));
   });
 
   it('should set dimensions', () => {
     const geometryId = 1;
     service.createGeometry(geometryId);
-    const geometry: THREE.BoxGeometry = service.getGeometryById(geometryId);
+    const geometry: THREE.BoxGeometry = service.getGeometryByStGeometryId(geometryId);
     const dimensions: StTriple = {stX: 1, stY: 1, stZ: 1};
 
     service.setDimensions(geometryId, dimensions);

@@ -19,10 +19,10 @@ export class StGeometryService {
 
     createBaseGeometry(): number
     {
-      const geometryId = this.recyclableSequenceService.generateId();
+      const stGeometryId = this.recyclableSequenceService.generateId();
 
       const stGeometry: StGeometry= {
-        stGeometryId: geometryId,
+        stGeometryId: stGeometryId,
         stWidth: 1,
         stHeight: 1,
         stDepth: 1,
@@ -30,7 +30,7 @@ export class StGeometryService {
       };
   
       // create a geometry
-      this.geometryService.createGeometry(geometryId);
+      this.geometryService.createGeometry(stGeometryId);
 
       // create the dimensions
       const dimensions: StTriple = { 
@@ -40,18 +40,15 @@ export class StGeometryService {
        };
       
        // set the dimensions on the geometry
-       this.geometryService.setDimensions(geometryId, dimensions);
-      
-       stGeometry.threeGeometry = this.geometryService.getGeometryById(geometryId) as THREE.BoxGeometry;      
-
-       this.stGeometryDict[geometryId] = stGeometry;
+       this.geometryService.setDimensions(stGeometryId, dimensions);
+       this.stGeometryDict[stGeometryId] = stGeometry;
   
-      return geometryId;
+      return stGeometryId;
     }
 
-  getGeometryById(id: number): StGeometry
+  getGeometryById(stGeometryId: number): StGeometry
   {
-    const stGeometry: StGeometry = this.stGeometryDict[id];
+    const stGeometry: StGeometry = this.stGeometryDict[stGeometryId];
 
     return stGeometry;
   }

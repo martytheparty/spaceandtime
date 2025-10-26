@@ -12,14 +12,14 @@ export class GeometryService {
   constructor() { }
 
     createGeometry(
-      id: number 
+      stGeometryId: number 
     ): number
     {
-      this.geometryDict[id] = new THREE.BoxGeometry();
-      return id;
+      this.geometryDict[stGeometryId] = new THREE.BoxGeometry();
+      return stGeometryId;
     }
 
-    setDimensions(id: number, dimensions: StTriple): number
+    setDimensions(stGeometryId: number, dimensions: StTriple): number
     {
       // to update the size we need to create a new geometry
       const geometry: THREE.BoxGeometry =  new THREE.BoxGeometry(
@@ -27,13 +27,13 @@ export class GeometryService {
         dimensions.stY,
         dimensions.stZ
       );
-      this.geometryDict[id] = geometry;
-      return id;
+      this.geometryDict[stGeometryId] = geometry;
+      return stGeometryId;
     }
   
-    getGeometryById(id: number): THREE.BoxGeometry
+    getGeometryByStGeometryId(stGeometryId: number): THREE.BoxGeometry
     {
-      const geometry: THREE.BoxGeometry = this.geometryDict[id];
+      const geometry: THREE.BoxGeometry = this.geometryDict[stGeometryId];
       return geometry;
     }
 }
