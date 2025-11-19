@@ -1,3 +1,5 @@
+import { VizComponent } from "../../../components/viz/viz.component";
+
 // Holds numbers
 export interface NumberDictionary {
   [id: number]: number;
@@ -13,4 +15,7 @@ export interface BooleanDictionary {
   [id: number]: boolean;
 }
 
-// In the future we can create object specific dictions ie CameraDict { [id: number]: StCamera}
+// Holds VizComponents
+export interface VizComponentDictionary {
+  [id: number]: VizComponent;
+}

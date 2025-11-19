@@ -8,10 +8,10 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 
 // generic libs
-import { AnimationService } from './services/animations/animation.service';
+import { AnimationService } from './services/entities/animations/animation.service';
 
 // utility libs
-import { PlatformService } from './services/utilities/platform.service';
+import { PlatformService } from './services/utilities/positioning/platform.service';
 
 // components
 import { AppLayoutMenuComponent } from './components/app-layout-menu/app-layout-menu.component';
@@ -19,7 +19,7 @@ import { AppCustomLayoutComponent } from './components/layouts/app-custom-layout
 import { AppMenuComponent } from './components/app-menu/app-menu.component';
 import { AppTabularLayoutComponent } from './components/layouts/app-tabular-layout/app-tabular-layout.component';
 import { AppUpdateLayoutComponent } from './components/layouts/app-update-layout/app-update-layout.component';
-import { CurrentRouteService } from './services/utilities/current-route.service';
+import { CurrentRouteService } from './services/utilities/routing/current-route.service';
 
 @Component({
   selector: 'app-root',
@@ -47,7 +47,7 @@ export class AppComponent
   }
 
   layoutLoop = () => {
-      // note: RequestAnimationFrame is browser specific.
+      // note: RequestAnimationFrame is browserspecific.
       requestAnimationFrame(this.requestAnimationFrameHandler);
   }
 

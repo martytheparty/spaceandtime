@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { StVisualization } from '../../interfaces/st';
-import { VisualizationService } from '../visualization/visualization.service';
+import { VisualizationService } from '../entities/visualization/visualization.service';
 import { ReflowType } from '../../interfaces/layout/reflow-types';
 
 @Injectable({

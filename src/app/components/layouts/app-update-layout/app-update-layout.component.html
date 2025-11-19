@@ -3,9 +3,9 @@
         class="visualization"
         #viewer
     >
-        @if(id > 0 && afterInitComplete) {
+        @if(stRendererId > 0 && afterInitComplete) {
             <app-viz
-             [stRendererInputId]="id"
+             [stRendererInputId]="stRendererId"
              [vizWidth]="viewerWidth"
              [vizHeight]="viewerHeight"
             ></app-viz>
@@ -16,17 +16,17 @@
 
         SET UP THREE PUBLISHED THAT WILL PUBLISH ACTUAL VALUES USED
         <p>EDITOR</p> 
-         @if(id > 0 && afterInitComplete) {
+         @if(stRendererId > 0 && afterInitComplete) {
         <div>
                 Aspect Ratio SHOULD BE: {{viewerWidth/viewerHeight}} 
         </div>
         <div>
-                CALCULATED Aspect Ratio IS: {{stPublisherService.calculatedAspectRatioSignal()[this.id]}}
+                CALCULATED Aspect Ratio IS: {{stPublisherService.calculatedAspectRatioSignal()[this.stRendererId]}}
         </div>
         <div>
                 ACTUAL Aspect Ratio IS:
                 <span data-cy="three-aspect-ratio"> 
-                {{threePublisherService.threeAspectRatioSignal()[this.id]}}
+                {{threePublisherService.threeAspectRatioSignal()[this.stRendererId]}}
                 </span>
         </div>
         }

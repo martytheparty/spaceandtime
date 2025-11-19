@@ -9,11 +9,11 @@ import {
 import { ActivatedRoute } from '@angular/router';
 
 import { VizComponent } from '../../viz/viz.component';
-import { StRendererService } from '../../../services/st/renderer/st-renderer.service';
-import { StPublisherService } from '../../../services/st/publish/st-publisher.service';
-import { ThreePublisherService } from '../../../services/three/publish/three-publisher.service';
+import { StRendererService } from '../../../services/entities/st/renderer/st-renderer.service';
+import { StPublisherService } from '../../../services/entities/st/publish/st-publisher.service';
+import { ThreePublisherService } from '../../../services/entities/three/publish/three-publisher.service';
 import { LayoutType } from '../../../interfaces/layout/layout-types';
-import { CurrentRouteService } from '../../../services/utilities/current-route.service';
+import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
 
 @Component({
   selector: 'app-update-layout',
@@ -33,7 +33,7 @@ export class AppUpdateLayoutComponent {
   threePublisherService: ThreePublisherService = inject(ThreePublisherService);
   currentRouteService: CurrentRouteService = inject(CurrentRouteService);
 
-  id: number = 0;
+  stRendererId: number = 0;
   viewerWidth = 0;
   viewerHeight = 0;
   afterInitComplete = false;
@@ -41,40 +41,81 @@ export class AppUpdateLayoutComponent {
 
   constructor() {
     effect(() => {
-      const ar = this.stPublisherService.calculatedAspectRatioSignal()[this.id];
+      const ar = this.stPublisherService.calculatedAspectRatioSignal()[this.stRendererId];
 
       this.setCalculatedAspectRation(ar);
 
       // stRenderers should be empty unless we are in tabular view
       const currentView: LayoutType = this.currentRouteService.currentRoute();
 
-      this.id = this.getCurrentVisualizationId(currentView, window.location.href);
+      this.stRendererId = this.getCurrentRendererId(currentView, window.location.href);
       this.processVisualization(this);
     });
   }
 
-  getCurrentVisualizationId(currentView: string, href: string): number {
-    let id = 0;
+  getCurrentRendererId(currentView: string, href: string): number {
+    let stRendererId = 0;
 
     if (currentView === 'update') {
         const url = new URL(href);
         const segments = url.pathname.split('/');
-        id = Number(segments[segments.length - 1]);
+        stRendererId = Number(segments[segments.length - 1]);
     }
 
-    return id;
+    return stRendererId;
   }
 
 
-  processVisualization(component: AppUpdateLayoutComponent): boolean {
-    if (component.id > 0 && component.editorView?.nativeElement) {
-      component.viewerWidth = component.editorView.nativeElement.offsetWidth;
-      component.viewerHeight = component.editorView.nativeElement.offsetHeight;
+  processVisualization(appLayoutComponent: AppUpdateLayoutComponent): boolean {
+    const isStRendererCreated = this.isStRendererCreated(appLayoutComponent);
+    const editorDomElementExists = this.doesEditorViewDomElementExist(appLayoutComponent);
 
-      setTimeout(component.finalizeInitialization(component), 0 );
+    return this.updateStVisualizationSize(appLayoutComponent, isStRendererCreated, editorDomElementExists);
+  }
+
+  updateStVisualizationSize(
+    appLayoutComponent: AppUpdateLayoutComponent,
+    isStRendererCreated: boolean,
+    editorDomElementExists: boolean
+  ): boolean {
+    let updated = false;
+    if (isStRendererCreated && editorDomElementExists) {
+      const editorView: ElementRef<HTMLDivElement> = appLayoutComponent.editorView as unknown as ElementRef<HTMLDivElement>;
+      const nativeElement: HTMLDivElement = editorView.nativeElement as unknown as HTMLDivElement;
+      this.resisizeVisualization(appLayoutComponent, nativeElement);
+      updated = true;
+    }
+    return updated;
+  }
+
+  doesEditorViewDomElementExist(appLayoutComponent: AppUpdateLayoutComponent): boolean {
+    let exists = false;
+
+    if(appLayoutComponent.editorView?.nativeElement) {
+      exists = true;
     }
 
-    return true;
+    return exists;
+  }
+
+  isStRendererCreated(appLayoutComponent: AppUpdateLayoutComponent): boolean {
+    let created = false;
+
+    if (appLayoutComponent.stRendererId > 0) {
+      created = true;
+    }
+
+    return created;
+  }
+
+  resisizeVisualization(appUpdateLayoutComponent: AppUpdateLayoutComponent, editorViewDiv: HTMLDivElement): boolean
+  {
+      
+      appUpdateLayoutComponent.viewerWidth = editorViewDiv.offsetWidth;
+      appUpdateLayoutComponent.viewerHeight = editorViewDiv.offsetHeight;
+
+      setTimeout(appUpdateLayoutComponent.finalizeInitialization(appUpdateLayoutComponent), 0 );
+      return true;
   }
 
   setCalculatedAspectRation(ar: number | undefined): number | undefined {

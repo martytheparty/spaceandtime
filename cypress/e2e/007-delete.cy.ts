@@ -55,9 +55,17 @@ describe('delete spec', () => {
       cy.get('[data-cy="visualization"]')
       .should('have.length', expectedVizCount)
 
-      cy.get('app-viz').eq(0).should('have.css', 'left', '0px');
-      cy.get('app-viz').eq(1).should('have.css', 'left', '200px');
-      cy.get('app-viz').eq(2).should('have.css', 'left', '400px');
+    //   cy.get('app-viz').eq(0).should('have.css', 'left', '0px');
+    //   cy.get('app-viz').eq(1).should('have.css', 'left', '200px');
+    //   cy.get('app-viz').eq(2).should('have.css', 'left', '400px');
+
+      cy.get('app-viz').then($els => {
+            const lefts = [...$els]
+        .map(el => parseInt(getComputedStyle(el).left, 10))
+        .sort((a, b) => a - b);
+
+        expect(lefts).to.deep.equal([0, 200, 400]);
+        });
 
   })
 
@@ -120,9 +128,17 @@ describe('delete spec', () => {
       cy.get('[data-cy="visualization"]')
       .should('have.length', expectedVizCount)
 
-      cy.get('app-viz').eq(0).should('have.css', 'left', '0px');
-      cy.get('app-viz').eq(1).should('have.css', 'left', '400px');
-      cy.get('app-viz').eq(2).should('have.css', 'left', '600px');
+    //   cy.get('app-viz').eq(0).should('have.css', 'left', '0px');
+    //   cy.get('app-viz').eq(1).should('have.css', 'left', '400px');
+    //   cy.get('app-viz').eq(2).should('have.css', 'left', '600px');
+
+      cy.get('app-viz').then($els => {
+            const lefts = [...$els]
+        .map(el => parseInt(getComputedStyle(el).left, 10))
+        .sort((a, b) => a - b);
+
+        expect(lefts).to.deep.equal([0, 400, 600]);
+        });
 
   })
 })

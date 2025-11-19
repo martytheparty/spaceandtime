@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
-import { StRendererService } from './services/st/renderer/st-renderer.service';
 
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { StRendererService } from './services/entities/st/renderer/st-renderer.service';
 
 describe('AppComponent', () => {
   let fixture: ComponentFixture<AppComponent>;

@@ -30,7 +30,7 @@ describe('VizComponent', () => {
   it('should initialize the component', () => {
     const component: VizComponent = fixture.debugElement.children[0].componentInstance;
 
-    const isInitialized = component.setAsInitialized();
+    const isInitialized = component.setAsAttached();
     
     expect(isInitialized).toBeTrue();
 

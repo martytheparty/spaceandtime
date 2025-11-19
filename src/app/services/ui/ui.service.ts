@@ -1,8 +1,8 @@
 import { Injectable, signal, inject } from '@angular/core';
 
-import { StRendererService } from '../st/renderer/st-renderer.service';
 import { StRenderer } from '../../interfaces/st';
-import { VisualizationService } from '../visualization/visualization.service';
+import { VisualizationService } from '../entities/visualization/visualization.service';
+import { StRendererService } from '../entities/st/renderer/st-renderer.service';
 
 @Injectable({
   providedIn: 'root'

@@ -49,7 +49,7 @@ describe('AppUpdateLayoutComponent', () => {
     // should be based on the last part the the href so in this case "update"
     const href = "http://any.com/mysite/update/100";
 
-    const currentId = component.getCurrentVisualizationId(view, href);
+    const currentId = component.getCurrentRendererId(view, href);
     expect(currentId).toEqual(100);
   });
 
@@ -62,8 +62,9 @@ describe('AppUpdateLayoutComponent', () => {
 
   it('should process the visualization', () => {
     const processed = component.processVisualization(component);
-
-    expect(processed).toEqual(true);
+    // should return a false because the stRendererId is 0
+    expect(component.stRendererId).toEqual(0);
+    expect(processed).toEqual(false);
   });
 
   it('should process the visualization', () => {
@@ -85,9 +86,62 @@ describe('AppUpdateLayoutComponent', () => {
     expect(component.viewerHeight).toEqual(0);
     
     component.processVisualization(mockComponent);
-
-
-  
-
   });
+
+  it('should check if the St Renderer Was Created', () => {
+    // Fake component
+    const mockComponent: AppUpdateLayoutComponent  = {
+      stRendererId: 1
+    } as unknown as AppUpdateLayoutComponent;
+
+    const isRendered = component.isStRendererCreated(mockComponent);
+
+    expect(isRendered).toBe(true);
+  });
+
+  it('should update the components viewerDimentions', () => {
+    // Fake component
+    const mockComponent: AppUpdateLayoutComponent  = {
+      id: 1,
+      editorView: {
+        nativeElement: {
+          offsetWidth: 200,
+          offsetHeight: 100,
+        },
+      },
+      afterInitComplete: false,
+      finalizeInitialization: (comp: any) => {
+        return () => { comp.afterInitComplete = true; };
+      }
+    } as unknown as AppUpdateLayoutComponent;
+
+    const nativeElement = mockComponent.editorView?.nativeElement as HTMLDivElement;
+
+    const isResized = component.resisizeVisualization(mockComponent, nativeElement);
+
+    expect(isResized).toBe(true);
+  });
+
+  it('should update ST Visualization Size', () => {
+    // Fake component
+    const mockComponent: AppUpdateLayoutComponent  = {
+      id: 1,
+      editorView: {
+        nativeElement: {
+          offsetWidth: 200,
+          offsetHeight: 100,
+        },
+      },
+      afterInitComplete: false,
+      finalizeInitialization: (comp: any) => {
+        return () => { comp.afterInitComplete = true; };
+      }
+    } as unknown as AppUpdateLayoutComponent;
+
+    const stVisualizationSizeUpdated = component.updateStVisualizationSize(mockComponent, true, true);
+
+    expect(stVisualizationSizeUpdated).toBe(true);
+  })
+
+
 });

@@ -51,7 +51,8 @@
     "sStPublish": "ng g s services/st/publish/stPublisher",
     "iCaculatedAspectRationDict": "ng g i interfaces/st/dictionaries/calculatedAspectRatioDict",
     "sThreePublish": "ng g s services/three/publish/threePublisher",
-    "sCurrentRoute": "ng g s services/utilities/currentRoute"
+    "sCurrentRoute": "ng g s services/utilities/currentRoute",
+    "sComponent": "ng g s services/angular/vizComponent"
   },
   "private": true,
   "dependencies": {

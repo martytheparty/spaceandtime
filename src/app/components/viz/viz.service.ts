@@ -1,10 +1,10 @@
 import { ElementRef, inject, Injectable } from '@angular/core';
 
-import { RendererService } from '../../services/three/renderer/renderer.service';
-import { StRendererService } from '../../services/st/renderer/st-renderer.service';
+import { RendererService } from '../../services/entities/three/renderer/renderer.service';
 
 import * as THREE from 'three';
 import { StRenderer } from '../../interfaces/st';
+import { StRendererService } from '../../services/entities/st/renderer/st-renderer.service';
 
 @Injectable({
   providedIn: 'root'

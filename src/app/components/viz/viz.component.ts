@@ -9,7 +9,9 @@ import {
 } from '@angular/core';
 
 import { ComponentVisualizationService } from './viz.service';
-import { VisualizationService } from '../../services/visualization/visualization.service';
+import { VisualizationService } from '../../services/entities/visualization/visualization.service';
+import { RecyclableSequenceService } from '../../services/utilities/general/recyclable-sequence-service.service';
+import { VizComponentService } from '../../services/angular/viz-component.service';
 
 @Component({
   selector: 'app-viz',
@@ -21,17 +23,26 @@ import { VisualizationService } from '../../services/visualization/visualization
 export class VizComponent implements AfterViewInit, OnDestroy {
 
 
+  // service that provcides functionality for THIS instance of a viz component.
   componentVisualizationService: ComponentVisualizationService = inject(ComponentVisualizationService);
+  // service that operates accross ALL viz components.
+  vizComponentService: VizComponentService = inject(VizComponentService);
   visualizationService: VisualizationService = inject(VisualizationService);
+  recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
 
   stRendererInputId = input.required<number>();
+  stVizComponentId: number;
 
   vizWidth = input<number>(200);
   vizHeight = input<number>(200);
 
-  private hasBeenInitialized = false;
+  private hasBeenAttached = false;
   
   @ViewChild('viz') rendererViewChild: ElementRef | undefined;
+
+  constructor() {
+    this.stVizComponentId = this.recyclableSequenceService.generateId();;
+  }
 
   ngAfterViewInit(): void {
         if (this.rendererViewChild?.nativeElement) {
@@ -44,21 +55,28 @@ export class VizComponent implements AfterViewInit, OnDestroy {
             this.vizHeight()
           );
         }
+        this.visualizationService.calculatePositions();
   }
 
   ngOnDestroy(): void {
-    this.visualizationService.deleteComponentForId(this.stRendererInputId());
+    // I don't think we should be using the next line... but it breaks the app if it
+    // is commented out...
+    //this.visualizationService.deleteComponentForId(this.stRendererInputId());
+    
+    
+    this.vizComponentService.deleteVizComponentByStComponentId(this.stVizComponentId);
+    this.recyclableSequenceService.recycleId(this.stVizComponentId);
   }
 
-  setAsInitialized(): boolean
+  setAsAttached(): boolean
   {
-    this.hasBeenInitialized = true;
+    this.hasBeenAttached = true;
 
-    return this.isInitialized();
+    return this.isAttached();
   }
 
-  isInitialized(): boolean
+  isAttached(): boolean
   {
-    return this.hasBeenInitialized;
+    return this.hasBeenAttached;
   }
 }

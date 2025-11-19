@@ -14,10 +14,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { VizComponent } from '../../viz/viz.component';
 
 import { UiService } from '../../../services/ui/ui.service';
-import { AnimationService } from '../../../services/animations/animation.service';
-import { VisualizationService } from '../../../services/visualization/visualization.service';
+import { AnimationService } from '../../../services/entities/animations/animation.service';
+import { VisualizationService } from '../../../services/entities/visualization/visualization.service';
 import { StRenderer } from '../../../interfaces/st';
-import { CurrentRouteService } from '../../../services/utilities/current-route.service';
+import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
 import { LayoutType } from '../../../interfaces/layout/layout-types';
 
 @Component({
