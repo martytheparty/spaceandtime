@@ -52,7 +52,8 @@
     "iCaculatedAspectRationDict": "ng g i interfaces/st/dictionaries/calculatedAspectRatioDict",
     "sThreePublish": "ng g s services/three/publish/threePublisher",
     "sCurrentRoute": "ng g s services/utilities/currentRoute",
-    "sComponent": "ng g s services/angular/vizComponent"
+    "sViewPort": "ng g s services/ui/wViewPort",
+    "sViewPortResize": "ng g s services/ui/wViewPortResize"
   },
   "private": true,
   "dependencies": {

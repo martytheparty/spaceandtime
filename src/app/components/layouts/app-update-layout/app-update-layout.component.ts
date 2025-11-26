@@ -14,6 +14,7 @@ import { StPublisherService } from '../../../services/entities/st/publish/st-pub
 import { ThreePublisherService } from '../../../services/entities/three/publish/three-publisher.service';
 import { LayoutType } from '../../../interfaces/layout/layout-types';
 import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
+import { WViewPortResizeService } from '../../../services/ui/w-view-port-resize.service';
 
 @Component({
   selector: 'app-update-layout',
@@ -32,6 +33,7 @@ export class AppUpdateLayoutComponent {
   stPublisherService: StPublisherService = inject(StPublisherService);
   threePublisherService: ThreePublisherService = inject(ThreePublisherService);
   currentRouteService: CurrentRouteService = inject(CurrentRouteService);
+   wViewPortResizeService: WViewPortResizeService = inject( WViewPortResizeService);
 
   stRendererId: number = 0;
   viewerWidth = 0;
@@ -41,6 +43,12 @@ export class AppUpdateLayoutComponent {
 
   constructor() {
     effect(() => {
+
+
+      const { width, height } = this.wViewPortResizeService.viewport();
+      this.viewerWidth = width;
+      this.viewerHeight = height;
+
       const ar = this.stPublisherService.calculatedAspectRatioSignal()[this.stRendererId];
 
       this.setCalculatedAspectRation(ar);
@@ -82,7 +90,7 @@ export class AppUpdateLayoutComponent {
     if (isStRendererCreated && editorDomElementExists) {
       const editorView: ElementRef<HTMLDivElement> = appLayoutComponent.editorView as unknown as ElementRef<HTMLDivElement>;
       const nativeElement: HTMLDivElement = editorView.nativeElement as unknown as HTMLDivElement;
-      this.resisizeVisualization(appLayoutComponent, nativeElement);
+      this.resizeVisualization(appLayoutComponent, nativeElement);
       updated = true;
     }
     return updated;
@@ -108,7 +116,7 @@ export class AppUpdateLayoutComponent {
     return created;
   }
 
-  resisizeVisualization(appUpdateLayoutComponent: AppUpdateLayoutComponent, editorViewDiv: HTMLDivElement): boolean
+  resizeVisualization(appUpdateLayoutComponent: AppUpdateLayoutComponent, editorViewDiv: HTMLDivElement): boolean
   {
       
       appUpdateLayoutComponent.viewerWidth = editorViewDiv.offsetWidth;

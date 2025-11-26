@@ -4,9 +4,8 @@ import { VizComponent } from '../../../components/viz/viz.component';
 import { RecyclableSequenceService } from '../../utilities/general/recyclable-sequence-service.service';
 import { HashService } from '../../utilities/general/hash.service';
 import { AppModelService } from '../../appmodel/appmodel.service';
-import { VizComponentDictionary } from '../../../interfaces/base/dictionary/base-dicts';
-import { RendererService } from '../three/renderer/renderer.service';
 import { VizComponentService } from '../../angular/viz-component.service';
+import { WViewPortService } from '../../ui/w-view-port.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +15,12 @@ export class VisualizationService {
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   private hashService: HashService = inject(HashService);
   private appModelService: AppModelService = inject(AppModelService); 
-  private rendererService: RendererService = inject(RendererService);
   private vizComponentService: VizComponentService = inject(VizComponentService);
+  private wViewPortService: WViewPortService = inject(WViewPortService);
 
-  viewPortWidth = window.innerWidth;
-  viewPortHeight = window.innerHeight;
+  // save the width when the visualization was rendered
+  viewPortWidth = this.wViewPortService.getViewPortWidth();
+  viewPortHeight = this.wViewPortService.getViewPortHeight();
 
   stVisualizations: StVisualization[] = [];
 
@@ -193,8 +193,8 @@ export class VisualizationService {
     // 1) this can't handle a single viz that is wider than the view port
     // 2) hard coded to 200px height per row.  So when we have configurable
     // viz heights this will break (vert overlap);
-    if (this.viewPortWidth !== window.innerWidth) {
-      this.viewPortWidth = window.innerWidth; // possible reflow
+    if (this.viewPortWidth !== this.wViewPortService.getViewPortWidth()) {
+      this.viewPortWidth = this.wViewPortService.getViewPortWidth(); // possible reflow
       this.resetHash(this.viewPortWidth, this.viewPortHeight);
     }
 

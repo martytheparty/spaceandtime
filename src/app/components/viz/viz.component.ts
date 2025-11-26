@@ -1,6 +1,7 @@
 import { 
   AfterViewInit,
   Component,
+  effect,
   ElementRef,
   inject,
   input,
@@ -18,7 +19,7 @@ import { VizComponentService } from '../../services/angular/viz-component.servic
   imports: [],
   templateUrl: './viz.component.html',
   styleUrl: './viz.component.scss',
-   providers: [ComponentVisualizationService]
+  providers: [ComponentVisualizationService]
 })
 export class VizComponent implements AfterViewInit, OnDestroy {
 
@@ -35,19 +36,38 @@ export class VizComponent implements AfterViewInit, OnDestroy {
 
   vizWidth = input<number>(200);
   vizHeight = input<number>(200);
+  oldWidth = 0;
+  oldHeight = 0;
 
   private hasBeenAttached = false;
   
   @ViewChild('viz') rendererViewChild: ElementRef | undefined;
 
   constructor() {
-    this.stVizComponentId = this.recyclableSequenceService.generateId();;
+    this.stVizComponentId = this.recyclableSequenceService.generateId();
+
+    effect(() => {
+      const updated = this.updateDimensionsSignalHandler(
+        this.rendererViewChild,
+        this.vizWidth(),
+        this.vizHeight(),
+        this.oldWidth,
+        this.oldHeight,
+        this.stRendererInputId()
+      );
+
+      this.updateOld(updated, this.vizWidth(), this.vizHeight());
+    })
   }
 
   ngAfterViewInit(): void {
         if (this.rendererViewChild?.nativeElement) {
-          this.rendererViewChild.nativeElement.style.width = `${this.vizWidth()}px`;
-          this.rendererViewChild.nativeElement.style.height = `${this.vizHeight()}px`;
+          const nativeElement: HTMLDivElement = this.rendererViewChild.nativeElement;
+          const width = this.vizWidth();
+          const height = this.vizHeight();
+
+          this.updateDimensions(nativeElement, width, height, 0, 0); // does not seem to be needed
+          // this is where the element is actually created
           this.componentVisualizationService.renderInNativeElement(
             this.rendererViewChild,
             this.stRendererInputId(),
@@ -58,14 +78,65 @@ export class VizComponent implements AfterViewInit, OnDestroy {
         this.visualizationService.calculatePositions();
   }
 
-  ngOnDestroy(): void {
-    // I don't think we should be using the next line... but it breaks the app if it
-    // is commented out...
-    //this.visualizationService.deleteComponentForId(this.stRendererInputId());
-    
-    
+  ngOnDestroy(): void {    
     this.vizComponentService.deleteVizComponentByStComponentId(this.stVizComponentId);
     this.recyclableSequenceService.recycleId(this.stVizComponentId);
+  }
+
+  updateOld(updated: boolean, width: number, height: number): boolean{
+      if (updated) {
+        this.oldWidth = width;
+        this.oldHeight = height;
+      }
+      return updated;
+  }
+
+  updateDimensionsSignalHandler(
+    rendererViewChild: ElementRef | undefined,
+    newWidth: number,
+    newHeight: number,
+    currentWidth: number,
+    currentHeight: number,
+    stRendererInputId: number
+  ): boolean {
+    let updated = false;
+    if (rendererViewChild) {
+      const nativeElement: HTMLDivElement = rendererViewChild.nativeElement;
+      this.updateDimensions(nativeElement, newWidth, newHeight, currentWidth, currentHeight);
+      this.componentVisualizationService.renderInNativeElement(
+              rendererViewChild,
+              stRendererInputId,
+              newWidth,
+              newHeight
+            );
+      updated = true;
+    }
+    return updated;
+  }
+
+  updateDimensions(
+    nativeElement: HTMLDivElement, 
+    newWidth: number,
+    newHeight: number,
+    currentWidth: number,
+    currentHeight: number
+  ): boolean
+  {
+    let changed = false;
+
+    if (
+      newHeight !== currentHeight
+      || newWidth !== currentWidth 
+    ) {
+        changed = true;
+        // updates the native element on the next frame
+        requestAnimationFrame(() => {
+          nativeElement.style.width = `${newWidth}px`;
+          nativeElement.style.height = `${newHeight}px`;          
+        })
+    }
+
+    return changed;
   }
 
   setAsAttached(): boolean
