@@ -19,7 +19,7 @@ describe('update spec', () => {
     .should('be.visible')
     .click()
 
-    // get list of delete buttons and click the second one
+    // get list of update buttons and click the second one
     const expectedUpdateVizCount = 1;
 
     cy.get('[data-cy="update-viz-button"]')
