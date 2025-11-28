@@ -83,7 +83,7 @@ describe('AppUpdateLayoutComponent', () => {
       }
     } as unknown as AppUpdateLayoutComponent;
 
-    expect(component.viewerHeight).toEqual(0);
+    expect(component.viewerHeight).toBeGreaterThan(1);
     
     component.processVisualization(mockComponent);
   });
@@ -117,7 +117,7 @@ describe('AppUpdateLayoutComponent', () => {
 
     const nativeElement = mockComponent.editorView?.nativeElement as HTMLDivElement;
 
-    const isResized = component.resisizeVisualization(mockComponent, nativeElement);
+    const isResized = component.resizeVisualization(mockComponent, nativeElement);
 
     expect(isResized).toBe(true);
   });

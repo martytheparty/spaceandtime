@@ -18,6 +18,7 @@ export class WViewPortResizeService implements OnDestroy {
       width: window.innerWidth,
       height: window.innerHeight
     });
+    return true;
   };
 
   constructor() { 

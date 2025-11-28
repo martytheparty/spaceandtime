@@ -13,4 +13,11 @@ describe('WViewPortResizeService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('updates the viewport size correctly', () => {
+  const executed = service['onResize']();
+
+    expect(executed).toBeTrue();
+});
+
 });

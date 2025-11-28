@@ -116,7 +116,10 @@ export class AppUpdateLayoutComponent {
     return created;
   }
 
-  resizeVisualization(appUpdateLayoutComponent: AppUpdateLayoutComponent, editorViewDiv: HTMLDivElement): boolean
+  resizeVisualization(
+    appUpdateLayoutComponent: AppUpdateLayoutComponent,
+    editorViewDiv: HTMLDivElement
+  ): boolean
   {
       
       appUpdateLayoutComponent.viewerWidth = editorViewDiv.offsetWidth;
