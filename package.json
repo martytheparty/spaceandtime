@@ -53,7 +53,9 @@
     "sThreePublish": "ng g s services/three/publish/threePublisher",
     "sCurrentRoute": "ng g s services/utilities/currentRoute",
     "sViewPort": "ng g s services/ui/wViewPort",
-    "sViewPortResize": "ng g s services/ui/wViewPortResize"
+    "sViewPortResize": "ng g s services/ui/wViewPortResize",
+    "clicore21": "ng update @angular/core@21 @angular/cli@21",
+    "mat21": "ng update @angular/material@21"
   },
   "private": true,
   "dependencies": {
