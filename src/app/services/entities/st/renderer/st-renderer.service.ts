@@ -172,17 +172,18 @@ export class StRendererService {
   {
     let deleted = false;
     const stRenderer = this.getRendererById(stRendererId);
-    this.stCameraService.deleteCameraById(stRenderer.stCameraId);
 
-    if (this.stRenderersDict[stRendererId]) {
-      this.rendererService.deleteRendererById(stRendererId);
-      this.stRenderersDict[stRendererId].deleted = true;
-      delete this.stRenderersDict[stRendererId];
+    if (stRenderer) {
+      this.stCameraService.deleteCameraById(stRenderer.stCameraId);
 
-      deleted = true;
+      if (this.stRenderersDict[stRendererId]) {
+        this.rendererService.deleteRendererById(stRendererId);
+        this.stRenderersDict[stRendererId].deleted = true;
+        delete this.stRenderersDict[stRendererId];
+
+        deleted = true;
+      }
     }
-
-
     return deleted;
   }
 }
