@@ -445,6 +445,13 @@ export class VisualizationService {
   pruneVisualizationsByRendererId(stRendererId: number): boolean
   {
     let updated = false;
+    const stVisualization = this.stVisualizations.find( (stVisualizationItem: StVisualization) => {
+      return stVisualizationItem.stRendererId === stRendererId;
+    });
+
+    if (stVisualization?.stVisualizationId) {
+      this.recyclableSequenceService.recycleId(stVisualization?.stVisualizationId);
+    }
     const newVisualizations: StVisualization[] = this.filterVisualizationForRendererId(stRendererId, this.stVisualizations);
 
     if (newVisualizations.length < this.stVisualizations.length) {

@@ -55,7 +55,17 @@ export class StCameraService {
     this.stCameraDict[stCameraId] = stCamera;
 
     return stCameraId;
+  }
 
+  deleteCameraById(stCameraId: number): boolean
+  {
+    // 1) Delete The 3JS Camera Reference 
+    this.cameraService.deleteCameraByStCameraId(stCameraId);
+    // 2) Delete This StCamera Reference
+    delete this.stCameraDict[stCameraId];
+    // 3) Recycle The ID
+    this.recyclableSequenceService.recycleId(stCameraId);
+    return true;
   }
 
   getCameraById(id: number): StCamera

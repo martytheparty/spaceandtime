@@ -4,6 +4,7 @@ import { StTriple } from '../../../../interfaces/base/triple/st-triple';
 import { ThreePublisherService } from '../publish/three-publisher.service';
 
 import * as THREE from 'three';
+import { ThreeCameraDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import * as THREE from 'three';
 export class CameraService {
 
   private threePublisherService: ThreePublisherService = inject(ThreePublisherService);
-  private cameraDict: any = {};
+  private cameraDict: ThreeCameraDictionary = {};
 
   constructor() { }
 
@@ -39,9 +40,19 @@ export class CameraService {
   }
 
   getCameraByStCameraId(stCameraId: number): THREE.PerspectiveCamera {
+    // In the future we will probably need multiple cameras for the same
+    // StCameraId
     const camera: THREE.PerspectiveCamera = this.cameraDict[stCameraId];
 
     return camera;
+  }
+
+  deleteCameraByStCameraId(stCameraId: number): boolean
+  {
+    // In the future we will probably need multiple cameras for the same
+    // StCameraId
+    // always returns true unless something very odd happens
+    return delete this.cameraDict[stCameraId];
   }
 
   setAspectRatio(stRendererId: number, camera: THREE.PerspectiveCamera, aspectRatio: number): boolean {

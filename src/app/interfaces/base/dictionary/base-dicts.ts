@@ -1,5 +1,7 @@
 import { VizComponent } from "../../../components/viz/viz.component";
 
+import * as THREE from 'three';
+
 // Holds numbers
 export interface NumberDictionary {
   [id: number]: number;
@@ -18,4 +20,9 @@ export interface BooleanDictionary {
 // Holds VizComponents
 export interface VizComponentDictionary {
   [id: number]: VizComponent;
+}
+
+// Holds ThreeJsCameras
+export interface ThreeCameraDictionary {
+  [id: number]: THREE.PerspectiveCamera;
 }

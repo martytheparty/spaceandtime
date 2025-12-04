@@ -171,6 +171,8 @@ export class StRendererService {
   deleteRenderer(stRendererId: number): boolean
   {
     let deleted = false;
+    const stRenderer = this.getRendererById(stRendererId);
+    this.stCameraService.deleteCameraById(stRenderer.stCameraId);
 
     if (this.stRenderersDict[stRendererId]) {
       this.rendererService.deleteRendererById(stRendererId);

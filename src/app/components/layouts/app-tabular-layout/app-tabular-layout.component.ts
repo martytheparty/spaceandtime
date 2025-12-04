@@ -70,9 +70,10 @@ export class AppTabularLayoutComponent {
     }
 
     deleteRendererItem(stRendererId: number): boolean
-    {      
+    {   
       let deleted = this.uiService.deleteRenderer(stRendererId);
-      this.visualizationService.deleteVisualizationForRendererId(stRendererId);
+      // I don't think that this is needed so I commented it out
+      //this.visualizationService.deleteVisualizationForRendererId(stRendererId);
 
       return deleted;
     }
