@@ -1,6 +1,7 @@
 import { VizComponent } from "../../../components/viz/viz.component";
 
 import * as THREE from 'three';
+import { StVisualization } from "../../st";
 
 // Holds numbers
 export interface NumberDictionary {
@@ -25,4 +26,9 @@ export interface VizComponentDictionary {
 // Holds ThreeJsCameras
 export interface ThreeCameraDictionary {
   [id: number]: THREE.PerspectiveCamera;
+}
+
+// Holds Visualization Object
+export interface SequenceDictionary {
+  [id: number]: null | VizComponent |  StVisualization;
 }

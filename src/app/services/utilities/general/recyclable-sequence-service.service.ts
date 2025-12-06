@@ -1,22 +1,27 @@
 import { Injectable } from '@angular/core';
+import { SequenceDictionary } from '../../../interfaces/base/dictionary/base-dicts';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecyclableSequenceService {
-  private currentId = 0;
-  private recycledIds: number[] = [];
+  private sequenceDictionary: SequenceDictionary = {};
 
   generateId(): number {
-    if (this.recycledIds.length > 0) {
-      return this.recycledIds.pop() as number;
+    let nextId = 1;
+
+    while(this.sequenceDictionary.hasOwnProperty(nextId)) {
+      nextId++;
     }
-    return ++this.currentId;
+
+    this.sequenceDictionary[nextId] = null;
+
+    console.table(this.sequenceDictionary);
+
+    return nextId;
   }
 
   recycleId(id: number): void {
-    if (id > 0 && id <= this.currentId) {
-      this.recycledIds.push(id);
-    }
+    delete this.sequenceDictionary[id];
   }
 }
