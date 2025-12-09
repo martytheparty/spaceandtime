@@ -22,7 +22,8 @@ export class StCameraService {
     const far = 100;
 
     const stCameraId = this.recyclableSequenceService.generateId();
-    this.cameraService.createCamera(
+    // creates a threeJS camera and saves it with the stCameraId
+    this.cameraService.createThreeJsCamera(
       stCameraId, 
       frustrum, 
       aspectRatio,
@@ -53,6 +54,8 @@ export class StCameraService {
     };
 
     this.stCameraDict[stCameraId] = stCamera;
+
+    this.recyclableSequenceService.associateStObjectToId(stCameraId, stCamera)
 
     return stCameraId;
   }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SequenceDictionary } from '../../../interfaces/base/dictionary/base-dicts';
+import { SeqenceStTypes, SequenceDictionary } from '../../../interfaces/base/dictionary/base-dicts';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,21 @@ export class RecyclableSequenceService {
     console.table(this.sequenceDictionary);
 
     return nextId;
+  }
+
+  associateStObjectToId(stId: number, stType: SeqenceStTypes ): boolean {
+    return this.setTypeForStId(this.sequenceDictionary, stId, stType);
+  }
+
+  private setTypeForStId(sequenceDictionary: SequenceDictionary, stId: number, stType: SeqenceStTypes): boolean {
+    let updated = false;
+
+    if (sequenceDictionary.hasOwnProperty(stId)) {
+      updated = true;
+      sequenceDictionary[stId] = stType;
+    }
+
+    return updated;
   }
 
   recycleId(id: number): void {

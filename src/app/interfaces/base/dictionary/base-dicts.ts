@@ -1,7 +1,11 @@
 import { VizComponent } from "../../../components/viz/viz.component";
 
 import * as THREE from 'three';
-import { StVisualization } from "../../st";
+import { 
+  StAnimation,
+  StCamera,
+  StVisualization
+} from "../../st";
 
 // Holds numbers
 export interface NumberDictionary {
@@ -30,5 +34,11 @@ export interface ThreeCameraDictionary {
 
 // Holds Visualization Object
 export interface SequenceDictionary {
-  [id: number]: null | VizComponent |  StVisualization;
+  [id: number]: SeqenceStTypes;
 }
+
+export type SeqenceStTypes = null 
+            | VizComponent 
+            | StVisualization 
+            | StCamera
+            | StAnimation;

@@ -116,14 +116,19 @@ export class AnimationService {
   ): number
   {
     const stRendererId = this.recyclableSequenceService.generateId();
+
+    const stAnimationId = this.recyclableSequenceService.generateId();
+    
     const animation: StAnimation = {
-      stId: 1, 
+      stAnimationId, 
       alias,
       temporal,
       redraw,
       time,
       values
     };
+
+    this.recyclableSequenceService.associateStObjectToId(stAnimationId, animation);
 
     stObject.stAnimations.push(animation)
 

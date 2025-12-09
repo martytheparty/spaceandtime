@@ -16,7 +16,7 @@ export class CameraService {
 
   constructor() { }
 
-  createCamera(
+  createThreeJsCamera(
     stCameraId: number,
     frustrum: number,
     aspectRatio: number,

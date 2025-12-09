@@ -1,7 +1,7 @@
 import { StMesh } from '../three/mesh/st-mesh';
 
 export interface StAnimation {
-    stId: number,
+    stAnimationId: number,
     alias: ThreePathAliasType
     temporal: TemporalTypes
     redraw: 'discrete' | 'continous'
