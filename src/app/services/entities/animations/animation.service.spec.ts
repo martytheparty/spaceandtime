@@ -55,7 +55,7 @@ describe('AnimationService', () => {
 
     const stAnimations: StAnimation[] = [
         { 
-          stId: 1,
+          stAnimationId: 1,
           alias: "mesh-rotation-x",
           temporal: 'infinite',
           redraw: 'continous',
@@ -63,7 +63,7 @@ describe('AnimationService', () => {
           values: [.05]
         },
         { 
-          stId: 2,
+          stAnimationId: 2,
           alias: "mesh-rotation-y",
           temporal: 'infinite',
           redraw: 'continous',
@@ -71,7 +71,7 @@ describe('AnimationService', () => {
           values: [.05]
         },
         { 
-          stId: 2,
+          stAnimationId: 2,
           alias: "mesh-rotation-z",
           temporal: 'infinite',
           redraw: 'continous',
@@ -97,7 +97,7 @@ describe('AnimationService', () => {
       (stMeshId: number) => {
         const stMesh = stMeshService.getMeshById(stMeshId);
         const animation1: StAnimation =           {
-          stId: 1, 
+          stAnimationId: 1, 
           alias: "mesh-rotation-x",
           temporal: 'infinite',
           redraw: 'continous',
@@ -106,7 +106,7 @@ describe('AnimationService', () => {
         };
         stMesh.stAnimations.push(animation1);
         const animation2: StAnimation =           {
-          stId: 2, 
+          stAnimationId: 2, 
           alias: "mesh-rotation-y",
           temporal: 'infinite',
           redraw: 'continous',
