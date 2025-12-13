@@ -44,7 +44,7 @@ export class VizComponent implements AfterViewInit, OnDestroy {
   @ViewChild('viz') rendererViewChild: ElementRef | undefined;
 
   constructor() {
-    this.stVizComponentId = this.recyclableSequenceService.generateId();
+    this.stVizComponentId = this.recyclableSequenceService.generateStId();
 
     effect(() => {
       const updated = this.updateDimensionsSignalHandler(
@@ -55,6 +55,8 @@ export class VizComponent implements AfterViewInit, OnDestroy {
         this.oldHeight,
         this.stRendererInputId()
       );
+      
+      this.recyclableSequenceService.associateStObjectToId(this.stVizComponentId, this);
 
       this.updateOld(updated, this.vizWidth(), this.vizHeight());
     })

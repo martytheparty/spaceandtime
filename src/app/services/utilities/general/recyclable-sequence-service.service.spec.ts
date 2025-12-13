@@ -15,21 +15,21 @@ describe('RecyclableSequenceServiceService', () => {
   });
 
   it('should generate an id', () => {
-    const id1 = service.generateId();
-    const id2 = service.generateId();
+    const id1 = service.generateStId();
+    const id2 = service.generateStId();
     expect(id1).toBeGreaterThan(0);
     expect(id2).not.toEqual(id1);
   })
 
   it('should recycle an id', () => {
 
-    const id1 = service.generateId();
+    const id1 = service.generateStId();
 
     expect(id1).toBeGreaterThan(0);
 
     service.recycleId(id1);
 
-    const id2 = service.generateId();
+    const id2 = service.generateStId();
 
     expect(id2).toEqual(id1);
   })

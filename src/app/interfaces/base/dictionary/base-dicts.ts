@@ -4,6 +4,11 @@ import * as THREE from 'three';
 import { 
   StAnimation,
   StCamera,
+  StGeometry,
+  StMaterial,
+  StMesh,
+  StRenderer,
+  StScene,
   StVisualization
 } from "../../st";
 
@@ -41,4 +46,10 @@ export type SeqenceStTypes = null
             | VizComponent 
             | StVisualization 
             | StCamera
-            | StAnimation;
+            | StAnimation
+            | StScene
+            | StGeometry
+            | StRenderer
+            | StMaterial
+            | StMesh
+            | StVisualization;

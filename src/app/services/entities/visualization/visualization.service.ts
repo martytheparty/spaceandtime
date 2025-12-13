@@ -47,9 +47,9 @@ export class VisualizationService {
     const ele: HTMLDivElement = vizComponent.rendererViewChild?.nativeElement;
 
     if (ele) {
-      stVisualizationId = this.recyclableSequenceService.generateId();
-      const visualization: StVisualization = {
-        stVisualizationId: stVisualizationId,
+      stVisualizationId = this.recyclableSequenceService.generateStId();
+      const stVisualization: StVisualization = {
+        stVisualizationId,
         stLeft: 0,
         stTop: 0,
         stWidth: 0,
@@ -67,10 +67,11 @@ export class VisualizationService {
       const vizHeight = ele.offsetHeight;
 
       // push viz into array
-      this.stVisualizations.push(visualization);
+      this.stVisualizations.push(stVisualization);
+      this.recyclableSequenceService.associateStObjectToId(stVisualizationId, stVisualization);
 
-      visualization.stWidth = vizWidth;
-      visualization.stHeight = vizHeight;
+      stVisualization.stWidth = vizWidth;
+      stVisualization.stHeight = vizHeight;
 
 
       this.calculatePositions();

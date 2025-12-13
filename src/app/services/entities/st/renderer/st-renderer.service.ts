@@ -38,7 +38,7 @@ export class StRendererService {
 
   getBaseStRenderer(): number
   {
-    const stRendererId = this.recyclableSequenceService.generateId();
+    const stRendererId = this.recyclableSequenceService.generateStId();
     this.rendererService.createRenderer(stRendererId);
     const renderer: THREE.WebGLRenderer = this.rendererService.getRendererById(stRendererId);
 
@@ -68,6 +68,7 @@ export class StRendererService {
     this.rendererService.setAnimationFunctionForStId(stRendererId, rendererFunction);
 
     this.stRenderersDict[stRendererId] = stRenderer;
+    this.recyclableSequenceService.associateStObjectToId(stRendererId, stRenderer);
 
     return stRendererId;
   }

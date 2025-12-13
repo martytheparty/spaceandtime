@@ -36,10 +36,10 @@ export class StMeshService {
 
   createBaseMesh(): number
   {
-    const meshId = this.recyclableSequenceService.generateId();
+    const stMeshId = this.recyclableSequenceService.generateStId();
 
     const stMesh: StMesh = {
-      stMeshId: meshId,
+      stMeshId,
       stPosition: {stX: 0, stY: 0, stZ: 0},
       stRotation: {stX: 0, stY: 0, stZ: 0},
       stGeometryId: this.stGeometryService.createBaseGeometry(),
@@ -48,18 +48,19 @@ export class StMeshService {
     };
 
 
-    this.meshService.createMesh(meshId);
-    stMesh.threeMesh = this.meshService.getMeshById(meshId);
+    this.meshService.createMesh(stMeshId);
+    stMesh.threeMesh = this.meshService.getMeshById(stMeshId);
 
     const geometry: THREE.BoxGeometry = this.geometryService.getGeometryByStGeometryId(stMesh.stGeometryId);
-    this.meshService.updateMeshGeometry(meshId, geometry);
+    this.meshService.updateMeshGeometry(stMeshId, geometry);
 
     const material: THREE.MeshNormalMaterial = this.materialService.getMaterialById(stMesh.stMaterialId);
-    this.meshService.updateMeshMaterial(meshId, material);
+    this.meshService.updateMeshMaterial(stMeshId, material);
 
-    this.stMeshDict[meshId] = stMesh;
+    this.stMeshDict[stMeshId] = stMesh;
+    this.recyclableSequenceService.associateStObjectToId(stMeshId, stMesh)
 
-    return meshId;
+    return stMeshId;
   }
 
   getMeshById(id: number): StMesh

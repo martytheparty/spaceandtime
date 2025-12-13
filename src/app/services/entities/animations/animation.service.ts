@@ -115,9 +115,7 @@ export class AnimationService {
     values: number[] = []
   ): number
   {
-    const stRendererId = this.recyclableSequenceService.generateId();
-
-    const stAnimationId = this.recyclableSequenceService.generateId();
+    const stAnimationId = this.recyclableSequenceService.generateStId();
     
     const animation: StAnimation = {
       stAnimationId, 
@@ -132,7 +130,7 @@ export class AnimationService {
 
     stObject.stAnimations.push(animation)
 
-    return stRendererId;
+    return stAnimationId;
   }
 
   visualizationsLayout(ignoreHash = false): void

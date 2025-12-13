@@ -22,7 +22,7 @@ export class StSceneService {
 
   createBaseScene(): number
   {
-    const sceneId = this.recyclableSequenceService.generateId();
+    const sceneId = this.recyclableSequenceService.generateStId();
 
     const stScene: StScene = {
       stSceneId: sceneId,
@@ -41,6 +41,7 @@ export class StSceneService {
     }
 
     this.stSceneDict[sceneId] = stScene;
+    this.recyclableSequenceService.associateStObjectToId(sceneId, stScene);
 
     return sceneId;
   }

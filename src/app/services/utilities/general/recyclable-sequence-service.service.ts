@@ -7,7 +7,7 @@ import { SeqenceStTypes, SequenceDictionary } from '../../../interfaces/base/dic
 export class RecyclableSequenceService {
   private sequenceDictionary: SequenceDictionary = {};
 
-  generateId(): number {
+  generateStId(): number {
     let nextId = 1;
 
     while(this.sequenceDictionary.hasOwnProperty(nextId)) {
@@ -15,8 +15,7 @@ export class RecyclableSequenceService {
     }
 
     this.sequenceDictionary[nextId] = null;
-
-    console.table(this.sequenceDictionary);
+    console.log(this.sequenceDictionary);
 
     return nextId;
   }

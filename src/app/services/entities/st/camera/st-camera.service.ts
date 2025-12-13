@@ -21,7 +21,7 @@ export class StCameraService {
     const near = .01;
     const far = 100;
 
-    const stCameraId = this.recyclableSequenceService.generateId();
+    const stCameraId = this.recyclableSequenceService.generateStId();
     // creates a threeJS camera and saves it with the stCameraId
     this.cameraService.createThreeJsCamera(
       stCameraId, 

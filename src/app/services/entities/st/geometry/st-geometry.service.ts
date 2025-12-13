@@ -18,7 +18,7 @@ export class StGeometryService {
 
     createBaseGeometry(): number
     {
-      const stGeometryId = this.recyclableSequenceService.generateId();
+      const stGeometryId = this.recyclableSequenceService.generateStId();
 
       const stGeometry: StGeometry= {
         stGeometryId: stGeometryId,
@@ -41,6 +41,7 @@ export class StGeometryService {
        // set the dimensions on the geometry
        this.geometryService.setDimensions(stGeometryId, dimensions);
        this.stGeometryDict[stGeometryId] = stGeometry;
+       this.recyclableSequenceService.associateStObjectToId(stGeometryId, stGeometry);
   
       return stGeometryId;
     }

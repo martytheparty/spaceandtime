@@ -70,7 +70,7 @@ describe('VisualizationService', () => {
   });
 
   it('should create a new visualization', () => {
-      const rendererId = recyclableSequenceService.generateId();
+      const rendererId = recyclableSequenceService.generateStId();
       rendererService.createRenderer(rendererId);
 
       const mockElement = {
@@ -150,7 +150,7 @@ describe('VisualizationService', () => {
   it('Remove a visualization based on a id', () => {
     expect(service.stVisualizations.length).toBe(0);
 
-      const rendererId = recyclableSequenceService.generateId();
+      const rendererId = recyclableSequenceService.generateStId();
       rendererService.createRenderer(rendererId);
 
       const mockElement = {

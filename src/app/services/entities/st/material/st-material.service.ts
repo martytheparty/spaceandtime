@@ -19,19 +19,20 @@ export class StMaterialService {
 
     createBaseMaterial(): number
     {
-      const materialId = this.recyclableSequenceService.generateId();
+      const stMaterialId = this.recyclableSequenceService.generateStId();
       
       const stMaterial: StMaterial= {
-        stMaterialId: materialId,
+        stMaterialId,
         stType: 'normal',
         stSide:  THREE.FrontSide
       };
 
-      this.materialService.createMaterial(materialId);
-      stMaterial.threeMaterial = this.materialService.getMaterialById(materialId) as THREE.MeshNormalMaterial;
-      this.stMaterialDict[materialId] = stMaterial;
+      this.materialService.createMaterial(stMaterialId);
+      stMaterial.threeMaterial = this.materialService.getMaterialById(stMaterialId) as THREE.MeshNormalMaterial;
+      this.stMaterialDict[stMaterialId] = stMaterial;
+      this.recyclableSequenceService.associateStObjectToId(stMaterialId, stMaterial)
   
-      return materialId;
+      return stMaterialId;
     }
   
     getMaterialById(id: number): StMaterial
