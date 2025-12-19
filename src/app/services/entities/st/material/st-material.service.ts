@@ -22,6 +22,7 @@ export class StMaterialService {
       const stMaterialId = this.recyclableSequenceService.generateStId();
       
       const stMaterial: StMaterial= {
+        type: 'st-material',
         stMaterialId,
         stType: 'normal',
         stSide:  THREE.FrontSide

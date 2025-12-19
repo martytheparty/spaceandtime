@@ -56,6 +56,7 @@ export class StRendererService {
     const stScene: StScene = this.stSceneService.getSceneById(stSceneId);
 
     const stRenderer: StRenderer = { 
+      type: 'st-renderer',
       stRendererId,
       stWidth: startWidth, 
       stHeight: startHeight,

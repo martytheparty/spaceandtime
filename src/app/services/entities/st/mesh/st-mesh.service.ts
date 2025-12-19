@@ -39,6 +39,7 @@ export class StMeshService {
     const stMeshId = this.recyclableSequenceService.generateStId();
 
     const stMesh: StMesh = {
+      type: 'st-mesh',
       stMeshId,
       stPosition: {stX: 0, stY: 0, stZ: 0},
       stRotation: {stX: 0, stY: 0, stZ: 0},

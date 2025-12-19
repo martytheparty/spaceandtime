@@ -25,6 +25,7 @@ export class StSceneService {
     const sceneId = this.recyclableSequenceService.generateStId();
 
     const stScene: StScene = {
+      type: 'st-scene',
       stSceneId: sceneId,
       stMeshIds: []
     };

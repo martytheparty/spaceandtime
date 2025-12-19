@@ -38,6 +38,7 @@ export class VizComponent implements AfterViewInit, OnDestroy {
   vizHeight = input<number>(200);
   oldWidth = 0;
   oldHeight = 0;
+  type = 'viz-component';
 
   private hasBeenAttached = false;
   

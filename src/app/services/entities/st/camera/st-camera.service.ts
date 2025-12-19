@@ -40,6 +40,7 @@ export class StCameraService {
     this.cameraService.setCameraPosition(stCameraId, stPosition);
 
     const  stCamera: StCamera = {
+      type: 'st-camera',
       stCameraId: stCameraId,
       stAspectRatio: aspectRatio,
       stFrustrum: frustrum,

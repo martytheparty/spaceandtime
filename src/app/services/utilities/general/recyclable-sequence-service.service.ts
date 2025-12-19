@@ -15,7 +15,8 @@ export class RecyclableSequenceService {
     }
 
     this.sequenceDictionary[nextId] = null;
-    console.log(this.sequenceDictionary);
+
+    this.logSequenceDictionary();
 
     return nextId;
   }
@@ -37,5 +38,14 @@ export class RecyclableSequenceService {
 
   recycleId(id: number): void {
     delete this.sequenceDictionary[id];
+  }
+
+  logSequenceDictionary(): boolean
+  {
+    let drew = true;
+
+    console.log(this.sequenceDictionary);
+
+    return drew;
   }
 }

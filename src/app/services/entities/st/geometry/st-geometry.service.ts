@@ -21,6 +21,7 @@ export class StGeometryService {
       const stGeometryId = this.recyclableSequenceService.generateStId();
 
       const stGeometry: StGeometry= {
+        type: 'st-geometry',
         stGeometryId: stGeometryId,
         stWidth: 1,
         stHeight: 1,

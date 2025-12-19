@@ -49,6 +49,7 @@ export class VisualizationService {
     if (ele) {
       stVisualizationId = this.recyclableSequenceService.generateStId();
       const stVisualization: StVisualization = {
+        type: 'st-visualization',
         stVisualizationId,
         stLeft: 0,
         stTop: 0,

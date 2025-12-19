@@ -118,6 +118,7 @@ export class AnimationService {
     const stAnimationId = this.recyclableSequenceService.generateStId();
     
     const animation: StAnimation = {
+      type: 'st-animation',
       stAnimationId, 
       alias,
       temporal,

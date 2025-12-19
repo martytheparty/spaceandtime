@@ -1,4 +1,5 @@
 export interface StRenderer {
+    type: 'st-renderer';
     stRendererId: number;
     stWidth: number;
     stHeight: number;

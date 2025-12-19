@@ -2,6 +2,7 @@
 import { StTriple } from '../../../base/triple/st-triple';
 
 export interface StCamera {
+    type: 'st-camera';
     stCameraId: number;
     stAspectRatio: number;
     stNear: number;
