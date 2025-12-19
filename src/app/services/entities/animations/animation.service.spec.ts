@@ -55,6 +55,7 @@ describe('AnimationService', () => {
 
     const stAnimations: StAnimation[] = [
         { 
+          type: 'st-animation',
           stAnimationId: 1,
           alias: "mesh-rotation-x",
           temporal: 'infinite',
@@ -63,6 +64,7 @@ describe('AnimationService', () => {
           values: [.05]
         },
         { 
+          type: 'st-animation',
           stAnimationId: 2,
           alias: "mesh-rotation-y",
           temporal: 'infinite',
@@ -70,7 +72,8 @@ describe('AnimationService', () => {
           time: 0,
           values: [.05]
         },
-        { 
+        {
+          type: 'st-animation',
           stAnimationId: 2,
           alias: "mesh-rotation-z",
           temporal: 'infinite',
@@ -96,7 +99,8 @@ describe('AnimationService', () => {
    stScene.stMeshIds.forEach(
       (stMeshId: number) => {
         const stMesh = stMeshService.getMeshById(stMeshId);
-        const animation1: StAnimation =           {
+        const animation1: StAnimation = {
+          type: 'st-animation',
           stAnimationId: 1, 
           alias: "mesh-rotation-x",
           temporal: 'infinite',
@@ -105,7 +109,8 @@ describe('AnimationService', () => {
           values: [.05]
         };
         stMesh.stAnimations.push(animation1);
-        const animation2: StAnimation =           {
+        const animation2: StAnimation = {
+          type: 'st-animation',
           stAnimationId: 2, 
           alias: "mesh-rotation-y",
           temporal: 'infinite',
