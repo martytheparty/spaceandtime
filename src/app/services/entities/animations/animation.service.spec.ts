@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { AnimationService } from './animation.service';
 import { RedrawTypes, StAnimation, StGeometry, StMesh, StRenderer, StScene, StVisualization, TemporalTypes, ThreePathAliasType } from '../../../interfaces/st';
 import { StMeshService } from '../st/mesh/st-mesh.service';
+import { MeshService } from '../three/mesh/mesh.service';
 import { StGeometryService } from '../st/geometry/st-geometry.service';
 import { StRendererService } from '../st/renderer/st-renderer.service';
 import { VisualizationService } from '../visualization/visualization.service';
@@ -20,10 +21,13 @@ describe('AnimationService', () => {
   let stRendererService: StRendererService;
   let stSceneService: StSceneService;
 
+  let meshService: MeshService;
+
   let visualizationService: VisualizationService;
 
 
   let stMesh: StMesh;
+  let threeMesh: THREE.Mesh;
   let stGeometry: StGeometry;
 
   beforeEach(() => {
@@ -34,9 +38,11 @@ describe('AnimationService', () => {
     stRendererService = TestBed.inject(StRendererService);
     visualizationService = TestBed.inject(VisualizationService);
     stSceneService = TestBed.inject(StSceneService);
+    meshService = TestBed.inject(MeshService);
 
     const meshId = stMeshService.createBaseMesh();
     stMesh = stMeshService.getMeshById(meshId);
+    threeMesh = meshService.getMeshById(meshId);
 
     const geometryId = stGeometryService.createBaseGeometry();
     stGeometry = stGeometryService.getGeometryById(geometryId);
@@ -51,7 +57,6 @@ describe('AnimationService', () => {
   it('should be modify rotation x (updateMeshForAnimation)', () => {
 
     const material = new THREE.MeshNormalMaterial({side: THREE.FrontSide})
-    const mesh = stMesh.threeMesh as THREE.Mesh;
 
     const stAnimations: StAnimation[] = [
         { 
@@ -83,9 +88,9 @@ describe('AnimationService', () => {
         }
       ]
 
-    expect(mesh.rotation.x).toEqual(0);
-    service.updateMeshForAnimation(mesh, stAnimations[0]);
-    expect(mesh.rotation.x).toEqual(0.05);
+    expect(threeMesh.rotation.x).toEqual(0);
+    service.updateMeshForAnimation(threeMesh, stAnimations[0]);
+    expect(threeMesh.rotation.x).toEqual(0.05);
 
   });
 
