@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
 import { StMesh, StScene } from '../../../../interfaces/st';
 import { SceneService } from '../../three/scene/scene.service';
+import { MeshService } from '../../three/mesh/mesh.service';
 
 
 @Injectable({
@@ -17,6 +18,7 @@ export class StSceneService {
 
   private sceneService: SceneService = inject(SceneService);
   private stMeshService: StMeshService = inject(StMeshService);
+  private threeMeshService: MeshService = inject(MeshService);
 
   constructor() { }
 
@@ -32,11 +34,12 @@ export class StSceneService {
 
     const baseMeshId: number = this.stMeshService.createBaseMesh();
     const baseMesh: StMesh = this.stMeshService.getMeshById(baseMeshId);
+    const threeMesh: THREE.Mesh = this.threeMeshService.getMeshById(baseMeshId);
     stScene.stMeshIds.push(baseMeshId);
 
     this.sceneService.createScene(sceneId);
-    if (baseMesh.threeMesh) {
-      const mesh: THREE.Mesh = baseMesh.threeMesh;
+    if (threeMesh) {
+      const mesh: THREE.Mesh = threeMesh;
 
       this.sceneService.addMeshToScene(sceneId, mesh);
     }

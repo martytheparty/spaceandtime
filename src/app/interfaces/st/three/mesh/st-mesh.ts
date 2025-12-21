@@ -11,5 +11,4 @@ export interface StMesh {
     stGeometryId: number;
     stMaterialId: number;
     stAnimations: StAnimation[];
-    threeMesh?: THREE.Mesh  // do not require three objects due to future import export
 }

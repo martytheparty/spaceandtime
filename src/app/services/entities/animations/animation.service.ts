@@ -27,6 +27,7 @@ import { StSceneService } from '../st/scene/st-scene.service';
 import { StMeshService } from '../st/mesh/st-mesh.service';
 import { VizComponentService } from '../../angular/viz-component.service';
 import { VizComponent } from '../../../components/viz/viz.component';
+import { MeshService } from '../three/mesh/mesh.service';
 
 
 
@@ -48,6 +49,7 @@ export class AnimationService {
   sceneService: SceneService = inject(SceneService);
   cameraService: CameraService = inject(CameraService);
   stMeshService: StMeshService = inject(StMeshService);
+  threeMeshService: MeshService = inject(MeshService);
 
   recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   visualizationService: VisualizationService = inject(VisualizationService);
@@ -90,10 +92,11 @@ export class AnimationService {
           stMeshId: number
         ) => {
           const stMesh: StMesh = this.stMeshService.getMeshById(stMeshId);
+          const threeMesh: THREE.Mesh = this.threeMeshService.getMeshById(stMeshId);
           const animations: StAnimation[] = stMesh.stAnimations;
           animations.forEach( (animation: StAnimation) => {
-            if (stMesh.threeMesh) {
-              this.updatePropertyForAnimation(stMesh.threeMesh, animation)
+            if (threeMesh) {
+              this.updatePropertyForAnimation(threeMesh, animation)
             }
           } );
         } );
