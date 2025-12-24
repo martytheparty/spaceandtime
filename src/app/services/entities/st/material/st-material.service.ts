@@ -29,7 +29,6 @@ export class StMaterialService {
       };
 
       this.materialService.createMaterial(stMaterialId);
-      stMaterial.threeMaterial = this.materialService.getMaterialById(stMaterialId) as THREE.MeshNormalMaterial;
       this.stMaterialDict[stMaterialId] = stMaterial;
       this.recyclableSequenceService.associateStObjectToId(stMaterialId, stMaterial)
   

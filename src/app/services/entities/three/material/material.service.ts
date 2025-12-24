@@ -11,16 +11,16 @@ export class MaterialService {
   constructor() {}
 
   createMaterial(
-    id: number 
+    stId: number 
   ): number
   {
-    this.materialDict[id] = new THREE.MeshNormalMaterial();
-    return id;
+    this.materialDict[stId] = new THREE.MeshNormalMaterial();
+    return stId;
   }
 
-  getMaterialById(id: number): THREE.MeshNormalMaterial
+  getMaterialById(stId: number): THREE.MeshNormalMaterial
   {
-    const material: THREE.MeshNormalMaterial = this.materialDict[id];
+    const material: THREE.MeshNormalMaterial = this.materialDict[stId];
     return material;
   }
 }
