@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
+import { ThreeMaterialDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MaterialService {
 
-  private materialDict: any = {};
+  private materialDict: ThreeMaterialDictionary = {};
 
   constructor() {}
 
