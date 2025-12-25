@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
 import { StTriple } from '../../../../interfaces/base/triple/st-triple';
+import { ThreeGeometryDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeometryService {
   
-  private geometryDict: any = {};
+  private geometryDict: ThreeGeometryDictionary = {};
 
   constructor() { }
 

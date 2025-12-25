@@ -37,6 +37,11 @@ export interface ThreeCameraDictionary {
   [id: number]: THREE.PerspectiveCamera;
 }
 
+// Holds ThreeJsGeometries
+export interface ThreeGeometryDictionary {
+  [id: number]: THREE.BoxGeometry;
+}
+
 // Holds Visualization Object
 export interface SequenceDictionary {
   [id: number]: SeqenceStTypes;
