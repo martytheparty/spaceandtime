@@ -42,6 +42,12 @@ export interface ThreeGeometryDictionary {
   [id: number]: THREE.BoxGeometry;
 }
 
+
+// Holds ThreeJsMaterials
+export interface ThreeMaterialDictionary {
+  [id: number]: THREE.MeshNormalMaterial;
+}
+
 // Holds Visualization Object
 export interface SequenceDictionary {
   [id: number]: SeqenceStTypes;
