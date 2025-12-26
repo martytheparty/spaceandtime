@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
+import { ThreeMeshDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MeshService {
 
-  private meshDict: any = {};
+  private meshDict: ThreeMeshDictionary = {};
 
   constructor() {}
 

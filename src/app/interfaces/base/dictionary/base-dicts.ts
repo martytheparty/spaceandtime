@@ -42,10 +42,14 @@ export interface ThreeGeometryDictionary {
   [id: number]: THREE.BoxGeometry;
 }
 
-
 // Holds ThreeJsMaterials
 export interface ThreeMaterialDictionary {
   [id: number]: THREE.MeshNormalMaterial;
+}
+
+// Holds ThreeJsMeshes
+export interface ThreeMeshDictionary {
+  [id: number]: THREE.Mesh;
 }
 
 // Holds Visualization Object
