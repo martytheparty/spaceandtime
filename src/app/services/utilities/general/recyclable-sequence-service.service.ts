@@ -1,10 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SeqenceStTypes, SequenceDictionary } from '../../../interfaces/base/dictionary/base-dicts';
+import { DebounceService } from '../timing/debounce.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecyclableSequenceService {
+
+  debounceService: DebounceService = inject(DebounceService);
+
   private sequenceDictionary: SequenceDictionary = {};
 
   generateStId(): number {
@@ -42,10 +46,24 @@ export class RecyclableSequenceService {
 
   logSequenceDictionary(): boolean
   {
-    let drew = true;
+    let registered = true;
+    const debounceTime = 100;
+
+    this.debounceService.debounce(
+      "sequence-log",
+      this.printSequenceDictionary.bind(this),
+      debounceTime
+    );
+
+    return registered;
+  }
+
+  printSequenceDictionary(): boolean
+  {
+    let printed = true;
 
     console.log(this.sequenceDictionary);
 
-    return drew;
+    return printed;
   }
 }
