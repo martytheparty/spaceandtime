@@ -55,7 +55,8 @@
     "sViewPort": "ng g s services/ui/wViewPort",
     "sViewPortResize": "ng g s services/ui/wViewPortResize",
     "clicore21": "ng update @angular/core@21 @angular/cli@21",
-    "mat21": "ng update @angular/material@21"
+    "mat21": "ng update @angular/material@21",
+    "sDebounce": "ng g s services/utilities/timing/debounce"
   },
   "private": true,
   "dependencies": {
