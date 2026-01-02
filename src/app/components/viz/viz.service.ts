@@ -56,4 +56,13 @@ export class ComponentVisualizationService {
 
     return found;
   }
+
+  setArForWidthAndHeight(
+    stRendererId: number,
+    width: number,
+    height: number
+  ): boolean {
+    this.stRendererService.updateAspectRatioByIdForWidthAndHeight(stRendererId, width, height);
+    return true;
+  }
 }

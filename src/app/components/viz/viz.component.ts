@@ -13,6 +13,7 @@ import { ComponentVisualizationService } from './viz.service';
 import { VisualizationService } from '../../services/entities/visualization/visualization.service';
 import { RecyclableSequenceService } from '../../services/utilities/general/recyclable-sequence-service.service';
 import { VizComponentService } from '../../services/angular/viz-component.service';
+import { DebounceService } from '../../services/utilities/timing/debounce.service';
 
 @Component({
   selector: 'app-viz',
@@ -30,6 +31,7 @@ export class VizComponent implements AfterViewInit, OnDestroy {
   vizComponentService: VizComponentService = inject(VizComponentService);
   visualizationService: VisualizationService = inject(VisualizationService);
   recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
+  debounceService: DebounceService = inject(DebounceService);
 
   stRendererInputId = input.required<number>();
   stVizComponentId: number;
@@ -39,6 +41,8 @@ export class VizComponent implements AfterViewInit, OnDestroy {
   oldWidth = 0;
   oldHeight = 0;
   type = 'viz-component';
+  effectCount = 0; // just for debugging
+  componentInitialized = false;
 
   private hasBeenAttached = false;
   
@@ -48,16 +52,56 @@ export class VizComponent implements AfterViewInit, OnDestroy {
     this.stVizComponentId = this.recyclableSequenceService.generateStId();
 
     effect(() => {
-      const updated = this.updateDimensionsSignalHandler(
-        this.rendererViewChild,
-        this.vizWidth(),
-        this.vizHeight(),
-        this.oldWidth,
-        this.oldHeight,
-        this.stRendererInputId()
-      );
-      
-      this.recyclableSequenceService.associateStObjectToId(this.stVizComponentId, this);
+      // 1) This effect is triggered by the vizWidth Signal
+      // 2) This effect is triggered by the vizHeight Signal
+      // 3) This effect is triggered by the stRendererInputId
+
+      let updated = true;
+
+
+      if (this.componentInitialized) {
+        // Edge case - the user resized the UI, but the actual element is wrong at this time
+        // so the AR had to be update for the future width.
+
+        this.debounceService.debounce(
+          "viz-component-update-dims-redraw",
+          () => {
+              this.updateDimensionsSignalHandler(
+                this.rendererViewChild,
+                this.vizWidth(),
+                this.vizHeight(),
+                this.oldWidth,
+                this.oldHeight,
+                this.stRendererInputId()
+              );
+
+              this.componentVisualizationService
+                .setArForWidthAndHeight(
+                  this.stRendererInputId(),
+                  this.vizWidth(),
+                  this.vizHeight()
+                )
+          },
+          60
+        )
+
+      } else {
+        this.componentInitialized = true;
+
+        // this is getting called multiple times during browser reset... probably not ideal.
+        // this probably should only be called when it has never been set before.
+
+        updated = this.updateDimensionsSignalHandler(
+          this.rendererViewChild,
+          this.vizWidth(),
+          this.vizHeight(),
+          this.oldWidth,
+          this.oldHeight,
+          this.stRendererInputId()
+        );
+        // this only needs to be set up one time... not for every change 
+        this.recyclableSequenceService.associateStObjectToId(this.stVizComponentId, this);
+      }
 
       this.updateOld(updated, this.vizWidth(), this.vizHeight());
     })
@@ -114,6 +158,7 @@ export class VizComponent implements AfterViewInit, OnDestroy {
             );
       updated = true;
     }
+
     return updated;
   }
 
