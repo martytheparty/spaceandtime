@@ -26,7 +26,7 @@ import { WViewPortResizeService } from '../../../services/ui/w-view-port-resize.
 })
 export class AppUpdateLayoutComponent {
 
-  @ViewChild('viewer') viewerView : ElementRef | undefined;
+  @ViewChild('viewer') viewerView: ElementRef | undefined;
 
   route: ActivatedRoute = inject(ActivatedRoute);
   stRendererService: StRendererService = inject(StRendererService);
@@ -46,6 +46,12 @@ export class AppUpdateLayoutComponent {
   constructor() {
     effect(() => {
 
+      // This effect is executed if:
+      // currentRoute() signal
+      // viewport() signal
+      // aspectRatioSignal() signal
+
+
       const currentView: LayoutType = this.currentRouteService.currentRoute();
       this.stRendererId = this.getCurrentRendererId(currentView, window.location.href);
 
@@ -53,6 +59,10 @@ export class AppUpdateLayoutComponent {
       this.viewPortWidth = width;
       this.viewPortHeight = height;
       this.viewerWidth = width;
+
+      //console.log("APP UPDATE LAYOUT COMPONENT 💥", width, height);
+
+
       this.processVisualization(this);
       
       const ar = this.stPublisherService.calculatedAspectRatioSignal()[this.stRendererId];
@@ -91,8 +101,8 @@ export class AppUpdateLayoutComponent {
   ): boolean {
     let updated = false;
     if (isStRendererCreated && editorDomElementExists) {
-      const editorView: ElementRef<HTMLDivElement> = appLayoutComponent.viewerView as unknown as ElementRef<HTMLDivElement>;
-      const nativeElement: HTMLDivElement = editorView.nativeElement as unknown as HTMLDivElement;
+      const viewerView: ElementRef<HTMLDivElement> = appLayoutComponent.viewerView as unknown as ElementRef<HTMLDivElement>;
+      const nativeElement: HTMLDivElement = viewerView.nativeElement as unknown as HTMLDivElement;
       this.resizeVisualization(appLayoutComponent, nativeElement);
       updated = true;
     }
@@ -121,12 +131,13 @@ export class AppUpdateLayoutComponent {
 
   resizeVisualization(
     appUpdateLayoutComponent: AppUpdateLayoutComponent,
-    editorViewDiv: HTMLDivElement
+    viewerViewDiv: HTMLDivElement
   ): boolean
   {
-      
-      appUpdateLayoutComponent.viewerWidth = editorViewDiv.offsetWidth;
-      appUpdateLayoutComponent.viewerHeight = editorViewDiv.offsetHeight;
+      // VIEWER WIDTH DOES NOT WORK BECAUSE THE SCROLL BAR COMES AND GOES
+      // PROBABLY NEED TO USE THE VIEWPORT WIDTH
+      appUpdateLayoutComponent.viewerWidth = this.viewPortWidth;
+      appUpdateLayoutComponent.viewerHeight = viewerViewDiv.offsetHeight;
       
       setTimeout(appUpdateLayoutComponent.finalizeInitialization(appUpdateLayoutComponent), 0 );
       return true;

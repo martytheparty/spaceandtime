@@ -56,13 +56,16 @@ export class VizComponent implements AfterViewInit, OnDestroy {
       // 2) This effect is triggered by the vizHeight Signal
       // 3) This effect is triggered by the stRendererInputId
 
-      let updated = true;
+      this.componentInitialized = this.dimensionChangeHandler(this.componentInitialized);
 
+      this.updateOld(this.componentInitialized, this.vizWidth(), this.vizHeight());
+    })
+  }
 
-      if (this.componentInitialized) {
+  dimensionChangeHandler(isInitialized: boolean): boolean {
+    if (isInitialized) {
         // Edge case - the user resized the UI, but the actual element is wrong at this time
         // so the AR had to be update for the future width.
-
         this.debounceService.debounce(
           "viz-component-update-dims-redraw",
           () => {
@@ -82,16 +85,11 @@ export class VizComponent implements AfterViewInit, OnDestroy {
                   this.vizHeight()
                 )
           },
-          60
+          100
         )
-
-      } else {
-        this.componentInitialized = true;
-
-        // this is getting called multiple times during browser reset... probably not ideal.
-        // this probably should only be called when it has never been set before.
-
-        updated = this.updateDimensionsSignalHandler(
+    } else {
+      isInitialized = true;
+      this.updateDimensionsSignalHandler(
           this.rendererViewChild,
           this.vizWidth(),
           this.vizHeight(),
@@ -99,12 +97,11 @@ export class VizComponent implements AfterViewInit, OnDestroy {
           this.oldHeight,
           this.stRendererInputId()
         );
-        // this only needs to be set up one time... not for every change 
-        this.recyclableSequenceService.associateStObjectToId(this.stVizComponentId, this);
-      }
 
-      this.updateOld(updated, this.vizWidth(), this.vizHeight());
-    })
+        this.recyclableSequenceService.associateStObjectToId(this.stVizComponentId, this);
+    }
+    
+    return isInitialized;
   }
 
   ngAfterViewInit(): void {
@@ -113,7 +110,11 @@ export class VizComponent implements AfterViewInit, OnDestroy {
           const width = this.vizWidth();
           const height = this.vizHeight();
 
-          this.updateDimensions(nativeElement, width, height, 0, 0); // does not seem to be needed
+          this.updateDimensions(
+            nativeElement, 
+            width, 
+            height
+          );
           // this is where the element is actually created
           this.componentVisualizationService.renderInNativeElement(
             this.rendererViewChild,
@@ -129,6 +130,8 @@ export class VizComponent implements AfterViewInit, OnDestroy {
     this.vizComponentService.deleteVizComponentByStComponentId(this.stVizComponentId);
     this.recyclableSequenceService.recycleId(this.stVizComponentId);
   }
+
+
 
   updateOld(updated: boolean, width: number, height: number): boolean{
       if (updated) {
@@ -149,7 +152,13 @@ export class VizComponent implements AfterViewInit, OnDestroy {
     let updated = false;
     if (rendererViewChild) {
       const nativeElement: HTMLDivElement = rendererViewChild.nativeElement;
-      this.updateDimensions(nativeElement, newWidth, newHeight, currentWidth, currentHeight);
+      this.updateDimensions(
+        nativeElement, 
+        newWidth, 
+        newHeight, 
+        // currentWidth, 
+        // currentHeight
+      );
       this.componentVisualizationService.renderInNativeElement(
               rendererViewChild,
               stRendererInputId,
@@ -165,24 +174,25 @@ export class VizComponent implements AfterViewInit, OnDestroy {
   updateDimensions(
     nativeElement: HTMLDivElement, 
     newWidth: number,
-    newHeight: number,
-    currentWidth: number,
-    currentHeight: number
+    newHeight: number
   ): boolean
   {
     let changed = false;
+    console.log("UPDATE DIMENSION is", nativeElement, newWidth, newHeight);
+    // console.log("UPDATE DIMENSION was", nativeElement, currentWidth, currentHeight);
 
-    if (
-      newHeight !== currentHeight
-      || newWidth !== currentWidth 
-    ) {
+    // if (
+    //   newHeight !== currentHeight
+    //   || newWidth !== currentWidth 
+    // ) {
+        console.log("************* CHANGED 😊 ****************");
         changed = true;
         // updates the native element on the next frame
         requestAnimationFrame(() => {
           nativeElement.style.width = `${newWidth}px`;
           nativeElement.style.height = `${newHeight}px`;          
         })
-    }
+    // }
 
     return changed;
   }
