@@ -26,7 +26,6 @@ describe('VisualizationService', () => {
     expect(service).toBeTruthy();
   });
 
-
   it('should render in a native element', () => {
     const mockElementRef: ElementRef = new ElementRef(document.createElement('div'));
     const stId = stRendererService.getBaseStRenderer();
@@ -37,4 +36,11 @@ describe('VisualizationService', () => {
 
     expect(1).toEqual(1);
   });
+  it('should set the Aspect Ratio For A stRenderId', () => {
+    const stRendererId = 1;
+    const width = 1;
+    const height = 1;
+    const result = service.setArForWidthAndHeight(stRendererId, width, height);
+    expect(result).toBeTrue();
+  })
 });

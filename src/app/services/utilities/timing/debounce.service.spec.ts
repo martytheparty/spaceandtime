@@ -13,4 +13,11 @@ describe('DebounceService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should call debounce with the default time', () => {
+    const func = () => {};
+
+    service.debounce('unit-test', func);
+    service.cancel('unit-test')
+  })
 });

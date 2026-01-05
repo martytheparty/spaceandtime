@@ -26,16 +26,18 @@ import { WViewPortResizeService } from '../../../services/ui/w-view-port-resize.
 })
 export class AppUpdateLayoutComponent {
 
-  @ViewChild('viewer') editorView : ElementRef | undefined;
+  @ViewChild('viewer') viewerView: ElementRef | undefined;
 
   route: ActivatedRoute = inject(ActivatedRoute);
   stRendererService: StRendererService = inject(StRendererService);
   stPublisherService: StPublisherService = inject(StPublisherService);
   threePublisherService: ThreePublisherService = inject(ThreePublisherService);
   currentRouteService: CurrentRouteService = inject(CurrentRouteService);
-   wViewPortResizeService: WViewPortResizeService = inject( WViewPortResizeService);
+  wViewPortResizeService: WViewPortResizeService = inject( WViewPortResizeService);
 
   stRendererId: number = 0;
+  viewPortHeight = 0;
+  viewPortWidth = 0;
   viewerWidth = 0;
   viewerHeight = 0;
   afterInitComplete = false;
@@ -44,20 +46,27 @@ export class AppUpdateLayoutComponent {
   constructor() {
     effect(() => {
 
+      // This effect is executed if:
+      // currentRoute() signal
+      // viewport() signal
+      // aspectRatioSignal() signal
+
+
+      const currentView: LayoutType = this.currentRouteService.currentRoute();
+      this.stRendererId = this.getCurrentRendererId(currentView, window.location.href);
 
       const { width, height } = this.wViewPortResizeService.viewport();
+      this.viewPortWidth = width;
+      this.viewPortHeight = height;
       this.viewerWidth = width;
-      this.viewerHeight = height;
-
+      this.processVisualization(this);
+      
       const ar = this.stPublisherService.calculatedAspectRatioSignal()[this.stRendererId];
 
       this.setCalculatedAspectRation(ar);
 
       // stRenderers should be empty unless we are in tabular view
-      const currentView: LayoutType = this.currentRouteService.currentRoute();
 
-      this.stRendererId = this.getCurrentRendererId(currentView, window.location.href);
-      this.processVisualization(this);
     });
   }
 
@@ -88,8 +97,8 @@ export class AppUpdateLayoutComponent {
   ): boolean {
     let updated = false;
     if (isStRendererCreated && editorDomElementExists) {
-      const editorView: ElementRef<HTMLDivElement> = appLayoutComponent.editorView as unknown as ElementRef<HTMLDivElement>;
-      const nativeElement: HTMLDivElement = editorView.nativeElement as unknown as HTMLDivElement;
+      const viewerView: ElementRef<HTMLDivElement> = appLayoutComponent.viewerView as unknown as ElementRef<HTMLDivElement>;
+      const nativeElement: HTMLDivElement = viewerView.nativeElement as unknown as HTMLDivElement;
       this.resizeVisualization(appLayoutComponent, nativeElement);
       updated = true;
     }
@@ -99,7 +108,7 @@ export class AppUpdateLayoutComponent {
   doesEditorViewDomElementExist(appLayoutComponent: AppUpdateLayoutComponent): boolean {
     let exists = false;
 
-    if(appLayoutComponent.editorView?.nativeElement) {
+    if(appLayoutComponent.viewerView?.nativeElement) {
       exists = true;
     }
 
@@ -118,13 +127,14 @@ export class AppUpdateLayoutComponent {
 
   resizeVisualization(
     appUpdateLayoutComponent: AppUpdateLayoutComponent,
-    editorViewDiv: HTMLDivElement
+    viewerViewDiv: HTMLDivElement
   ): boolean
   {
+      // VIEWER WIDTH DOES NOT WORK BECAUSE THE SCROLL BAR COMES AND GOES
+      // PROBABLY NEED TO USE THE VIEWPORT WIDTH
+      appUpdateLayoutComponent.viewerWidth = this.viewPortWidth;
+      appUpdateLayoutComponent.viewerHeight = viewerViewDiv.offsetHeight;
       
-      appUpdateLayoutComponent.viewerWidth = editorViewDiv.offsetWidth;
-      appUpdateLayoutComponent.viewerHeight = editorViewDiv.offsetHeight;
-
       setTimeout(appUpdateLayoutComponent.finalizeInitialization(appUpdateLayoutComponent), 0 );
       return true;
   }

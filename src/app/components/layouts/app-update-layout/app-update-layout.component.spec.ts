@@ -71,7 +71,7 @@ describe('AppUpdateLayoutComponent', () => {
         // Fake component
     const mockComponent: AppUpdateLayoutComponent  = {
       id: 1,
-      editorView: {
+      viewerView: {
         nativeElement: {
           offsetWidth: 200,
           offsetHeight: 100,
@@ -83,7 +83,7 @@ describe('AppUpdateLayoutComponent', () => {
       }
     } as unknown as AppUpdateLayoutComponent;
 
-    expect(component.viewerHeight).toBeGreaterThan(1);
+    expect(component.viewerHeight).toEqual(0);
     
     component.processVisualization(mockComponent);
   });
@@ -103,7 +103,7 @@ describe('AppUpdateLayoutComponent', () => {
     // Fake component
     const mockComponent: AppUpdateLayoutComponent  = {
       id: 1,
-      editorView: {
+      viewerView: {
         nativeElement: {
           offsetWidth: 200,
           offsetHeight: 100,
@@ -115,7 +115,7 @@ describe('AppUpdateLayoutComponent', () => {
       }
     } as unknown as AppUpdateLayoutComponent;
 
-    const nativeElement = mockComponent.editorView?.nativeElement as HTMLDivElement;
+    const nativeElement = mockComponent.viewerView?.nativeElement as HTMLDivElement;
 
     const isResized = component.resizeVisualization(mockComponent, nativeElement);
 
@@ -126,7 +126,7 @@ describe('AppUpdateLayoutComponent', () => {
     // Fake component
     const mockComponent: AppUpdateLayoutComponent  = {
       id: 1,
-      editorView: {
+      viewerView: {
         nativeElement: {
           offsetWidth: 200,
           offsetHeight: 100,
