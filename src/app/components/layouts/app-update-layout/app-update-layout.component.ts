@@ -59,10 +59,6 @@ export class AppUpdateLayoutComponent {
       this.viewPortWidth = width;
       this.viewPortHeight = height;
       this.viewerWidth = width;
-
-      //console.log("APP UPDATE LAYOUT COMPONENT 💥", width, height);
-
-
       this.processVisualization(this);
       
       const ar = this.stPublisherService.calculatedAspectRatioSignal()[this.stRendererId];

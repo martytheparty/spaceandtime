@@ -155,9 +155,7 @@ export class VizComponent implements AfterViewInit, OnDestroy {
       this.updateDimensions(
         nativeElement, 
         newWidth, 
-        newHeight, 
-        // currentWidth, 
-        // currentHeight
+        newHeight,
       );
       this.componentVisualizationService.renderInNativeElement(
               rendererViewChild,
@@ -177,23 +175,12 @@ export class VizComponent implements AfterViewInit, OnDestroy {
     newHeight: number
   ): boolean
   {
-    let changed = false;
-    console.log("UPDATE DIMENSION is", nativeElement, newWidth, newHeight);
-    // console.log("UPDATE DIMENSION was", nativeElement, currentWidth, currentHeight);
-
-    // if (
-    //   newHeight !== currentHeight
-    //   || newWidth !== currentWidth 
-    // ) {
-        console.log("************* CHANGED 😊 ****************");
-        changed = true;
-        // updates the native element on the next frame
-        requestAnimationFrame(() => {
-          nativeElement.style.width = `${newWidth}px`;
-          nativeElement.style.height = `${newHeight}px`;          
-        })
-    // }
-
+    const changed = true;   
+    // updates the native element on the next frame
+    requestAnimationFrame(() => {
+      nativeElement.style.width = `${newWidth}px`;
+      nativeElement.style.height = `${newHeight}px`;          
+    })
     return changed;
   }
 
