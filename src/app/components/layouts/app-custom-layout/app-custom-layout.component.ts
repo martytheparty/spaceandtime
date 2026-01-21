@@ -33,7 +33,6 @@ export class AppCustomLayoutComponent {
         const currentView: LayoutType = this.currentRouteService.currentRoute();
         this.stRenderers = [...this.getRenderers(currentView)];
 
-        this.animationService.animateVisualizations( this.stRenderers);
         setTimeout( () => {
           const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
 

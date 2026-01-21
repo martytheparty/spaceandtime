@@ -49,7 +49,6 @@ export class AppTabularLayoutComponent {
         const newRenderers = this.getRenderers(currentView);
         this.stRenderers = [...newRenderers];
 
-        this.animationService.animateVisualizations( this.stRenderers);
         setTimeout( () => {
           const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
 

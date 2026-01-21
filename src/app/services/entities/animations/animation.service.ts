@@ -172,84 +172,38 @@ export class AnimationService {
     return wasSet;
   }
 
-  animatateVisualization(stRenderer: StRenderer, index: number): boolean {
-    const modulus = index%4;
-    this.animateMesh(stRenderer, modulus);
+  createAnimationForCount(count: number): StAnimation
+  {
+    const stAnimationId = this.recyclableSequenceService.generateStId();
+    const aliases: Record<number, ThreePathAliasType> = { 0: 'mesh-rotation-x', 1: 'mesh-rotation-y', 2: 'mesh-rotation-z' };
+    const aliasMod = count % 3;
+    const alias: ThreePathAliasType = aliases[aliasMod];
 
-    return true;
-  }
+    const temporalTypes: Record<number, TemporalTypes> = { 0: 'limits', 1: 'infinite' };
+    const temporalMod = count % 2;
+    // we don't use this yet
+    const temporal: TemporalTypes = 'infinite';
 
-  animateVisualizations(stRenderers: StRenderer[]): void {
-    stRenderers.forEach(this.animatateVisualization.bind(this));
-  }
+    const RedrawTypes: Record<number, RedrawTypes> = { 0: 'continous', 1: 'discrete' };
+    const redrawMod = count % 2;
+    // we don't use this yet
+    const redraw: RedrawTypes = 'continous';
+    const time = 0;
+    const values = [.05];
+    
+    const animation: StAnimation = {
+      type: 'st-animation',
+      stAnimationId, 
+      alias,
+      temporal,
+      redraw,
+      time,
+      values
+    };
+    this.recyclableSequenceService.associateStObjectToId(stAnimationId, animation);
 
-  animateMesh(stRenderer: StRenderer, modulus: number): boolean {
+    return animation;
 
-    const stScene: StScene = this.stSceneService.getSceneById(stRenderer.stSceneId);
-    const stMeshId = stScene.stMeshIds[0];
-    const stMesh: StMesh = this.stMeshService.getMeshById(stMeshId);
-
-    if (modulus === 0) {
-      const mesh = stMesh;
-      this
-        .addAnimation(
-          mesh,
-          'mesh-rotation-x',
-          'infinite',
-          'continous',
-          0,
-          [.05]);
-    } else if(modulus === 1) {
-      const mesh = stMesh;
-      this
-        .addAnimation(
-          mesh,
-          'mesh-rotation-y',
-          'infinite',
-          'continous',
-          0,
-          [.05]);
-    } else if(modulus === 2) {
-      const mesh = stMesh;
-      this
-        .addAnimation(
-          mesh,
-          'mesh-rotation-z',
-          'infinite',
-          'continous',
-          0,
-          [.05]);
-    } else if(modulus === 3) {
-      const mesh = stMesh;
-      this
-        .addAnimation(
-          mesh,
-          'mesh-rotation-x',
-          'infinite',
-          'continous',
-          0,
-          [.05]);
-
-        this
-          .addAnimation(
-            mesh,
-            'mesh-rotation-y',
-            'infinite',
-            'continous',
-            0,
-            [.05]);
-
-        this
-          .addAnimation(
-            mesh,
-            'mesh-rotation-z',
-            'infinite',
-            'continous',
-            0,
-            [.05]);
-    }
-
-    return true;
   }
 
   updateVisualizationLayout(vizCount: number): number
