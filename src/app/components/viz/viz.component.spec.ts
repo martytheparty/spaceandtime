@@ -84,7 +84,8 @@ describe('VizComponent', () => {
 
     it('should handle dimension changes', () => {
       const component: VizComponent = fixture.debugElement.children[0].componentInstance;
-      component.dimensionChangeHandler(true);
+      const result = component.dimensionChangeHandler(true);
+      expect(result).toBe(true);
     })
 
 });

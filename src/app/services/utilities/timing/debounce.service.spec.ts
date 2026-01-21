@@ -18,6 +18,10 @@ describe('DebounceService', () => {
     const func = () => {};
 
     service.debounce('unit-test', func);
-    service.cancel('unit-test')
+    const found = service.cancel('unit-test');
+
+    expect(found).toBe(true);
+
+    
   })
 });

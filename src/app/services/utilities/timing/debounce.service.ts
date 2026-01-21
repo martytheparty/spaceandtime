@@ -24,12 +24,16 @@ export class DebounceService {
     this.timers.set(key, timer);
   }
 
-  cancel(key: string): void {
+  cancel(key: string): boolean {
+    let found = false;
     const timer = this.timers.get(key);
     if (timer) {
       clearTimeout(timer);
       this.timers.delete(key);
+      found = true;
     }
+
+    return found;
   }
 
 }

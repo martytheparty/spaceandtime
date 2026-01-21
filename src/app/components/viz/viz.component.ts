@@ -68,23 +68,7 @@ export class VizComponent implements AfterViewInit, OnDestroy {
         // so the AR had to be update for the future width.
         this.debounceService.debounce(
           "viz-component-update-dims-redraw",
-          () => {
-              this.updateDimensionsSignalHandler(
-                this.rendererViewChild,
-                this.vizWidth(),
-                this.vizHeight(),
-                this.oldWidth,
-                this.oldHeight,
-                this.stRendererInputId()
-              );
-
-              this.componentVisualizationService
-                .setArForWidthAndHeight(
-                  this.stRendererInputId(),
-                  this.vizWidth(),
-                  this.vizHeight()
-                )
-          },
+          this.updateVisualizationDimensions.bind(this),
           100
         )
     } else {
@@ -131,7 +115,26 @@ export class VizComponent implements AfterViewInit, OnDestroy {
     this.recyclableSequenceService.recycleId(this.stVizComponentId);
   }
 
+  updateVisualizationDimensions(): boolean {
 
+    this.updateDimensionsSignalHandler(
+                this.rendererViewChild,
+                this.vizWidth(),
+                this.vizHeight(),
+                this.oldWidth,
+                this.oldHeight,
+                this.stRendererInputId()
+              );
+
+    this.componentVisualizationService
+                .setArForWidthAndHeight(
+                  this.stRendererInputId(),
+                  this.vizWidth(),
+                  this.vizHeight()
+                );
+
+    return true;
+  }
 
   updateOld(updated: boolean, width: number, height: number): boolean{
       if (updated) {
