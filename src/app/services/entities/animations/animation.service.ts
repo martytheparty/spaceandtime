@@ -28,6 +28,8 @@ import { StMeshService } from '../st/mesh/st-mesh.service';
 import { VizComponentService } from '../../angular/viz-component.service';
 import { VizComponent } from '../../../components/viz/viz.component';
 import { MeshService } from '../three/mesh/mesh.service';
+import { StRendererService } from '../st/renderer/st-renderer.service';
+import { StAnimationDictionary } from '../../../interfaces/base/dictionary/base-dicts';
 
 
 
@@ -36,6 +38,8 @@ import { MeshService } from '../three/mesh/mesh.service';
 })
 export class AnimationService {
 
+  private stAnimationDict: StAnimationDictionary = {};
+
   // all rules are broken in this service because it interacts directly with the 
   // st stuff and the three stuff.
 
@@ -43,7 +47,7 @@ export class AnimationService {
 
   // try injecting StRendererService after the drawing logic is removed from app
 
-  // stRenderService: StRendererService = inject(StRendererService);
+  //stRenderService: StRendererService = inject(StRendererService);
   rendererService: RendererService = inject(RendererService);
   stSceneService: StSceneService = inject(StSceneService);
   sceneService: SceneService = inject(SceneService);
@@ -93,8 +97,13 @@ export class AnimationService {
         ) => {
           const stMesh: StMesh = this.stMeshService.getMeshById(stMeshId);
           const threeMesh: THREE.Mesh = this.threeMeshService.getMeshById(stMeshId);
-          const animations: StAnimation[] = stMesh.stAnimations;
-          animations.forEach( (animation: StAnimation) => {
+          const animationIds = stMesh.stAnimationIds;
+
+          let stAnimations: StAnimation[] = animationIds.map( (animationId) => {
+            return this.stAnimationDict[animationId];
+          } );
+
+          stAnimations.forEach( (animation: StAnimation) => {
             if (threeMesh) {
               this.updatePropertyForAnimation(threeMesh, animation)
             }
@@ -107,34 +116,6 @@ export class AnimationService {
         this.rendererService.renderRenderer(stRenderer.stRendererId, scene, camera);
       }
     }
-  }
-
-  addAnimation(
-    stObject: SupportedStTypes,
-    alias: ThreePathAliasType, 
-    temporal: TemporalTypes,
-    redraw: RedrawTypes,
-    time: number = 0,
-    values: number[] = []
-  ): number
-  {
-    const stAnimationId = this.recyclableSequenceService.generateStId();
-    
-    const animation: StAnimation = {
-      type: 'st-animation',
-      stAnimationId, 
-      alias,
-      temporal,
-      redraw,
-      time,
-      values
-    };
-
-    this.recyclableSequenceService.associateStObjectToId(stAnimationId, animation);
-
-    stObject.stAnimations.push(animation)
-
-    return stAnimationId;
   }
 
   visualizationsLayout(ignoreHash = false): void
@@ -200,6 +181,8 @@ export class AnimationService {
       time,
       values
     };
+
+    this.stAnimationDict[stAnimationId] = animation;
     this.recyclableSequenceService.associateStObjectToId(stAnimationId, animation);
 
     return animation;
