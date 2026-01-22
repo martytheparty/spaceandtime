@@ -45,7 +45,7 @@ export class StMeshService {
       stRotation: {stX: 0, stY: 0, stZ: 0},
       stGeometryId: this.stGeometryService.createBaseGeometry(),
       stMaterialId: this.stMaterialService.createBaseMaterial(),
-      stAnimations: []
+      stAnimationIds: []
     };
 
 

@@ -52,6 +52,12 @@ export interface ThreeMeshDictionary {
   [id: number]: THREE.Mesh;
 }
 
+// Holds StAnimations
+
+export interface StAnimationDictionary {
+  [id: number]: StAnimation;
+}
+
 // Holds Visualization Object
 export interface SequenceDictionary {
   [id: number]: SeqenceStTypes;

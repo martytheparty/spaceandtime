@@ -10,5 +10,5 @@ export interface StMesh {
     stRotation: StTriple;
     stGeometryId: number;
     stMaterialId: number;
-    stAnimations: StAnimation[];
+    stAnimationIds: number[];
 }

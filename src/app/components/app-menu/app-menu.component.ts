@@ -104,7 +104,7 @@ export class AppMenuComponent
 
     // step 3 add the animation to the Mesh
 
-    stMesh.stAnimations.push(animation);
+    stMesh.stAnimationIds.push(animation.stAnimationId);
     return stId;
   }
  
