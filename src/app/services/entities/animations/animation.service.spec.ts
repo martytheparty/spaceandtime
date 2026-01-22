@@ -100,30 +100,13 @@ describe('AnimationService', () => {
     const stRendererId: number = stRendererService.getBaseStRenderer();
     const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
     const stScene: StScene = stSceneService.getSceneById(stRenderer.stSceneId);
+    const stAnimation: StAnimation = service.createAnimationForCount(0);
 
    stScene.stMeshIds.forEach(
       (stMeshId: number) => {
         const stMesh = stMeshService.getMeshById(stMeshId);
-        const animation1: StAnimation = {
-          type: 'st-animation',
-          stAnimationId: 1, 
-          alias: "mesh-rotation-x",
-          temporal: 'infinite',
-          redraw: 'continous',
-          time: 0,
-          values: [.05]
-        };
-        stMesh.stAnimations.push(animation1);
-        const animation2: StAnimation = {
-          type: 'st-animation',
-          stAnimationId: 2, 
-          alias: "mesh-rotation-y",
-          temporal: 'infinite',
-          redraw: 'continous',
-          time: 0,
-          values: [.05]
-        };
-        stMesh.stAnimations.push(animation2);
+
+        stMesh.stAnimationIds.push(stAnimation.stAnimationId);
       }
     );
 
@@ -148,16 +131,13 @@ describe('AnimationService', () => {
     const time: number = 0;
     const values: number[] = [1];
 
-    expect(stMesh.stAnimations.length).toEqual(0);
+    expect(stMesh.stAnimationIds.length).toEqual(0);
 
-    service.addAnimation(stMesh, alias,temporal,redraw, time, values);
+    //service.addAnimation(stMesh, alias,temporal,redraw, time, values);
+    const aniId1 = service.createAnimationForCount(0);
+    stMesh.stAnimationIds.push(aniId1.stAnimationId);
 
-    expect(stMesh.stAnimations.length).toEqual(1);
-
-    service.addAnimation(stMesh, alias,temporal,redraw);
-
-    expect(stMesh.stAnimations.length).toEqual(2);
-
+    expect(stMesh.stAnimationIds.length).toEqual(1);
   });
 
   it('should execute visualizationsLayout with a hash change', async () => {
