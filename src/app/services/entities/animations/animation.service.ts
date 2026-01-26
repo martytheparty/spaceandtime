@@ -7,16 +7,12 @@ import * as THREE from 'three';
 
 import { 
           AnimatableObjects,
-          RedrawTypes,
           StAnimation,
           StMesh,
           StRenderer,
           StScene,
-          StVisualization,
-          SupportedStTypes,
-          TemporalTypes,
-          ThreePathAliasType
-        } from '../../../interfaces/st';
+          StVisualization
+} from '../../../interfaces/st';
 
 import { RendererService } from '../three/renderer/renderer.service';
 import { SceneService } from '../three/scene/scene.service';
@@ -28,8 +24,7 @@ import { StMeshService } from '../st/mesh/st-mesh.service';
 import { VizComponentService } from '../../angular/viz-component.service';
 import { VizComponent } from '../../../components/viz/viz.component';
 import { MeshService } from '../three/mesh/mesh.service';
-import { StRendererService } from '../st/renderer/st-renderer.service';
-import { StAnimationDictionary } from '../../../interfaces/base/dictionary/base-dicts';
+import { StAnimationService } from '../st/animation/st-animation.service';
 
 
 
@@ -37,9 +32,6 @@ import { StAnimationDictionary } from '../../../interfaces/base/dictionary/base-
   providedIn: 'root'
 })
 export class AnimationService {
-
-  private stAnimationDict: StAnimationDictionary = {};
-
   // all rules are broken in this service because it interacts directly with the 
   // st stuff and the three stuff.
 
@@ -54,6 +46,7 @@ export class AnimationService {
   cameraService: CameraService = inject(CameraService);
   stMeshService: StMeshService = inject(StMeshService);
   threeMeshService: MeshService = inject(MeshService);
+  stAnimationService: StAnimationService = inject(StAnimationService);
 
   recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   visualizationService: VisualizationService = inject(VisualizationService);
@@ -95,13 +88,10 @@ export class AnimationService {
         stMeshIds.forEach( (
           stMeshId: number
         ) => {
-          const stMesh: StMesh = this.stMeshService.getMeshById(stMeshId);
           const threeMesh: THREE.Mesh = this.threeMeshService.getMeshById(stMeshId);
-          const animationIds = stMesh.stAnimationIds;
+          const animationIds = this.stMeshService.getStAnimationIdsForStMeshId(stMeshId);
 
-          let stAnimations: StAnimation[] = animationIds.map( (animationId) => {
-            return this.stAnimationDict[animationId];
-          } );
+          let stAnimations: StAnimation[] = this.stAnimationService.getStAnimationsForStIds(animationIds);
 
           stAnimations.forEach( (animation: StAnimation) => {
             if (threeMesh) {
@@ -151,42 +141,6 @@ export class AnimationService {
       ele.style.top = stVisualization.stTop.toString() + 'px';
     }
     return wasSet;
-  }
-
-  createAnimationForCount(count: number): StAnimation
-  {
-    const stAnimationId = this.recyclableSequenceService.generateStId();
-    const aliases: Record<number, ThreePathAliasType> = { 0: 'mesh-rotation-x', 1: 'mesh-rotation-y', 2: 'mesh-rotation-z' };
-    const aliasMod = count % 3;
-    const alias: ThreePathAliasType = aliases[aliasMod];
-
-    const temporalTypes: Record<number, TemporalTypes> = { 0: 'limits', 1: 'infinite' };
-    const temporalMod = count % 2;
-    // we don't use this yet
-    const temporal: TemporalTypes = 'infinite';
-
-    const RedrawTypes: Record<number, RedrawTypes> = { 0: 'continous', 1: 'discrete' };
-    const redrawMod = count % 2;
-    // we don't use this yet
-    const redraw: RedrawTypes = 'continous';
-    const time = 0;
-    const values = [.05];
-    
-    const animation: StAnimation = {
-      type: 'st-animation',
-      stAnimationId, 
-      alias,
-      temporal,
-      redraw,
-      time,
-      values
-    };
-
-    this.stAnimationDict[stAnimationId] = animation;
-    this.recyclableSequenceService.associateStObjectToId(stAnimationId, animation);
-
-    return animation;
-
   }
 
   updateVisualizationLayout(vizCount: number): number
