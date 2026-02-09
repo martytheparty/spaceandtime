@@ -19,7 +19,7 @@ describe('MeshService', () => {
   it('should be a to process array of materials', () => {
     const id = 1;
     service.createMesh(id);
-    const mesh: THREE.Mesh = service.getMeshById(id);
+    const mesh: THREE.Mesh = service.getMeshByStMeshId(id);
     const materials: THREE.MeshNormalMaterial[] = [];
     const material: THREE.MeshNormalMaterial = mesh.material as THREE.MeshNormalMaterial;
     materials.push(material);
@@ -31,7 +31,7 @@ describe('MeshService', () => {
   it('should dispose of a material that is not an array', () => {
     const meshId = 1;
     service.createMesh(meshId);
-    const mesh: THREE.Mesh = service.getMeshById(meshId);
+    const mesh: THREE.Mesh = service.getMeshByStMeshId(meshId);
 
     const material = new THREE.MeshNormalMaterial();
     const rId = service.updateMeshMaterial(1, material);
@@ -43,7 +43,7 @@ describe('MeshService', () => {
     const meshId = 1;
     service.createMesh(meshId);
 
-    const mesh = service.getMeshById(meshId);
+    const mesh = service.getMeshByStMeshId(meshId);
     const boxGeometry: THREE.BoxGeometry = new THREE.BoxGeometry();
 
     service.updateMeshGeometry(meshId, boxGeometry);

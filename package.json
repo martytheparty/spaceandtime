@@ -56,7 +56,10 @@
     "sViewPortResize": "ng g s services/ui/wViewPortResize",
     "clicore21": "ng update @angular/core@21 @angular/cli@21",
     "mat21": "ng update @angular/material@21",
-    "sDebounce": "ng g s services/utilities/timing/debounce"
+    "sDebounce": "ng g s services/utilities/timing/debounce",
+    "sstAnimation": "ng g s services/entities/st/animation/stAnimation",
+    "sAnimation": "ng g s services/entities/three/animation/threeAnimation",
+    "classVizPosition": "ng g class services/utilities/positioning/vizComponentLayout.class"
   },
   "private": true,
   "dependencies": {

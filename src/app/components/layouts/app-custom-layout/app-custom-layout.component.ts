@@ -3,12 +3,13 @@ import { Component, effect, inject, QueryList, ViewChildren } from '@angular/cor
 import { StRenderer } from '../../../interfaces/st';
 
 import { UiService } from '../../../services/ui/ui.service';
-import { AnimationService } from '../../../services/entities/animations/animation.service';
 import { VisualizationService } from '../../../services/entities/visualization/visualization.service';
 
 import { VizComponent } from '../../viz/viz.component';
 import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
 import { LayoutType } from '../../../interfaces/layout/layout-types';
+import { VizComponentService } from '../../../services/angular/viz-component.service';
+import { VizComponentLayoutClass } from '../../../services/utilities/positioning/viz-component-layout.class';
 
 @Component({
   selector: 'app-custom-layout',
@@ -20,9 +21,11 @@ export class AppCustomLayoutComponent {
     @ViewChildren('visualizationItem') visualizationItems!: QueryList<VizComponent>;
 
     uiService: UiService = inject(UiService);
-    animationService: AnimationService = inject(AnimationService);
     visualizationService: VisualizationService = inject(VisualizationService);
     currentRouteService: CurrentRouteService = inject(CurrentRouteService);
+
+    vizComponentService: VizComponentService = inject(VizComponentService);
+    vizComponentLayoutClass: VizComponentLayoutClass = new VizComponentLayoutClass();
 
     stRenderers: StRenderer[] = [];
 
@@ -36,7 +39,11 @@ export class AppCustomLayoutComponent {
         setTimeout( () => {
           const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
 
-          this.animationService.updateVisualizationLayout(vizCount); // not sure if this is necessary
+          this.vizComponentLayoutClass.updateVisualizationLayout(
+            vizCount,
+            this.visualizationService,
+            this.vizComponentService
+          ); // not sure if this is necessary
         });
       });
     }

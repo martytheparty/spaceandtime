@@ -1,5 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import * as THREE from 'three';
+import { SceneService } from '../scene/scene.service';
+import { CameraService } from '../camera/camera.service';
+import { StRenderer } from '../../../../interfaces/st';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +10,9 @@ import * as THREE from 'three';
 export class RendererService {
 
   private renderersDict: any = {};
+
+  threeSceneService: SceneService = inject(SceneService);
+  threeCameraService: CameraService = inject(CameraService);
 
   constructor() { }
 
@@ -26,17 +32,28 @@ export class RendererService {
   }
 
   renderRenderer(
-    id: number,
+    stRendererId: number,
     scene: THREE.Scene,
     camera: THREE.PerspectiveCamera
   ): void
   {
-    const renderer: THREE.WebGLRenderer = this.renderersDict[id];
+    const renderer: THREE.WebGLRenderer = this.renderersDict[stRendererId];
 
     if(renderer) {
       renderer.render(scene, camera);
     }
 
+  }
+
+  renderStRenderer(stRenderer: StRenderer): boolean
+  {
+    // Gets the THREE Scene
+    const scene: THREE.Scene = this.threeSceneService.getSceneById(stRenderer.stSceneId);
+    // Gets the THREE Camera
+    const camera: THREE.PerspectiveCamera = this.threeCameraService.getCameraByStCameraId(stRenderer.stCameraId); 
+    this.renderRenderer(stRenderer.stRendererId, scene, camera);
+
+    return true;
   }
 
   deleteRendererById(stId: number): boolean {

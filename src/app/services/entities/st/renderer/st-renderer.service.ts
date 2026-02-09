@@ -13,10 +13,12 @@ import { RendererService } from '../../three/renderer/renderer.service'
 
 import * as THREE from 'three';
 import { StSceneService } from '../scene/st-scene.service';
-import { AnimationService } from '../../../entities/animations/animation.service';
 import { CameraService } from '../../three/camera/camera.service';
 import { StPublisherService } from '../publish/st-publisher.service';
 import { SceneService } from '../../three/scene/scene.service';
+import { ThreeAnimationClass } from '../../three/animation/three-animation.class';
+import { MeshService } from '../../three/mesh/mesh.service';
+import { StAnimationService } from '../animation/st-animation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,14 +27,17 @@ export class StRendererService {
 
   private stCameraService: StCameraService = inject(StCameraService);
   private stSceneService: StSceneService = inject(StSceneService);
+  private stAnimationService: StAnimationService = inject(StAnimationService);
   private sceneService: SceneService = inject(SceneService);
-  private animationService: AnimationService = inject(AnimationService);
 
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   private stRenderersDict: any = {};
   private rendererService: RendererService = inject(RendererService);
   private threeCameraService: CameraService = inject(CameraService);
   private stPublisherService: StPublisherService = inject(StPublisherService);
+  private threeMeshService: MeshService = inject(MeshService);
+
+  threeAnimationClass: ThreeAnimationClass = new ThreeAnimationClass();
 
   constructor() { }
 
@@ -64,8 +69,16 @@ export class StRendererService {
       stSceneId: stScene.stSceneId,
       deleted: false
     };
-    
-    const rendererFunction: () => void = this.animationService.createAnimationFunctionForId(stRenderer);
+        
+    let rendererFunction: () => void = this.threeAnimationClass
+    .createAnimationFunctionForStrenderer(
+      stRenderer, 
+      this.stSceneService,
+      this.threeMeshService,
+      this.stAnimationService,
+      this.rendererService,
+    );
+
     this.rendererService.setAnimationFunctionForStId(stRendererId, rendererFunction);
 
     this.stRenderersDict[stRendererId] = stRenderer;

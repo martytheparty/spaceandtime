@@ -63,11 +63,17 @@ export class StMeshService {
     return stMeshId;
   }
 
-  getMeshById(id: number): StMesh
+  getStMeshById(id: number): StMesh
   {
     const mesh: StMesh = this.stMeshDict[id];
 
     return mesh;
   }
+
+  getStAnimationIdsForStMeshId(stMeshId: number): number[]
+  {
+    const stMesh: StMesh = this.getStMeshById(stMeshId);
+    return stMesh.stAnimationIds;
+  } 
 
 }

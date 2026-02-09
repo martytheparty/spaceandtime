@@ -14,11 +14,11 @@ import { UiService } from '../../services/ui/ui.service';
 import { AppModelService } from '../../services/appmodel/appmodel.service';
 import { ReflowType } from '../../interfaces/layout/reflow-types';
 import { CommonModule } from '@angular/common';
-import { AnimationService } from '../../services/entities/animations/animation.service';
 import { StAnimation, StMesh, StRenderer, StScene } from '../../interfaces/st';
 import { StRendererService } from '../../services/entities/st/renderer/st-renderer.service';
 import { StSceneService } from '../../services/entities/st/scene/st-scene.service';
 import { StMeshService } from '../../services/entities/st/mesh/st-mesh.service';
+import { StAnimationService } from '../../services/entities/st/animation/st-animation.service';
 
 
 @Component({
@@ -40,7 +40,7 @@ export class AppMenuComponent
   stMeshService : StMeshService = inject(StMeshService);
   appModelService: AppModelService = inject(AppModelService);
   injector: Injector = inject(Injector);
-  animationService: AnimationService = inject(AnimationService);
+  stAnimationService: StAnimationService = inject(StAnimationService);
 
   isOpen = false;
   reflow: ReflowType = this.appModelService.getReflow();
@@ -88,7 +88,7 @@ export class AppMenuComponent
     // add default animation to the renderer
 
     // step 1 create an st animation
-    const animation: StAnimation = this.animationService.createAnimationForCount(this.addCount++);
+    const animation: StAnimation = this.stAnimationService.createStAnimation(this.addCount++);
 
     // const animation = this.a
     // step 2 get the Mesh
@@ -100,7 +100,7 @@ export class AppMenuComponent
     // assumes that there is only one mesh that should be automatically animated
 
     const stMeshId = stScene.stMeshIds[0];
-    const stMesh: StMesh = this.stMeshService.getMeshById(stMeshId);
+    const stMesh: StMesh = this.stMeshService.getStMeshById(stMeshId);
 
     // step 3 add the animation to the Mesh
 
