@@ -4,9 +4,11 @@ import {
   StAnimation,
   TemporalTypes,
   ThreePathAliasType,
-  RedrawTypes
+  RedrawTypes,
+  StMesh
 } from '../../../../interfaces/st';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
+import { StMeshService } from '../mesh/st-mesh.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,7 @@ export class StAnimationService {
 
   private stAnimationDict: StAnimationDictionary = {};
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
+  private stMeshService: StMeshService = inject(StMeshService);
   
   getAnimationFromDictionary(stAnimationId: number): StAnimation | undefined
   {
@@ -60,13 +63,23 @@ export class StAnimationService {
 
       return stAnimation;
   }
+  
+  getStAnimationsForStMeshId(meshId: number): StAnimation[] {
+    const stMesh: StMesh = this.stMeshService.getStMeshById(meshId);
+    const stAnimationIds: number[] = stMesh.stAnimationIds;
 
-  getStAnimationsForStIds(stAnimationIds: number[]): StAnimation[] {
-    let stAnimations: StAnimation[] = stAnimationIds.map( (animationId) => {
-      const stAnimation: StAnimation = this.getAnimationFromDictionary(animationId) as unknown as StAnimation;
-      return stAnimation;
-    } );
+    const stAnimations: StAnimation[] = [];
 
+    stAnimationIds.forEach(
+      ( stAnimationId: number) => {
+        const stAnimation: StAnimation | undefined = this.getAnimationFromDictionary(stAnimationId);
+        if (stAnimation) {
+          stAnimations.push( stAnimation );
+        }
+      } 
+    );
+
+  
     return stAnimations;
   }
 }

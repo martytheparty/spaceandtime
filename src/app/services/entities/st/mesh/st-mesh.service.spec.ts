@@ -19,8 +19,16 @@ describe('StMeshService', () => {
 
   it('should create a base mesh', () => {
     const meshId = service.createBaseMesh();
-    const stMesh: StMesh = service.getMeshById(meshId);
+    const stMesh: StMesh = service.getStMeshById(meshId);
 
     expect(stMesh.stMeshId).toEqual(meshId);
+  })
+
+  it('should return a list of animation ids for a mesh', () => {
+    const meshId = service.createBaseMesh();
+    const stMesh: StMesh = service.getStMeshById(meshId);    
+    const animationIds = service.getStAnimationIdsForStMeshId(meshId);
+
+    expect(stMesh.stAnimationIds).toEqual(animationIds);
   })
 });

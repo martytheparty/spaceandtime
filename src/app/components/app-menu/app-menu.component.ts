@@ -14,7 +14,6 @@ import { UiService } from '../../services/ui/ui.service';
 import { AppModelService } from '../../services/appmodel/appmodel.service';
 import { ReflowType } from '../../interfaces/layout/reflow-types';
 import { CommonModule } from '@angular/common';
-import { AnimationService } from '../../services/entities/animations/animation.service';
 import { StAnimation, StMesh, StRenderer, StScene } from '../../interfaces/st';
 import { StRendererService } from '../../services/entities/st/renderer/st-renderer.service';
 import { StSceneService } from '../../services/entities/st/scene/st-scene.service';

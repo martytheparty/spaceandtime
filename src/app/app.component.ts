@@ -7,8 +7,6 @@ import { CommonModule } from '@angular/common';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
 
-// generic libs
-import { AnimationService } from './services/entities/animations/animation.service';
 
 // utility libs
 import { PlatformService } from './services/utilities/positioning/platform.service';
@@ -20,6 +18,9 @@ import { AppMenuComponent } from './components/app-menu/app-menu.component';
 import { AppTabularLayoutComponent } from './components/layouts/app-tabular-layout/app-tabular-layout.component';
 import { AppUpdateLayoutComponent } from './components/layouts/app-update-layout/app-update-layout.component';
 import { CurrentRouteService } from './services/utilities/routing/current-route.service';
+import { VisualizationService } from './services/entities/visualization/visualization.service';
+import { VizComponentService } from './services/angular/viz-component.service';
+import { VizComponentLayoutClass } from './services/utilities/positioning/viz-component-layout.class';
 
 @Component({
   selector: 'app-root',
@@ -36,9 +37,13 @@ import { CurrentRouteService } from './services/utilities/routing/current-route.
 })
 export class AppComponent
  {
-  animationService: AnimationService = inject(AnimationService);
+  // animationService: AnimationService = inject(AnimationService);
   platformService: PlatformService = inject(PlatformService);
-  currentRouteService: CurrentRouteService = inject(CurrentRouteService)
+  currentRouteService: CurrentRouteService = inject(CurrentRouteService);
+
+    visualizationService: VisualizationService = inject(VisualizationService);
+    vizComponentService: VizComponentService = inject(VizComponentService);
+    vizComponentLayoutClass: VizComponentLayoutClass = new VizComponentLayoutClass();
 
   constructor() {
     this.setupAnimationDrawingLoop();
@@ -52,7 +57,7 @@ export class AppComponent
   }
 
   requestAnimationFrameHandler = () => {
-      this.animationService.visualizationsLayout();
+      this.vizComponentLayoutClass.visualizationsLayout(this.visualizationService, this.vizComponentService);
       this.layoutLoop();
   }
 

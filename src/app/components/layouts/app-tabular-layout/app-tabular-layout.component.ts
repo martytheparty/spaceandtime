@@ -14,11 +14,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { VizComponent } from '../../viz/viz.component';
 
 import { UiService } from '../../../services/ui/ui.service';
-import { AnimationService } from '../../../services/entities/animations/animation.service';
 import { VisualizationService } from '../../../services/entities/visualization/visualization.service';
 import { StRenderer } from '../../../interfaces/st';
 import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
 import { LayoutType } from '../../../interfaces/layout/layout-types';
+import { VizComponentLayoutClass } from '../../../services/utilities/positioning/viz-component-layout.class';
+import { VizComponentService } from '../../../services/angular/viz-component.service';
 
 @Component({
   selector: 'app-tabular-layout',
@@ -34,10 +35,12 @@ export class AppTabularLayoutComponent {
     @ViewChildren('visualizationItem') visualizationItems!: QueryList<VizComponent>;
 
     uiService: UiService = inject(UiService);
-    animationService: AnimationService = inject(AnimationService);
     visualizationService: VisualizationService = inject(VisualizationService);
     router: Router = inject(Router);
     currentRouteService: CurrentRouteService = inject(CurrentRouteService);
+
+    vizComponentService: VizComponentService = inject(VizComponentService);
+    vizComponentLayoutClass: VizComponentLayoutClass = new VizComponentLayoutClass();
 
     stRenderers: StRenderer[] = [];
 
@@ -52,7 +55,11 @@ export class AppTabularLayoutComponent {
         setTimeout( () => {
           const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
 
-          this.animationService.updateVisualizationLayout(vizCount);
+          this.vizComponentLayoutClass.updateVisualizationLayout(
+            vizCount,
+            this.visualizationService,
+            this.vizComponentService
+          );
         });
       });
     }

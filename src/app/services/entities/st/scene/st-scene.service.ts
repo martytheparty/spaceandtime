@@ -34,7 +34,7 @@ export class StSceneService {
 
     const baseMeshId: number = this.stMeshService.createBaseMesh();
     const baseMesh: StMesh = this.stMeshService.getStMeshById(baseMeshId);
-    const threeMesh: THREE.Mesh = this.threeMeshService.getMeshById(baseMeshId);
+    const threeMesh: THREE.Mesh = this.threeMeshService.getMeshByStMeshId(baseMeshId);
     stScene.stMeshIds.push(baseMeshId);
 
     this.sceneService.createScene(sceneId);

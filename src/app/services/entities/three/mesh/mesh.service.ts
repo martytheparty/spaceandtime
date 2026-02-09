@@ -25,7 +25,7 @@ export class MeshService {
     dispose = true // there may be instances where disposing is not desired
   ): number
   {
-    const mesh: THREE.Mesh = this.getMeshById(id);
+    const mesh: THREE.Mesh = this.getMeshByStMeshId(id);
 
     if (mesh.material && dispose) {
       if (Array.isArray(mesh.material)) {
@@ -51,7 +51,7 @@ export class MeshService {
     dispose = true // there may be instances where disposing is not desired
   ): number
   {
-    const mesh: THREE.Mesh = this.getMeshById(id);
+    const mesh: THREE.Mesh = this.getMeshByStMeshId(id);
 
     if (mesh.geometry && dispose) {
       mesh.geometry.dispose(); // call this if the material is not being used in the app
@@ -62,9 +62,9 @@ export class MeshService {
     return id;
   }
 
-  getMeshById(id: number): THREE.Mesh
+  getMeshByStMeshId(stMeshId: number): THREE.Mesh
   {
-    const mesh: THREE.Mesh = this.meshDict[id];
+    const mesh: THREE.Mesh = this.meshDict[stMeshId];
     return mesh;
   }
 }
