@@ -14,6 +14,7 @@ import { VisualizationService } from '../../services/entities/visualization/visu
 import { RecyclableSequenceService } from '../../services/utilities/general/recyclable-sequence-service.service';
 import { VizComponentService } from '../../services/angular/viz-component.service';
 import { DebounceService } from '../../services/utilities/timing/debounce.service';
+import { StVizComponent } from '../../interfaces/st';
 
 @Component({
   selector: 'app-viz',
@@ -82,7 +83,12 @@ export class VizComponent implements AfterViewInit, OnDestroy {
           this.stRendererInputId()
         );
 
-        this.recyclableSequenceService.associateStObjectToId(this.stVizComponentId, this);
+        const stVizComponent: StVizComponent = { 
+          type: 'st-viz-component',
+          stVizComponentId: this.stVizComponentId
+        };
+        
+        this.recyclableSequenceService.associateStObjectToId(this.stVizComponentId, stVizComponent);
     }
     
     return isInitialized;

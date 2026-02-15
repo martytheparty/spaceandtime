@@ -1,5 +1,5 @@
 import { inject, Injectable, QueryList } from '@angular/core';
-import { StVisualization } from '../../../interfaces/st/visualization/st-visualization';
+import { StVisualization } from '../../../interfaces/st/layout/visualization/st-visualization';
 import { VizComponent } from '../../../components/viz/viz.component';
 import { RecyclableSequenceService } from '../../utilities/general/recyclable-sequence-service.service';
 import { HashService } from '../../utilities/general/hash.service';
