@@ -9,7 +9,8 @@ import {
   StMesh,
   StRenderer,
   StScene,
-  StVisualization
+  StVisualization,
+  StVizComponent
 } from "../../st";
 
 // Holds numbers
@@ -64,7 +65,7 @@ export interface SequenceDictionary {
 }
 
 export type SeqenceStTypes = null 
-            | VizComponent 
+            | StVizComponent 
             | StVisualization 
             | StCamera
             | StAnimation
