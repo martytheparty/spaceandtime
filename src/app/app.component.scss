@@ -29,6 +29,10 @@
         display: none;
     }
 
+    app-data-layout {
+        display: none;
+    }
+
     &.tabular {
 
         app-custom-layout {
@@ -40,6 +44,10 @@
         }
 
         app-update-layout {
+            display: none;
+        }
+
+        app-data-layout {
             display: none;
         }
     }
@@ -58,6 +66,28 @@
             display: block;
         }
 
+        app-data-layout {
+            display: none;
+        }
+
+    }
+
+    &.data {
+        app-custom-layout {
+            display: none;
+        }
+
+        app-tabular-layout {
+            display: none;
+        }
+
+       app-update-layout {
+            display: none;
+        }
+
+       app-data-layout {
+            display: block;
+        }
     }
 
 

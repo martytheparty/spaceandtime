@@ -61,10 +61,10 @@ export interface StAnimationDictionary {
 
 // Holds Visualization Object
 export interface SequenceDictionary {
-  [id: number]: SeqenceStTypes;
+  [id: number]: SequenceStTypes;
 }
 
-export type SeqenceStTypes = null 
+export type SequenceStTypes = null 
             | StVizComponent 
             | StVisualization 
             | StCamera
@@ -75,3 +75,12 @@ export type SeqenceStTypes = null
             | StMaterial
             | StMesh
             | StVisualization;
+
+export type StTypes = 'st-renderer' 
+            | 'st-camera'
+            | 'st-scene'
+            | 'st-mesh'
+            | 'st-geometry'
+            | 'st-material'
+            | 'st-animation'
+;

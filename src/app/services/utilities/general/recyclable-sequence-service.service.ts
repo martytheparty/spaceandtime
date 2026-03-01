@@ -1,13 +1,15 @@
 import { Injectable, inject } from '@angular/core';
-import { SeqenceStTypes, SequenceDictionary } from '../../../interfaces/base/dictionary/base-dicts';
+import { SequenceStTypes, SequenceDictionary } from '../../../interfaces/base/dictionary/base-dicts';
 import { DebounceService } from '../timing/debounce.service';
+import { StPublisherService } from '../../entities/st/publish/st-publisher.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecyclableSequenceService {
 
-  debounceService: DebounceService = inject(DebounceService);
+  private debounceService: DebounceService = inject(DebounceService);
+  private stPublishService: StPublisherService = inject(StPublisherService);
 
   private sequenceDictionary: SequenceDictionary = {};
 
@@ -25,11 +27,11 @@ export class RecyclableSequenceService {
     return nextId;
   }
 
-  associateStObjectToId(stId: number, stType: SeqenceStTypes ): boolean {
+  associateStObjectToId(stId: number, stType: SequenceStTypes ): boolean {
     return this.setTypeForStId(this.sequenceDictionary, stId, stType);
   }
 
-  private setTypeForStId(sequenceDictionary: SequenceDictionary, stId: number, stType: SeqenceStTypes): boolean {
+  private setTypeForStId(sequenceDictionary: SequenceDictionary, stId: number, stType: SequenceStTypes): boolean {
     let updated = false;
 
     if (sequenceDictionary.hasOwnProperty(stId)) {
@@ -55,6 +57,12 @@ export class RecyclableSequenceService {
       debounceTime
     );
 
+    this.debounceService.debounce(
+      "sequence-publish",
+      this.publishSequenceDictionary.bind(this),
+      debounceTime
+    );
+
     return registered;
   }
 
@@ -65,5 +73,12 @@ export class RecyclableSequenceService {
     console.log(this.sequenceDictionary);
 
     return printed;
+  }
+
+  publishSequenceDictionary(): boolean
+  {
+    let published = false;
+    this.stPublishService.setVisualizationIds(this.sequenceDictionary);
+    return published;
   }
 }

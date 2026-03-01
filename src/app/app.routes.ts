@@ -23,6 +23,11 @@ const tabularRoute: Route = {
     component: DummyComponent
 };
 
+const dataRoute: Route = {
+    path: "data/:type",
+    component: DummyComponent
+};
+
 const defaultRoute: Route = {
     path: "",
     component: DummyComponent
@@ -41,5 +46,6 @@ export const routes: Routes = [];
 routes.push(updateRoute);
 routes.push(customRoute);
 routes.push(tabularRoute);
+routes.push(dataRoute);
 routes.push(defaultRoute);
 routes.push(wildcardRoute);

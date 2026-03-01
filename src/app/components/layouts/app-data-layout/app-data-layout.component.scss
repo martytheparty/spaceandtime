@@ -1,0 +1,43 @@
+.wrapper {
+    position: relative;
+    top: 100px;
+    min-width: 0;
+
+    table {
+        width: 100%;
+
+        tr.st-row {
+            cursor: pointer;
+        }
+
+        tr.st-row:hover {
+            color: black;
+            background-color: antiquewhite;
+        }
+
+        tr.expanded-detail-row {
+            height: 0;
+        }
+
+        tr.expanded-detail-row.expanded {
+            height: auto;
+
+            .detail-content {
+                padding: 10px;
+            }
+        }
+    }
+
+    .mat-mdc-table {
+        width: 100%;
+    }
+
+    .mat-mdc-form-field {
+        font-size: 14px;
+        width: 100%;
+    }
+
+
+}
+
+

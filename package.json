@@ -60,7 +60,8 @@
     "sstAnimation": "ng g s services/entities/st/animation/stAnimation",
     "sAnimation": "ng g s services/entities/three/animation/threeAnimation",
     "classVizPosition": "ng g class services/utilities/positioning/vizComponentLayout.class",
-    "iStVizComponent": "ng g i interfaces/st/layout/components/st-viz-components"
+    "iStVizComponent": "ng g i interfaces/st/layout/components/st-viz-components",
+    "cappDataLayout": "ng g c components/layouts/appDataLayout"
   },
   "private": true,
   "dependencies": {
