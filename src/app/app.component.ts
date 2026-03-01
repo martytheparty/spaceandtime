@@ -21,6 +21,7 @@ import { CurrentRouteService } from './services/utilities/routing/current-route.
 import { VisualizationService } from './services/entities/visualization/visualization.service';
 import { VizComponentService } from './services/angular/viz-component.service';
 import { VizComponentLayoutClass } from './services/utilities/positioning/viz-component-layout.class';
+import { AppDataLayoutComponent } from './components/layouts/app-data-layout/app-data-layout.component';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ import { VizComponentLayoutClass } from './services/utilities/positioning/viz-co
     AppMenuComponent,
     AppTabularLayoutComponent,
     AppUpdateLayoutComponent,
+    AppDataLayoutComponent,
     CommonModule
   ],
   templateUrl: './app.component.html',
