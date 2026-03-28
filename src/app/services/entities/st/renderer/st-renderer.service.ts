@@ -183,13 +183,24 @@ export class StRendererService {
     return Object.values(this.stRenderersDict);
   }
 
+  getRenderersBySceneId(stSceneId: number): number[]
+  {
+    const stRenderers: StRenderer[] = this. getRenderers().filter( (stRenderer: StRenderer) => {
+      return stRenderer.stSceneId === stSceneId;
+    } );
+
+    return stRenderers.map( (stRenderer: StRenderer) => stRenderer.stRendererId );
+  }
+
   deleteRenderer(stRendererId: number): boolean
   {
     let deleted = false;
     const stRenderer = this.getRendererById(stRendererId);
 
     if (stRenderer) {
+      this.stSceneService.deleteSceneByIdForStRenderer(stRenderer.stSceneId, stRendererId);
       this.stCameraService.deleteCameraById(stRenderer.stCameraId);
+      // delete scene -> delete meshes -> delete animations
 
       if (this.stRenderersDict[stRendererId]) {
         this.rendererService.deleteRendererById(stRendererId);

@@ -76,11 +76,14 @@ export type SequenceStTypes = null
             | StMesh
             | StVisualization;
 
-export type StTypes = 'st-renderer' 
-            | 'st-camera'
-            | 'st-scene'
-            | 'st-mesh'
-            | 'st-geometry'
-            | 'st-material'
-            | 'st-animation'
-;
+export const ST_TYPES = [
+  'st-renderer',
+  'st-camera',
+  'st-scene',
+  'st-mesh',
+  'st-geometry',
+  'st-material',
+  'st-animation'
+] as const;
+
+export type StTypes = typeof ST_TYPES[number];

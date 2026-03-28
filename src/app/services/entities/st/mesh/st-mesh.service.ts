@@ -74,6 +74,12 @@ export class StMeshService {
   {
     const stMesh: StMesh = this.getStMeshById(stMeshId);
     return stMesh.stAnimationIds;
-  } 
+  }
+
+  deleteMeshForSceneId(stMeshId: number, stSceneId: number): boolean
+  {
+    // who needs to be checked in with before a delete?
+    return true;
+  }
 
 }

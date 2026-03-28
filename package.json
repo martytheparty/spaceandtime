@@ -61,7 +61,8 @@
     "sAnimation": "ng g s services/entities/three/animation/threeAnimation",
     "classVizPosition": "ng g class services/utilities/positioning/vizComponentLayout.class",
     "iStVizComponent": "ng g i interfaces/st/layout/components/st-viz-components",
-    "cappDataLayout": "ng g c components/layouts/appDataLayout"
+    "cappDataLayout": "ng g c components/layouts/appDataLayout",
+    "classStSceneDeferredDeps": "ng g class services/entities/st/scene/stSceneDeferredDeps.class"
   },
   "private": true,
   "dependencies": {

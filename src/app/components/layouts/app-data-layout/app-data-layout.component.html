@@ -1,8 +1,25 @@
-<div class="wrapper">
-    <mat-form-field>
-  <mat-label>Filter</mat-label>
-  <input #filter matInput (keyup)="applyFilter(filter.value)" placeholder="Ex. ium" #input>
-</mat-form-field>
+<div class="app-data-layout-wrapper">
+    <div class="filters">
+        <mat-form-field class="filter-item">
+            <mat-label>Filter</mat-label>
+            <input #filter matInput (keyup)="applyUserFilter(filter.value)" placeholder="Ex. ium" #input>
+        </mat-form-field>
+        <mat-form-field class="field-item">
+        <mat-label>Choose Filter Criteria</mat-label>
+        <mat-select
+            [value]="routeFilter"
+            (valueChange)="menuChanged($event)"
+        >
+            @for(entitySelectItem of entitiesSelectData; track $index; let i = $index) {
+                @if(entitySelectItem === "entities") {
+                    <mat-option [value]="entitySelectItem">all st entities</mat-option>
+                } @else {
+                    <mat-option [value]="entitySelectItem">{{entitySelectItem}}</mat-option>
+                }
+            }
+        </mat-select>
+        </mat-form-field>
+    </div>
     <table mat-table
         [dataSource]="dataSource"
         multiTemplateDataRows
