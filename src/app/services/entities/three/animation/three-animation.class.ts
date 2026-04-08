@@ -36,22 +36,30 @@ export class ThreeAnimationClass {
 
     // itterates over each mesh ID
     stMeshIds.forEach( (
-      stMeshId: number
-    ) => {
-      updated = true;
+       stMeshId: number
+     ) => {
       // Gets the mesh from THREE
       const threeMesh: THREE.Mesh = threeMeshService.getMeshByStMeshId(stMeshId);          
-      let stAnimations: StAnimation[] = stAnimationService.getStAnimationsForStMeshId(stMeshId);
-      // Itterates over each animation
+      const stAnimations: StAnimation[] = stAnimationService.getStAnimationsForStMeshId(stMeshId);
+      updated = this.updateAnimationsForThreeMesh(threeMesh, stAnimations);
+     } 
+     );
+
+    return updated;
+  }
+
+  updateAnimationsForThreeMesh(
+    threeMesh: THREE.Mesh,
+    stAnimations: StAnimation[]
+  ): boolean {
+    let updated = false;
       stAnimations.forEach( (animation: StAnimation) => {
         if (threeMesh) {
           // uses THREE to update THREE with animation
-          this.updatePropertyForAnimation(threeMesh, animation)
+          this.updatePropertyForAnimation(threeMesh, animation);
+          updated = true;
         }
       } );
-    } 
-    );
-
     return updated;
   }
 

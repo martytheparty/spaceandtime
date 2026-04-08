@@ -65,20 +65,21 @@ export class StAnimationService {
   }
   
   getStAnimationsForStMeshId(meshId: number): StAnimation[] {
-    const stMesh: StMesh = this.stMeshService.getStMeshById(meshId);
-    const stAnimationIds: number[] = stMesh.stAnimationIds;
-
     const stAnimations: StAnimation[] = [];
+    const stMesh: StMesh = this.stMeshService.getStMeshById(meshId);
 
-    stAnimationIds.forEach(
-      ( stAnimationId: number) => {
-        const stAnimation: StAnimation | undefined = this.getAnimationFromDictionary(stAnimationId);
-        if (stAnimation) {
-          stAnimations.push( stAnimation );
-        }
-      } 
-    );
+    if (stMesh) {
+      const stAnimationIds: number[] = stMesh.stAnimationIds;
 
+      stAnimationIds.forEach(
+        ( stAnimationId: number) => {
+          const stAnimation: StAnimation | undefined = this.getAnimationFromDictionary(stAnimationId);
+          if (stAnimation) {
+            stAnimations.push( stAnimation );
+          }
+        } 
+      );
+    }
   
     return stAnimations;
   }

@@ -174,10 +174,42 @@ describe('delete group of specs', () => {
       // check to see that the camera is not there
 
       cy.get(`[data-cy-entitity-table-st-id="${expectedId}"]`)
-      .should('not.exist')
-      
+      .should('not.exist');
+  })
 
+  it('deletes the scene ST Entitiy when the visualization is deleted', () => {
+      cy.visit('/data/entities');
+      cy.get('app-menu').should('exist').click();
 
+      cy.get('[data-cy="add-button"]')
+      .should('be.visible')
+      .click();
+
+      cy.get('[data-cy="toggle-layout-button"]').click();
+
+      cy.go('back');
+
+      // check to see that the scene is there
+      // expected scene id = 3
+
+      const expectedStSceneId = 3;
+
+      cy.get(`[data-cy-entitity-table-st-id="${expectedStSceneId}"]`)
+      .should('exist')
+      .and('be.visible');
+
+      cy.get('[data-cy="toggle-layout-button"]').click();
+
+      cy.get('[data-cy="delete-viz-button"]')
+      .should('be.visible')
+      .click();
+
+      cy.go('back');
+
+      // check to see that the scene is not there
+
+      cy.get(`[data-cy-entitity-table-st-id="${expectedStSceneId}"]`)
+      .should('not.exist');
   })
 
 

@@ -21,10 +21,6 @@ export class StSceneDeferredDepsClass {
     {
         let stRendererService: StRendererService = this.injector.get(StRendererService);
 
-        if (stRendererService === null) { // If the service has not been created then create it.
-            stRendererService = inject(StRendererService);
-        }
-
         return stRendererService;
 
     }

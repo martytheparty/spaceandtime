@@ -4,6 +4,7 @@ import { CurrentRouteService } from './current-route.service';
 
 import { Router, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
+import { RoutingLayoutDetailType, RoutingLayoutType } from '../../../interfaces/st/routing/layout';
 
 
 describe('CurrentRouteService', () => {
@@ -16,7 +17,8 @@ describe('CurrentRouteService', () => {
     events$ = new Subject<unknown>();
     mockRouter = {
       events: events$.asObservable(),
-      url: '/custom'
+      url: '/custom',
+      navigate: () => {}
     };
 
     TestBed.configureTestingModule({
@@ -50,5 +52,13 @@ describe('CurrentRouteService', () => {
     events$.next(new NavigationEnd(3, '/', '/'));
     expect(service.currentRoute()).toBe('');
   });
+
+  it('should set routing details', () => {
+    const routingType: RoutingLayoutType = 'data';
+    const routingLayoutDetailType: RoutingLayoutDetailType = "entities";
+    const setRoutingResult = service.setRoutingDetail(routingType, routingLayoutDetailType);
+
+    expect(setRoutingResult).toBeTrue();
+  })
 
 });

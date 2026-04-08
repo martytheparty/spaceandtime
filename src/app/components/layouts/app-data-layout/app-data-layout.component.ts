@@ -62,11 +62,9 @@ export class AppDataLayoutComponent {
         const route = this.currentRouteService.currentRoute();
         const routeLayoutDetailType: RoutingLayoutDetailType = this.currentRouteService.currentRouteType();
 
-        if (routeLayoutDetailType !== "") {
-          console.log("SET THE MENU TO ", routeLayoutDetailType);
-          this.routeFilter = routeLayoutDetailType;
-        }
 
+        this.setTableFilterBasedOnRoute(routeLayoutDetailType);
+        
         this.sequenceDictionary = this.stPublisherService.visualizationIds();
         this.stIds = Object.keys(this.sequenceDictionary);
 
@@ -81,6 +79,18 @@ export class AppDataLayoutComponent {
         this.dataSource.data = this.routeFilteredRecords; // filteredRecords
 
       });
+  }
+
+  setTableFilterBasedOnRoute(routeLayoutDetailType: RoutingLayoutDetailType): boolean
+  {
+    let wasSet = false;
+
+    if (routeLayoutDetailType !== "") {
+      this.routeFilter = routeLayoutDetailType;
+      wasSet = true;
+    }  
+
+    return wasSet;
   }
 
   applyFilters(routeLayoutDetailType: RoutingLayoutDetailType, records: StEntityTableRecord[]): StEntityTableRecord[] {
@@ -119,12 +129,17 @@ export class AppDataLayoutComponent {
   }
 
   applyRouterStTypeFilter(routerValue: RoutingLayoutDetailType, records: StEntityTableRecord[]): StEntityTableRecord[] {
-    const filteredRecords: StEntityTableRecord[] = records.filter( 
-      (stEntityRecord: StEntityTableRecord) => {
-        return stEntityRecord.type === routerValue;
-      });
+    const filteredRecords: StEntityTableRecord[] 
+    = records.filter( this.routeValueFilter.bind(this, routerValue));
 
     return filteredRecords;
+  }
+
+  routeValueFilter(routerValue: RoutingLayoutDetailType, stEntityTableRecord: StEntityTableRecord): boolean
+  {
+      
+        return stEntityTableRecord.type === routerValue;
+      
   }
 
   applyUserFilter(filterValue: string): boolean {

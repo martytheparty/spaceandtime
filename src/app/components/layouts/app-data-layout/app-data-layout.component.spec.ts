@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AppDataLayoutComponent, StEntityTableRecord } from './app-data-layout.component';
 import { SequenceDictionary, SequenceStTypes } from '../../../interfaces/base/dictionary/base-dicts';
+import { RoutingLayoutDetailType } from '../../../interfaces/st/routing/layout';
 
 describe('AppDataLayoutComponent', () => {
   let component: AppDataLayoutComponent;
@@ -73,6 +74,41 @@ describe('AppDataLayoutComponent', () => {
 
     expect(records.length).toEqual(1);
 
+  });
+
+  it('sets the table filter based on the route', () => {
+    const routingLayoutDetailType: RoutingLayoutDetailType = 'entities';
+
+    let result = component.setTableFilterBasedOnRoute(routingLayoutDetailType);
+
+    expect(result).toBeTrue();
+  });
+
+  it('applies filters for routingLayoutDetailType', () => {
+    const routingLayoutDetailType: RoutingLayoutDetailType = 'entities';
+    const records: StEntityTableRecord[] = [];
+
+    let filteredRecords = component.applyFilters(routingLayoutDetailType, records);
+
+    expect(filteredRecords.length).toBe(0);
+  });
+
+  it('filters based on the routerValue', () => {
+    const routerValue: RoutingLayoutDetailType = "st-scene";
+    const stEntityTableRecord: StEntityTableRecord = {
+      type: "st-scene"
+    } as unknown as StEntityTableRecord;
+    const matchResult =  component.routeValueFilter(routerValue, stEntityTableRecord);
+
+    expect(matchResult).toBeTrue();
+  });
+
+  it('handles menu changes', () => {
+    const routingLayoutDetailType: RoutingLayoutDetailType = "st-animation";
+
+    const menuResult = component.menuChanged(routingLayoutDetailType); 
+
+    expect(menuResult).toBeTrue();
   });
 
 });

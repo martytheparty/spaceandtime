@@ -63,27 +63,6 @@ export class StSceneService {
     return scene;
   }
 
-  getRenderersForSceneId(stSceneId: number): number[] {
-    // return renders for a given scene id
-
-    const stRendererIds: number[] = [];
-    // ask the renderer service for the list of renderers... but we can't because 
-    // this service is injected into the stRendererServie
-
-    return stRendererIds;
-  }
-
-  isSceneIdDeleteableForStRendererId(stSceneId: number, stRendererId: number): boolean {
-    // 2) From our injector get a RUNTIME reference to the renderer service.
-    let isDeleteable = false;
-
-    const stRendererIds: number[] = this.getRenderersForSceneId(stSceneId);
-
-    // check for for other renderer ids
-
-    return isDeleteable;
-  }
-
   deleteSceneByIdForStRenderer(stSceneId: number, stRendererId: number): boolean {
     let deleted = true;
     // Get a runtime version of StRendererService
@@ -95,11 +74,12 @@ export class StSceneService {
                                   .filter( (rendererId: number) => rendererId !== stRendererId );
 
 
-    if (rendererIds.length > 0) { // we found a renderer that is using this stSceneId
-      deleted = false;
-    } else {
+    // at this time you can not have more than one scene per renderer
+    //if (rendererIds.length > 0) { // we found a renderer that is using this stSceneId
+    //  deleted = false;
+    //} else {
       this.deleteSceneById(stSceneId);
-    }
+    //}
 
     return deleted;
   }
