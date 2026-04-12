@@ -11,6 +11,8 @@ import { StMaterialService } from '../material/st-material.service';
 
 import * as THREE from 'three';
 import { MaterialService } from '../../three/material/material.service';
+import { StSceneService } from '../scene/st-scene.service';
+import { StMeshDeferredDepsClass } from './st-mesh-deferred-deps.class';
 
 
 @Injectable({
@@ -19,6 +21,10 @@ import { MaterialService } from '../../three/material/material.service';
 export class StMeshService {
 
   private stMeshDict: any = {};
+
+  // must defer loading
+  //private stSceneService: StSceneService = inject(StSceneService);
+  private stMeshDeferredDepsClass: StMeshDeferredDepsClass = new StMeshDeferredDepsClass(); 
 
   // utilities services
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
@@ -78,8 +84,35 @@ export class StMeshService {
 
   deleteMeshForSceneId(stMeshId: number, stSceneId: number): boolean
   {
-    // who needs to be checked in with before a delete?
-    return true;
+    let shouldDelete = false;
+    // q1. who needs to be checked in with before a delete?
+    // a1. st scene service
+    const stSceneService: StSceneService = this.stMeshDeferredDepsClass.getStSceneService();
+    const allSceneIds = stSceneService.getScenesForMeshId(stMeshId);
+
+    // get a list of scenes using this meshId and if there are other than the passed in scene
+    const otherScenes = allSceneIds.filter( (stSceneIdValue: number) => stSceneIdValue !== stSceneId );
+     
+    // then don't delete.... otherwise attempt to delete the children and delete & recycle both.
+    shouldDelete = !this.hasOtherScenes(otherScenes);
+
+    this.deleteMesh(stMeshId, shouldDelete);
+
+    return !this.hasOtherScenes(otherScenes);
+  }
+
+  hasOtherScenes(sceneIds: number[]): boolean {
+    return sceneIds.length > 0; 
+  }
+
+  deleteMesh(meshId: number, shouldDelete: boolean = true): boolean
+  {
+    if (shouldDelete) {
+      delete this.stMeshDict[meshId];
+      this.recyclableSequenceService.recycleId(meshId);
+    }
+
+    return shouldDelete;
   }
 
 }

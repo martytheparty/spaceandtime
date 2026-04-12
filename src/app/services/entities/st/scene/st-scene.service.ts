@@ -8,6 +8,7 @@ import { SceneService } from '../../three/scene/scene.service';
 import { MeshService } from '../../three/mesh/mesh.service';
 import { StRendererService } from '../renderer/st-renderer.service';
 import { StSceneDeferredDepsClass } from './st-scene-deferred-deps.class';
+import { StSceneDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
 
 
 @Injectable({
@@ -15,7 +16,7 @@ import { StSceneDeferredDepsClass } from './st-scene-deferred-deps.class';
 })
 export class StSceneService {
 
-  private stSceneDict: any = {};
+  private stSceneDict: StSceneDictionary = {};
 
   // Construction Time Dependencies (100% guaranteed that this service WILL exist )
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
@@ -102,5 +103,37 @@ export class StSceneService {
     this.recyclableSequenceService.logSequenceDictionary();
 
     return deleted;
+  }
+
+  getScenesForMeshId(stMeshId: number): number[]
+  {
+    const stScenes: StScene[] = Object.values(this.stSceneDict);
+    const foundScenes: StScene[] = stScenes.filter( this.checkStSceneForStMeshId.bind(this, stMeshId));
+    const foundSceneIds: number[] = foundScenes.map( this.getIdForStScene );
+
+    return foundSceneIds;
+  }
+
+  getIdForStScene(stScene: StScene): number
+  {
+    return stScene.stSceneId;
+  }
+
+  checkStSceneForStMeshId(stMeshId: number, stScene: StScene): boolean
+  {
+    let found = false;
+    const emptyContext = {};
+    const foundIndex = stScene.stMeshIds.findIndex( this.checkForMeshIdMatch.bind(emptyContext, stMeshId));
+
+    if (foundIndex >= 0) {
+      found = true;
+    }
+    // now search in this array of mesh IDs for the passed in one
+    return found;
+  }
+
+  checkForMeshIdMatch(stMeshId: number, stMeshIdForStScene: number): boolean
+  {
+    return stMeshIdForStScene === stMeshId;
   }
 }

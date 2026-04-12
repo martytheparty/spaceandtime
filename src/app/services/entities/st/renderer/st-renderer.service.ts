@@ -207,6 +207,10 @@ export class StRendererService {
         this.stRenderersDict[stRendererId].deleted = true;
         delete this.stRenderersDict[stRendererId];
 
+        this.recyclableSequenceService.recycleId(stRendererId);
+
+        // next recycle the render id
+
         deleted = true;
       }
     }

@@ -59,6 +59,11 @@ export interface StAnimationDictionary {
   [id: number]: StAnimation;
 }
 
+// Holds StScenes
+export interface StSceneDictionary {
+  [id: number]: StScene;
+}
+
 // Holds Visualization Object
 export interface SequenceDictionary {
   [id: number]: SequenceStTypes;
