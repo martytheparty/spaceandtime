@@ -35,10 +35,21 @@ export class StMaterialService {
       return stMaterialId;
     }
   
-    getMaterialById(id: number): StMaterial
+    getMaterialById(
+      stMaterialId: number
+    ): StMaterial
     {
-      const material: StMaterial = this.stMaterialDict[id];
+      const material: StMaterial = this.stMaterialDict[stMaterialId];
   
       return material;
+    }
+
+    deleteStMaterialForStMesh(stMaterialId: number, stMeshId: number): boolean
+    {
+      // 💥🕸️
+      delete this.stMaterialDict[stMaterialId];
+      // 💥🔢
+      this.recyclableSequenceService.recycleId(stMaterialId);
+      return true;
     }
 }

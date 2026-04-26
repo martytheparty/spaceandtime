@@ -2,11 +2,11 @@ import {
     inject,
     Injector
 } from "@angular/core";
-import { StSceneService } from "../scene/st-scene.service";
 
+import { StMeshService } from '../mesh/st-mesh.service';
 
 /**
- * Centralizes the ST MESH deferred dependency resolutions.
+ * Centralizes the ST ANIMATION deferred dependency resolutions.
  *
  * This pattern is intentionally used in scenarios where constructor-based
  * injection is not practical (e.g., circular dependencies or runtime-only
@@ -14,12 +14,13 @@ import { StSceneService } from "../scene/st-scene.service";
  * effect of using standard DI is creating the Service.
  */
 
-export class StMeshDeferredDepsClass {
 
-    private injector: Injector = inject(Injector);
+export class StAnimationDeferredDepsClass {
 
-    getStSceneService(): StSceneService 
-    {
-        return this.injector.get(StSceneService);
-    }
+        private injector: Injector = inject(Injector);
+    
+        getStMeshService(): StMeshService 
+        {
+            return this.injector.get(StMeshService);
+        }
 }

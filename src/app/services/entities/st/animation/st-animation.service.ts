@@ -9,15 +9,22 @@ import {
 } from '../../../../interfaces/st';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
 import { StMeshService } from '../mesh/st-mesh.service';
+import { StAnimationDeferredDepsClass } from './st-animation-deferred-deps.class';
+
+// import { StMeshService } from '../mesh/st-mesh.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StAnimationService {
 
+  // Construction 🏗️ Time ⏰ Dependency 💉
   private stAnimationDict: StAnimationDictionary = {};
+  // Construction 🏗️ Time ⏰ Dependency 💉
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
-  private stMeshService: StMeshService = inject(StMeshService);
+  
+  // Execution Time Deferred ⏰ dependencies 💉.
+  private stAnimationDeferredDepsClass: StAnimationDeferredDepsClass = new StAnimationDeferredDepsClass();  
   
   getAnimationFromDictionary(stAnimationId: number): StAnimation | undefined
   {
@@ -66,7 +73,10 @@ export class StAnimationService {
   
   getStAnimationsForStMeshId(meshId: number): StAnimation[] {
     const stAnimations: StAnimation[] = [];
-    const stMesh: StMesh = this.stMeshService.getStMeshById(meshId);
+    
+    // Execution Time Deferred ⏰ dependencies 💉.
+    const stMeshService: StMeshService = this.stAnimationDeferredDepsClass.getStMeshService();
+    const stMesh: StMesh = stMeshService.getStMeshById(meshId);
 
     if (stMesh) {
       const stAnimationIds: number[] = stMesh.stAnimationIds;
@@ -82,5 +92,22 @@ export class StAnimationService {
     }
   
     return stAnimations;
+  }
+
+  deleteStAnimationForMeshId(
+    stMeshId: number, // 💀 mesh id must come first do to binding in the stMeshService
+    stAnimationId: number
+  ): boolean
+  {
+    // 🔮 we will need to check that this is not being used by another mesh
+    return this.deleteAnimation(stAnimationId);
+  }
+
+  deleteAnimation(stAnimationId: number): boolean
+  {
+    // 💀 this deletes without making sure that the animation is not being any where
+    delete this.stAnimationDict[stAnimationId];
+    this.recyclableSequenceService.recycleId(stAnimationId);
+    return true;
   }
 }

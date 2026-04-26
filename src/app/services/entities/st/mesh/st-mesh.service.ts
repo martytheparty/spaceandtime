@@ -13,6 +13,8 @@ import * as THREE from 'three';
 import { MaterialService } from '../../three/material/material.service';
 import { StSceneService } from '../scene/st-scene.service';
 import { StMeshDeferredDepsClass } from './st-mesh-deferred-deps.class';
+import { StMeshDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
+import { StAnimationService } from '../animation/st-animation.service';
 
 
 @Injectable({
@@ -20,7 +22,7 @@ import { StMeshDeferredDepsClass } from './st-mesh-deferred-deps.class';
 })
 export class StMeshService {
 
-  private stMeshDict: any = {};
+  private stMeshDict: StMeshDictionary = {};
 
   // must defer loading
   //private stSceneService: StSceneService = inject(StSceneService);
@@ -33,6 +35,8 @@ export class StMeshService {
   private meshService: MeshService = inject(MeshService);
   private geometryService: GeometryService = inject(GeometryService);
   private materialService: MaterialService = inject(MaterialService);
+
+  private stAnimationService: StAnimationService = inject(StAnimationService);
 
   // st services
   private stMaterialService: StMaterialService = inject(StMaterialService);
@@ -90,10 +94,10 @@ export class StMeshService {
     const stSceneService: StSceneService = this.stMeshDeferredDepsClass.getStSceneService();
     const allSceneIds = stSceneService.getScenesForMeshId(stMeshId);
 
-    // get a list of scenes using this meshId and if there are other than the passed in scene
+    // get a list 📋 of scenes using this meshId and if there are other than the passed in scene
     const otherScenes = allSceneIds.filter( (stSceneIdValue: number) => stSceneIdValue !== stSceneId );
      
-    // then don't delete.... otherwise attempt to delete the children and delete & recycle both.
+    // then don't delete.... otherwise ❔ attempt to delete 💥 the children and delete & recycle both.
     shouldDelete = !this.hasOtherScenes(otherScenes);
 
     this.deleteMesh(stMeshId, shouldDelete);
@@ -105,14 +109,53 @@ export class StMeshService {
     return sceneIds.length > 0; 
   }
 
-  deleteMesh(meshId: number, shouldDelete: boolean = true): boolean
+  deleteMesh(
+    stMeshId: number, 
+    shouldDelete: boolean = true // this is set to false if the delete mesh was found in another
+  ): boolean
   {
-    if (shouldDelete) {
-      delete this.stMeshDict[meshId];
-      this.recyclableSequenceService.recycleId(meshId);
+    const stMesh: StMesh = this.stMeshDict[stMeshId];
+    
+    if (shouldDelete && stMesh) {
+      const stGeometryId: number = stMesh.stGeometryId;
+      const stMaterialId: number = stMesh.stMaterialId;
+
+      // 💥 delete 🧊 geometry
+      this.stGeometryService.deleteStGeometryForStMesh(stGeometryId, stMeshId);
+      // 💥 delete 🧱 material
+      this.stMaterialService.deleteStMaterialForStMesh(stMaterialId, stMeshId);
+      // 💥 delete 🎞️ animations
+      stMesh.stAnimationIds.forEach( 
+        this.stAnimationService.deleteStAnimationForMeshId.bind(
+          this.stAnimationService, // sets the context the the animation service
+          stMeshId
+        )
+      );
+        
+      // 💥 delete 🕸️ mesh
+      delete this.stMeshDict[stMeshId];
+      // 💥 delete 🔢 ID
+      this.recyclableSequenceService.recycleId(stMeshId);
     }
 
     return shouldDelete;
+  }
+
+  getStMeshIdsForStGeometryId(stGeometryId: number): number[]
+  {
+    const allStMeshes: StMesh[] = Object.values(this.stMeshDict);
+    const foundStMeshes: StMesh[] = 
+    allStMeshes.filter(this.getMatchingStMeshesForId.bind({}, stGeometryId));
+
+    return foundStMeshes.map( this.getIdForMesh);
+  }
+
+  getMatchingStMeshesForId(stGeometryId: number, stMesh: StMesh): boolean {
+      return stMesh.stGeometryId === stGeometryId;
+  }
+
+  getIdForMesh(stMesh: StMesh): number {
+    return stMesh.stMeshId;
   }
 
 }

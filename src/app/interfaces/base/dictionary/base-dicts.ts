@@ -64,6 +64,14 @@ export interface StSceneDictionary {
   [id: number]: StScene;
 }
 
+export interface StGeometryDictionary {
+  [id: number]: StGeometry;
+}
+
+export interface StMeshDictionary {
+  [id: number]: StMesh;
+}
+
 // Holds Visualization Object
 export interface SequenceDictionary {
   [id: number]: SequenceStTypes;

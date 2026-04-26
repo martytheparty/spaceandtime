@@ -63,7 +63,9 @@
     "iStVizComponent": "ng g i interfaces/st/layout/components/st-viz-components",
     "cappDataLayout": "ng g c components/layouts/appDataLayout",
     "classStSceneDeferredDeps": "ng g class services/entities/st/scene/stSceneDeferredDeps.class",
-    "classStMeshDeferredDeps": "ng g class services/entities/st/mesh/stMeshDeferredDeps.class"
+    "classStMeshDeferredDeps": "ng g class services/entities/st/mesh/stMeshDeferredDeps.class",
+    "classStGeometryDeferredDeps": "ng g class services/entities/st/geometry/stGeometryDeferredDeps.class",
+    "classStAnimationDeferredDeps": "ng g class services/entities/st/animation/stAnimationDeferredDeps.class"
   },
   "private": true,
   "dependencies": {
