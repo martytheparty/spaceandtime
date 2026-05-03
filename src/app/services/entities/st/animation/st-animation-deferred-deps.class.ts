@@ -18,9 +18,22 @@ import { StMeshService } from '../mesh/st-mesh.service';
 export class StAnimationDeferredDepsClass {
 
         private injector: Injector = inject(Injector);
+        errorCount = 0;
     
-        getStMeshService(): StMeshService 
+        getStMeshService(): StMeshService | undefined
         {
-            return this.injector.get(StMeshService);
+            // try catch
+            let ms = undefined;
+            try {
+                ms = this.injector.get(StMeshService);
+            } catch(error){
+                if (this.errorCount === 0)
+                {
+                    this.errorCount++;
+                    console.log("Attempted to access the injector after it was gone - StAnimationDefferedClass");
+                }
+            }
+            
+            return ms;
         }
 }

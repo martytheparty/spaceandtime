@@ -100,7 +100,7 @@ export class StMeshService {
     // then don't delete.... otherwise ❔ attempt to delete 💥 the children and delete & recycle both.
     shouldDelete = !this.hasOtherScenes(otherScenes);
 
-    this.deleteMesh(stMeshId, shouldDelete);
+    this.deleteMesh(stMeshId);
 
     return !this.hasOtherScenes(otherScenes);
   }
@@ -110,13 +110,12 @@ export class StMeshService {
   }
 
   deleteMesh(
-    stMeshId: number, 
-    shouldDelete: boolean = true // this is set to false if the delete mesh was found in another
+    stMeshId: number
   ): boolean
   {
     const stMesh: StMesh = this.stMeshDict[stMeshId];
-    
-    if (shouldDelete && stMesh) {
+    let deleted = true;
+    // if (shouldDelete && stMesh) {
       const stGeometryId: number = stMesh.stGeometryId;
       const stMaterialId: number = stMesh.stMaterialId;
 
@@ -136,9 +135,9 @@ export class StMeshService {
       delete this.stMeshDict[stMeshId];
       // 💥 delete 🔢 ID
       this.recyclableSequenceService.recycleId(stMeshId);
-    }
+    //}
 
-    return shouldDelete;
+    return deleted;
   }
 
   getStMeshIdsForStGeometryId(stGeometryId: number): number[]

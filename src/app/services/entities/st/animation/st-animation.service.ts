@@ -72,26 +72,49 @@ export class StAnimationService {
   }
   
   getStAnimationsForStMeshId(meshId: number): StAnimation[] {
-    const stAnimations: StAnimation[] = [];
+    let stAnimations: StAnimation[] = [];
     
     // Execution Time Deferred ⏰ dependencies 💉.
-    const stMeshService: StMeshService = this.stAnimationDeferredDepsClass.getStMeshService();
-    const stMesh: StMesh = stMeshService.getStMeshById(meshId);
+    const stMeshService: StMeshService | undefined = this.stAnimationDeferredDepsClass.getStMeshService();
 
-    if (stMesh) {
-      const stAnimationIds: number[] = stMesh.stAnimationIds;
+    if (stMeshService !== undefined) {
+        const stMesh: StMesh = stMeshService.getStMeshById(meshId);
 
-      stAnimationIds.forEach(
-        ( stAnimationId: number) => {
-          const stAnimation: StAnimation | undefined = this.getAnimationFromDictionary(stAnimationId);
-          if (stAnimation) {
-            stAnimations.push( stAnimation );
-          }
-        } 
-      );
+       if (stMesh) {
+         const stAnimationIds: number[] = stMesh.stAnimationIds;
+
+         stAnimations = this.getStAnimationsForIds(stAnimationIds);
+       }
     }
   
     return stAnimations;
+  }
+
+  getStAnimationsForIds(stAnimationIds: number[]): StAnimation[] {
+    const filteredStAnimationIds: number[] 
+    = stAnimationIds
+      .filter( this.filterUndefinedStAnimation.bind(this) );
+
+    const stAnimations: StAnimation[] 
+    = filteredStAnimationIds.map( this.mapStAnimation.bind(this) );
+
+    return stAnimations;
+  }
+
+  filterUndefinedStAnimation(stAnimationId: number): boolean {
+        const stAnimation: StAnimation | undefined = this.getAnimationFromDictionary(stAnimationId);
+        let foundStAnimation = false;
+
+        if(stAnimation !== undefined) {
+           foundStAnimation = true;
+        }
+
+        return foundStAnimation;
+  }
+
+  mapStAnimation(stAnimationId: number): StAnimation {
+    const stAnimation: StAnimation = this.getAnimationFromDictionary(stAnimationId) as StAnimation;
+    return stAnimation;
   }
 
   deleteStAnimationForMeshId(
