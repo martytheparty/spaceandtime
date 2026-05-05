@@ -27,7 +27,7 @@
         <ng-container matColumnDef="stId">
             <th mat-header-cell *matHeaderCellDef> ST ID </th>
             <td mat-cell *matCellDef="let stRecord"> 
-                <span [attr.data-cy-entitity-table-st-id]="stRecord.stId">{{stRecord.stId}}</span>
+                <span class="entity-id" [attr.data-cy-entitity-table-st-id]="stRecord.stId">{{stRecord.stId}}</span>
             </td>
         </ng-container>
         <ng-container matColumnDef="type">

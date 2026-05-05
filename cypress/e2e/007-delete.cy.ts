@@ -212,5 +212,28 @@ describe('delete group of specs', () => {
       .should('not.exist');
   })
 
+  it.only('deleted all st entities', () => {
+    cy.visit('/data/entities');
+    cy.get('app-menu').should('exist').click();
+
+    cy.get('[data-cy="add-button"]')
+    .should('be.visible')
+    .click();
+
+    cy.get('.entity-id').its('length').should('be.gt', 1);
+
+    cy.get('[data-cy="toggle-layout-button"]').click();
+
+    
+    cy.get('[data-cy="delete-viz-button"]')
+    .should('be.visible')
+    .click();
+    
+    cy.go('back');
+
+    cy.get('.entity-id')
+    .should('have.length', 0);
+  });
+
 
 })
