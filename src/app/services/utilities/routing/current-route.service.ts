@@ -65,7 +65,6 @@ export class CurrentRouteService {
       // sometimes this won't be an StTypes
       routingLayoutType = segments.pop() as unknown as RoutingLayoutDetailType;
     }
-
     return routingLayoutType;
   }
 

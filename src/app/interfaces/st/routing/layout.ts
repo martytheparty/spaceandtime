@@ -6,6 +6,7 @@ export type RoutingLayoutType = LayoutType | 'data' | '';
 export const ROUTING_LAYOUT_DETAIL_TYPES = [
   ...ST_TYPES,
   'entities',
+  'three',
   ''
 ] as const;
 

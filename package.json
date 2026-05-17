@@ -65,7 +65,11 @@
     "classStSceneDeferredDeps": "ng g class services/entities/st/scene/stSceneDeferredDeps.class",
     "classStMeshDeferredDeps": "ng g class services/entities/st/mesh/stMeshDeferredDeps.class",
     "classStGeometryDeferredDeps": "ng g class services/entities/st/geometry/stGeometryDeferredDeps.class",
-    "classStAnimationDeferredDeps": "ng g class services/entities/st/animation/stAnimationDeferredDeps.class"
+    "classStAnimationDeferredDeps": "ng g class services/entities/st/animation/stAnimationDeferredDeps.class",
+    "cappDataLayoutFilter": "ng g c components/layouts/app-data-layout/entityFilter",
+    "cappDataLayoutStTable": "ng g c components/layouts/app-data-layout/st/entityTable",
+    "cappDataLayoutStService": "ng g s components/layouts/app-data-layout/st/services/entity",
+    "iStTableRecord": "ng g i components/layouts/app-data-layout/st/interfaces/StEntityTableRecord"
   },
   "private": true,
   "dependencies": {
