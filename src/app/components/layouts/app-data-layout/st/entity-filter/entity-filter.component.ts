@@ -42,13 +42,6 @@ export class EntityFilterComponent {
     return this.currentRouteService.setRoutingDetail(routingLayoutType, routingLayoutDetailType);
   }
 
-  applyUserFilter(filterValue: string): boolean {
-    // Create a service in app-data-layout to communicate this to the table component
-    // this.dataSource.filter = filterValue.trim().toLowerCase(); // data source for the table
-    // this.filterValueText = filterValue.trim().toLowerCase(); // ???
-    return true;
-  }
-
   populateMenu(rawEntitiesSelectData: readonly RoutingLayoutDetailType[]): RoutingLayoutDetailType[] {
     // filter out the blank and move entities to the top
 

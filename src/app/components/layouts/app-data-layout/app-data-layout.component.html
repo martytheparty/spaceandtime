@@ -7,12 +7,14 @@
         >
             <mat-button-toggle 
             value="st"
+            data-cy="toggle-layout-button-st"
             [checked]="currentRouteService.currentRouteType() !== 'three'"
             >
             ST
             </mat-button-toggle>
             <mat-button-toggle 
             value="three"
+            data-cy="toggle-layout-button-three"
             [checked]="currentRouteService.currentRouteType() === 'three'"
             >
             Three

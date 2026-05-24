@@ -26,4 +26,18 @@ describe('check for the menu app on the route route', () => {
       cy.get('[data-cy=table_update-icon]').click();
       cy.location('pathname').should('eq', '/custom');
     });
+
+    it('should go to data/entities route and ST should be checked', () => {
+      cy.visit('/data/entities');
+      cy.get('[data-cy="toggle-layout-button-st"]').should('have.class', 'mat-button-toggle-checked');
+      cy.get('[data-cy="toggle-layout-button-three"]').click();
+      cy.location('pathname').should('eq', '/data/three');
+    });
+
+    it('should go to data/three route and Three should be checked', () => {
+      cy.visit('/data/three');
+      cy.get('[data-cy="toggle-layout-button-three"]').should('have.class', 'mat-button-toggle-checked');
+      cy.get('[data-cy="toggle-layout-button-st"]').click();
+      cy.location('pathname').should('eq', '/data/entities');
+    });
 })
