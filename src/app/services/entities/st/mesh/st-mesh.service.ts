@@ -2,15 +2,19 @@ import { inject, Injectable } from '@angular/core';
 
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
 
-import { MeshService } from '../../three/mesh/mesh.service';
-import { GeometryService } from '../../three/geometry/geometry.service';
+import { MeshService } from '../../three/native/mesh/mesh.service';
+import { GeometryService } from '../../three/native/geometry/geometry.service';
 
 import { StMesh } from '../../../../interfaces/st';
 import { StGeometryService } from '../geometry/st-geometry.service';
 import { StMaterialService } from '../material/st-material.service';
 
 import * as THREE from 'three';
-import { MaterialService } from '../../three/material/material.service';
+import { MaterialService } from '../../three/native/material/material.service';
+import { StSceneService } from '../scene/st-scene.service';
+import { StMeshDeferredDepsClass } from './st-mesh-deferred-deps.class';
+import { StMeshDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
+import { StAnimationService } from '../animation/st-animation.service';
 
 
 @Injectable({
@@ -18,7 +22,11 @@ import { MaterialService } from '../../three/material/material.service';
 })
 export class StMeshService {
 
-  private stMeshDict: any = {};
+  private stMeshDict: StMeshDictionary = {};
+
+  // must defer loading
+  //private stSceneService: StSceneService = inject(StSceneService);
+  private stMeshDeferredDepsClass: StMeshDeferredDepsClass = new StMeshDeferredDepsClass(); 
 
   // utilities services
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
@@ -27,6 +35,8 @@ export class StMeshService {
   private meshService: MeshService = inject(MeshService);
   private geometryService: GeometryService = inject(GeometryService);
   private materialService: MaterialService = inject(MaterialService);
+
+  private stAnimationService: StAnimationService = inject(StAnimationService);
 
   // st services
   private stMaterialService: StMaterialService = inject(StMaterialService);
@@ -74,6 +84,79 @@ export class StMeshService {
   {
     const stMesh: StMesh = this.getStMeshById(stMeshId);
     return stMesh.stAnimationIds;
-  } 
+  }
+
+  deleteMeshForSceneId(stMeshId: number, stSceneId: number): boolean
+  {
+    let shouldDelete = false;
+    // q1. who needs to be checked in with before a delete?
+    // a1. st scene service
+    const stSceneService: StSceneService = this.stMeshDeferredDepsClass.getStSceneService();
+    const allSceneIds = stSceneService.getScenesForMeshId(stMeshId);
+
+    // get a list 📋 of scenes using this meshId and if there are other than the passed in scene
+    const otherScenes = allSceneIds.filter( (stSceneIdValue: number) => stSceneIdValue !== stSceneId );
+     
+    // then don't delete.... otherwise ❔ attempt to delete 💥 the children and delete & recycle both.
+    shouldDelete = !this.hasOtherScenes(otherScenes);
+
+    this.deleteMesh(stMeshId);
+
+    return !this.hasOtherScenes(otherScenes);
+  }
+
+  hasOtherScenes(sceneIds: number[]): boolean {
+    return sceneIds.length > 0; 
+  }
+
+  deleteMesh(
+    stMeshId: number
+  ): boolean
+  {
+    const stMesh: StMesh = this.stMeshDict[stMeshId];
+    let deleted = true;
+    // if (shouldDelete && stMesh) {
+      const stGeometryId: number = stMesh.stGeometryId;
+      const stMaterialId: number = stMesh.stMaterialId;
+
+      // 💥 delete 🧊 geometry
+      this.stGeometryService.deleteStGeometryForStMesh(stGeometryId, stMeshId);
+      // 💥 delete 🧱 material
+      this.stMaterialService.deleteStMaterialForStMesh(stMaterialId, stMeshId);
+      // 💥 delete 🎞️ animations
+      stMesh.stAnimationIds.forEach( 
+        this.stAnimationService.deleteStAnimationForMeshId.bind(
+          this.stAnimationService, // sets the context the the animation service
+          stMeshId
+        )
+      );
+        
+      // 💥 delete 🕸️ mesh
+      delete this.stMeshDict[stMeshId];
+      // 💥 delete 3️⃣ three 🕸️ mesh
+      this.meshService.deleteMeshByStMeshId(stMeshId); 
+      // 💥 delete 🔢 ID
+      this.recyclableSequenceService.recycleId(stMeshId);
+    //}
+
+    return deleted;
+  }
+
+  getStMeshIdsForStGeometryId(stGeometryId: number): number[]
+  {
+    const allStMeshes: StMesh[] = Object.values(this.stMeshDict);
+    const foundStMeshes: StMesh[] = 
+    allStMeshes.filter(this.getMatchingStMeshesForId.bind({}, stGeometryId));
+
+    return foundStMeshes.map( this.getIdForMesh);
+  }
+
+  getMatchingStMeshesForId(stGeometryId: number, stMesh: StMesh): boolean {
+      return stMesh.stGeometryId === stGeometryId;
+  }
+
+  getIdForMesh(stMesh: StMesh): number {
+    return stMesh.stMeshId;
+  }
 
 }

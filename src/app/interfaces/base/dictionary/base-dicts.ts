@@ -53,10 +53,38 @@ export interface ThreeMeshDictionary {
   [id: number]: THREE.Mesh;
 }
 
+export interface ThreeRendererDictionary {
+  [id: number]: THREE.WebGLRenderer;
+}
+
+export interface ThreeSceneDictionary {
+  [id: number]: THREE.Scene;
+}
+
+export type ThreeDictionaryTypes = ThreeCameraDictionary 
+| ThreeGeometryDictionary
+| ThreeMaterialDictionary
+| ThreeMeshDictionary
+| ThreeRendererDictionary
+| ThreeSceneDictionary;
+
 // Holds StAnimations
 
 export interface StAnimationDictionary {
   [id: number]: StAnimation;
+}
+
+// Holds StScenes
+export interface StSceneDictionary {
+  [id: number]: StScene;
+}
+
+export interface StGeometryDictionary {
+  [id: number]: StGeometry;
+}
+
+export interface StMeshDictionary {
+  [id: number]: StMesh;
 }
 
 // Holds Visualization Object
@@ -76,11 +104,14 @@ export type SequenceStTypes = null
             | StMesh
             | StVisualization;
 
-export type StTypes = 'st-renderer' 
-            | 'st-camera'
-            | 'st-scene'
-            | 'st-mesh'
-            | 'st-geometry'
-            | 'st-material'
-            | 'st-animation'
-;
+export const ST_TYPES = [
+  'st-renderer',
+  'st-camera',
+  'st-scene',
+  'st-mesh',
+  'st-geometry',
+  'st-material',
+  'st-animation'
+] as const;
+
+export type StTypes = typeof ST_TYPES[number];

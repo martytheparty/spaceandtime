@@ -9,15 +9,15 @@ import {
 import { StCameraService } from '../camera/st-camera.service';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
 
-import { RendererService } from '../../three/renderer/renderer.service'
+import { RendererService } from '../../three/native/renderer/renderer.service'
 
 import * as THREE from 'three';
 import { StSceneService } from '../scene/st-scene.service';
-import { CameraService } from '../../three/camera/camera.service';
+import { CameraService } from '../../three/native/camera/camera.service';
 import { StPublisherService } from '../publish/st-publisher.service';
-import { SceneService } from '../../three/scene/scene.service';
+import { SceneService } from '../../three/native/scene/scene.service';
 import { ThreeAnimationClass } from '../../three/animation/three-animation.class';
-import { MeshService } from '../../three/mesh/mesh.service';
+import { MeshService } from '../../three/native/mesh/mesh.service';
 import { StAnimationService } from '../animation/st-animation.service';
 
 @Injectable({
@@ -183,18 +183,33 @@ export class StRendererService {
     return Object.values(this.stRenderersDict);
   }
 
+  getRenderersBySceneId(stSceneId: number): number[]
+  {
+    const stRenderers: StRenderer[] = this. getRenderers().filter( (stRenderer: StRenderer) => {
+      return stRenderer.stSceneId === stSceneId;
+    } );
+
+    return stRenderers.map( (stRenderer: StRenderer) => stRenderer.stRendererId );
+  }
+
   deleteRenderer(stRendererId: number): boolean
   {
     let deleted = false;
     const stRenderer = this.getRendererById(stRendererId);
 
     if (stRenderer) {
+      this.stSceneService.deleteSceneByIdForStRenderer(stRenderer.stSceneId, stRendererId);
       this.stCameraService.deleteCameraById(stRenderer.stCameraId);
+      // delete scene -> delete meshes -> delete animations
 
       if (this.stRenderersDict[stRendererId]) {
         this.rendererService.deleteRendererById(stRendererId);
         this.stRenderersDict[stRendererId].deleted = true;
         delete this.stRenderersDict[stRendererId];
+
+        this.recyclableSequenceService.recycleId(stRendererId);
+
+        // next recycle the render id
 
         deleted = true;
       }

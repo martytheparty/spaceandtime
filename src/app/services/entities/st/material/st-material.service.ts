@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
-import { MaterialService } from '../../three/material/material.service';
+import { MaterialService } from '../../three/native/material/material.service';
 import { StMaterial } from '../../../../interfaces/st';
 
 import * as THREE from 'three';
@@ -35,10 +35,22 @@ export class StMaterialService {
       return stMaterialId;
     }
   
-    getMaterialById(id: number): StMaterial
+    getMaterialById(
+      stMaterialId: number
+    ): StMaterial
     {
-      const material: StMaterial = this.stMaterialDict[id];
+      const material: StMaterial = this.stMaterialDict[stMaterialId];
   
       return material;
+    }
+
+    deleteStMaterialForStMesh(stMaterialId: number, stMeshId: number): boolean
+    {
+      // 💥🕸️
+      delete this.stMaterialDict[stMaterialId];
+      // 💥🔢
+      this.recyclableSequenceService.recycleId(stMaterialId);
+      this.materialService.deleteMaterialByStMaterialId(stMaterialId);
+      return true;
     }
 }

@@ -9,15 +9,22 @@ import {
 } from '../../../../interfaces/st';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
 import { StMeshService } from '../mesh/st-mesh.service';
+import { StAnimationDeferredDepsClass } from './st-animation-deferred-deps.class';
+
+// import { StMeshService } from '../mesh/st-mesh.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StAnimationService {
 
+  // Construction 🏗️ Time ⏰ Dependency 💉
   private stAnimationDict: StAnimationDictionary = {};
+  // Construction 🏗️ Time ⏰ Dependency 💉
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
-  private stMeshService: StMeshService = inject(StMeshService);
+  
+  // Execution Time Deferred ⏰ dependencies 💉.
+  private stAnimationDeferredDepsClass: StAnimationDeferredDepsClass = new StAnimationDeferredDepsClass();  
   
   getAnimationFromDictionary(stAnimationId: number): StAnimation | undefined
   {
@@ -65,21 +72,65 @@ export class StAnimationService {
   }
   
   getStAnimationsForStMeshId(meshId: number): StAnimation[] {
-    const stMesh: StMesh = this.stMeshService.getStMeshById(meshId);
-    const stAnimationIds: number[] = stMesh.stAnimationIds;
+    let stAnimations: StAnimation[] = [];
+    
+    // Execution Time Deferred ⏰ dependencies 💉.
+    const stMeshService: StMeshService | undefined = this.stAnimationDeferredDepsClass.getStMeshService();
 
-    const stAnimations: StAnimation[] = [];
+    if (stMeshService !== undefined) {
+        const stMesh: StMesh = stMeshService.getStMeshById(meshId);
 
-    stAnimationIds.forEach(
-      ( stAnimationId: number) => {
-        const stAnimation: StAnimation | undefined = this.getAnimationFromDictionary(stAnimationId);
-        if (stAnimation) {
-          stAnimations.push( stAnimation );
-        }
-      } 
-    );
+       if (stMesh) {
+         const stAnimationIds: number[] = stMesh.stAnimationIds;
 
+         stAnimations = this.getStAnimationsForIds(stAnimationIds);
+       }
+    }
   
     return stAnimations;
+  }
+
+  getStAnimationsForIds(stAnimationIds: number[]): StAnimation[] {
+    const filteredStAnimationIds: number[] 
+    = stAnimationIds
+      .filter( this.filterUndefinedStAnimation.bind(this) );
+
+    const stAnimations: StAnimation[] 
+    = filteredStAnimationIds.map( this.mapStAnimation.bind(this) );
+
+    return stAnimations;
+  }
+
+  filterUndefinedStAnimation(stAnimationId: number): boolean {
+        const stAnimation: StAnimation | undefined = this.getAnimationFromDictionary(stAnimationId);
+        let foundStAnimation = false;
+
+        if(stAnimation !== undefined) {
+           foundStAnimation = true;
+        }
+
+        return foundStAnimation;
+  }
+
+  mapStAnimation(stAnimationId: number): StAnimation {
+    const stAnimation: StAnimation = this.getAnimationFromDictionary(stAnimationId) as StAnimation;
+    return stAnimation;
+  }
+
+  deleteStAnimationForMeshId(
+    stMeshId: number, // 💀 mesh id must come first do to binding in the stMeshService
+    stAnimationId: number
+  ): boolean
+  {
+    // 🔮 we will need to check that this is not being used by another mesh
+    return this.deleteAnimation(stAnimationId);
+  }
+
+  deleteAnimation(stAnimationId: number): boolean
+  {
+    // 💀 this deletes without making sure that the animation is not being any where
+    delete this.stAnimationDict[stAnimationId];
+    this.recyclableSequenceService.recycleId(stAnimationId);
+    return true;
   }
 }

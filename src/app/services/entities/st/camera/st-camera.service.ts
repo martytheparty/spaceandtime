@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
 import { StCamera } from '../../../../interfaces/st';
-import { CameraService } from '../../three/camera/camera.service';
+import { CameraService } from '../../three/native/camera/camera.service';
 import { StTriple } from '../../../../interfaces/base/triple/st-triple';
 
 @Injectable({

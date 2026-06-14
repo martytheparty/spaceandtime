@@ -1,0 +1,11 @@
+    .filters {
+        display: flex;
+
+        .filter-item {
+             margin: 0 2px;
+        }
+
+        mat-form-field {
+            flex: 1;
+        }
+    }

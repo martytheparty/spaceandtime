@@ -1,7 +1,15 @@
-.wrapper {
+.app-data-layout-wrapper {
     position: relative;
     top: 100px;
     min-width: 0;
+
+    .filters {
+        display: flex;
+
+        .filter-item {
+            margin: 0 2px;
+        }
+    }
 
     table {
         width: 100%;
@@ -37,6 +45,9 @@
         width: 100%;
     }
 
+    .data-type-toggle {
+        margin: 5px;
+    }
 
 }
 

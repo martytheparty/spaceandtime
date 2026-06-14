@@ -1,0 +1,30 @@
+.app-three-table-wrapper {
+    color: antiquewhite;
+
+    table {
+        width: 100%;
+
+        tr.st-row {
+            cursor: pointer;
+        }
+
+        tr.st-row:hover {
+            color: black;
+            background-color: antiquewhite;
+        }
+
+        tr.expanded-detail-row {
+            height: 0;
+        }
+
+        tr.expanded-detail-row.expanded {
+            height: auto;
+
+            .detail-content {
+                padding: 10px;
+                white-space: pre-wrap;
+                
+            }
+        }
+    }
+}
