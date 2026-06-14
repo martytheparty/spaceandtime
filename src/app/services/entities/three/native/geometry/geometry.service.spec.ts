@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { GeometryService } from './geometry.service';
 
-import { StTriple } from '../../../../interfaces/base/triple/st-triple';
+import { StTriple } from '../../../../../interfaces/base/triple/st-triple';
 
 import * as THREE from 'three';
 

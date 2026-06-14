@@ -1,0 +1,59 @@
+<div class="app-three-table-wrapper">
+    <table 
+    mat-table
+    multiTemplateDataRows
+    [dataSource]="dataSource"
+    >
+    <ng-container matColumnDef="threeType">
+        <th mat-header-cell *matHeaderCellDef> type </th>
+        <td mat-cell *matCellDef="let threeRecord"> 
+            <span class="three-type" [attr.data-cy-three-table-three-type]="threeRecord.threeType">{{threeRecord.threeType}}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="count">
+        <th mat-header-cell *matHeaderCellDef> count </th>
+        <td mat-cell *matCellDef="let threeRecord"> 
+            <span 
+                class="three-type" 
+                [attr.data-cy-three-table-three-type]="threeRecord.threeType"
+                [attr.data-cy-three-table-three-type-count]="threeRecord.count"
+            >{{threeRecord.count}}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="json">
+        <th mat-header-cell *matHeaderCellDef> JSON </th>
+        <td mat-cell *matCellDef="let threeRecord"> 
+            <span class="three-type" [attr.data-cy-three-table-three-type-json]="threeRecord.threeType">{{threeRecord.json}}</span>
+        </td>
+    </ng-container>
+
+        <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let row"
+            [attr.colspan]="threeTableColumns.length">
+            <div class="detail-content">
+                @if(expandedRows[row.threeType]) {
+                    {{ row.json }}
+                }
+            </div>
+        </td>
+    </ng-container>
+    <tr 
+    mat-header-row *matHeaderRowDef="threeTableColumns"
+    ></tr>
+    <tr mat-row 
+        *matRowDef="let row; columns: threeTableColumns;"
+        class="three-row"
+        tabindex="0"
+        (click)="toggleRow(row)"
+        (keydown.enter)="toggleRow(row)"
+    ></tr>
+    <tr mat-row 
+        *matRowDef="let row; columns: ['expandedDetail']"
+        class="expanded-detail-row"
+        [ngClass] = "{ 'expanded': expandedRows[row.threeType] }"
+    ></tr>
+
+    </table>
+</div>

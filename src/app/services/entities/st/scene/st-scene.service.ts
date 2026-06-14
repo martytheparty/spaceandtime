@@ -4,8 +4,8 @@ import { StMeshService } from '../mesh/st-mesh.service';
 import * as THREE from 'three';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
 import { StMesh, StScene } from '../../../../interfaces/st';
-import { SceneService } from '../../three/scene/scene.service';
-import { MeshService } from '../../three/mesh/mesh.service';
+import { SceneService } from '../../three/native/scene/scene.service';
+import { MeshService } from '../../three/native/mesh/mesh.service';
 import { StRendererService } from '../renderer/st-renderer.service';
 import { StSceneDeferredDepsClass } from './st-scene-deferred-deps.class';
 import { StSceneDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
@@ -98,7 +98,9 @@ export class StSceneService {
 
     // 1) Remove the Scene From The Dictionary
     delete this.stSceneDict[stSceneId];
-    // 2) Recycle the SceneId
+    // 2) Delete the Three Scene
+    this.sceneService.deleteSceneById(stSceneId);
+    // 3) Recycle the SceneId
     this.recyclableSequenceService.recycleId(stSceneId);
     this.recyclableSequenceService.logSequenceDictionary();
 

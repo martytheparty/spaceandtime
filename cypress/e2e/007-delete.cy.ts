@@ -212,7 +212,7 @@ describe('delete group of specs', () => {
       .should('not.exist');
   })
 
-  it.only('deleted all st entities', () => {
+  it('deleted all st entities', () => {
     cy.visit('/data/entities');
     cy.get('app-menu').should('exist').click();
 
@@ -233,6 +233,35 @@ describe('delete group of specs', () => {
 
     cy.get('.entity-id')
     .should('have.length', 0);
+  });
+
+  it('deleted all three entities', () => {
+    cy.visit('/data/three');
+    cy.get('app-menu').should('exist').click();
+
+    cy.get('[data-cy-three-table-three-type-count]')
+    .should('have.attr', 'data-cy-three-table-three-type-count', '0');
+
+    cy.get('[data-cy="add-button"]')
+    .should('be.visible')
+    .click();
+
+    cy.get('[data-cy-three-table-three-type-count]')
+    .should('have.attr', 'data-cy-three-table-three-type-count', '1');
+
+    cy.get('[data-cy="toggle-layout-button"]').click();
+
+    
+    cy.get('[data-cy="delete-viz-button"]')
+    .should('be.visible')
+    .click();
+    
+    cy.go('back');
+
+    cy.get('[data-cy-three-table-three-type-count]')
+    .should('have.attr', 'data-cy-three-table-three-type-count', '0');
+
+
   });
 
 

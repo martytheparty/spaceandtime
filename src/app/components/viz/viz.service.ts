@@ -1,6 +1,6 @@
 import { ElementRef, inject, Injectable } from '@angular/core';
 
-import { RendererService } from '../../services/entities/three/renderer/renderer.service';
+import { RendererService } from '../../services/entities/three/native/renderer/renderer.service';
 
 import * as THREE from 'three';
 import { StRenderer } from '../../interfaces/st';

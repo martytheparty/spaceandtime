@@ -2,15 +2,15 @@ import { inject, Injectable } from '@angular/core';
 
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
 
-import { MeshService } from '../../three/mesh/mesh.service';
-import { GeometryService } from '../../three/geometry/geometry.service';
+import { MeshService } from '../../three/native/mesh/mesh.service';
+import { GeometryService } from '../../three/native/geometry/geometry.service';
 
 import { StMesh } from '../../../../interfaces/st';
 import { StGeometryService } from '../geometry/st-geometry.service';
 import { StMaterialService } from '../material/st-material.service';
 
 import * as THREE from 'three';
-import { MaterialService } from '../../three/material/material.service';
+import { MaterialService } from '../../three/native/material/material.service';
 import { StSceneService } from '../scene/st-scene.service';
 import { StMeshDeferredDepsClass } from './st-mesh-deferred-deps.class';
 import { StMeshDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
@@ -133,6 +133,8 @@ export class StMeshService {
         
       // 💥 delete 🕸️ mesh
       delete this.stMeshDict[stMeshId];
+      // 💥 delete 3️⃣ three 🕸️ mesh
+      this.meshService.deleteMeshByStMeshId(stMeshId); 
       // 💥 delete 🔢 ID
       this.recyclableSequenceService.recycleId(stMeshId);
     //}

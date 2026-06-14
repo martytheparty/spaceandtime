@@ -53,6 +53,21 @@ export interface ThreeMeshDictionary {
   [id: number]: THREE.Mesh;
 }
 
+export interface ThreeRendererDictionary {
+  [id: number]: THREE.WebGLRenderer;
+}
+
+export interface ThreeSceneDictionary {
+  [id: number]: THREE.Scene;
+}
+
+export type ThreeDictionaryTypes = ThreeCameraDictionary 
+| ThreeGeometryDictionary
+| ThreeMaterialDictionary
+| ThreeMeshDictionary
+| ThreeRendererDictionary
+| ThreeSceneDictionary;
+
 // Holds StAnimations
 
 export interface StAnimationDictionary {

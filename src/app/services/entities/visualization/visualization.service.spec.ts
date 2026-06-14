@@ -4,7 +4,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VisualizationService } from './visualization.service';
 import { StVisualization } from '../../../interfaces/st';
-import { RendererService } from '../three/renderer/renderer.service';
+import { RendererService } from '../three/native/renderer/renderer.service';
 import { RecyclableSequenceService } from '../../utilities/general/recyclable-sequence-service.service';
 
 import { VizComponent } from '../../../components/viz/viz.component';

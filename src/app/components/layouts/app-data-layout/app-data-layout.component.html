@@ -22,7 +22,7 @@
         </mat-button-toggle-group>
     </div>
     @if(currentRouteService.currentRouteType() === 'three') {
-        <div style="color: wheat;">{{currentRouteService.currentRouteType()}}</div>
+        <app-three-table></app-three-table>
     }
 
     @if(currentRouteService.currentRouteType() !== 'three') {

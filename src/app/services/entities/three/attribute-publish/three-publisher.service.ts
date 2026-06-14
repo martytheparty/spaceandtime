@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { ThreeAspectRatioDict } from '../../../../interfaces/three/dictionaries/three-aspect-ratio-dict';
 
+// The purpose of this service is to publish ThreeJS Attributes
 
 @Injectable({
   providedIn: 'root'

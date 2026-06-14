@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
-import { MaterialService } from '../../three/material/material.service';
+import { MaterialService } from '../../three/native/material/material.service';
 import { StMaterial } from '../../../../interfaces/st';
 
 import * as THREE from 'three';
@@ -50,6 +50,7 @@ export class StMaterialService {
       delete this.stMaterialDict[stMaterialId];
       // 💥🔢
       this.recyclableSequenceService.recycleId(stMaterialId);
+      this.materialService.deleteMaterialByStMaterialId(stMaterialId);
       return true;
     }
 }

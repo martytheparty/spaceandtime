@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { AnimatableObjects, StAnimation, StRenderer, StScene } from '../../../../interfaces/st';
-import { MeshService } from '../mesh/mesh.service';
+import { MeshService } from '../native/mesh/mesh.service';
 import { StAnimationService } from '../../st/animation/st-animation.service';
 import { StSceneService } from '../../st/scene/st-scene.service';
-import { RendererService } from '../renderer/renderer.service';
+import { RendererService } from '../native/renderer/renderer.service';
 
 export class ThreeAnimationClass {
 

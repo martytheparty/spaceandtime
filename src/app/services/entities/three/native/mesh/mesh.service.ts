@@ -1,13 +1,22 @@
-import { Injectable } from '@angular/core';
+import { 
+  inject,
+  signal,
+  Injectable,
+  WritableSignal
+} from '@angular/core';
 import * as THREE from 'three';
-import { ThreeMeshDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
+import { ThreeMeshDictionary } from '../../../../../interfaces/base/dictionary/base-dicts';
+import { HashService } from '../../../../utilities/general/hash.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MeshService {
-
+  hashService: HashService = inject(HashService);
   private meshDict: ThreeMeshDictionary = {};
+  publicMeshDictionary: WritableSignal<ThreeMeshDictionary> = signal<ThreeMeshDictionary>(this.meshDict);
+  // dictionary hash
+  publicMeshDictionaryHash: WritableSignal<string> = signal<string>("");
 
   constructor() {}
 
@@ -16,6 +25,7 @@ export class MeshService {
   ): number
   {
     this.meshDict[id] = new THREE.Mesh();
+    this.publishMeshDictionary();
     return id;
   }
 
@@ -36,6 +46,7 @@ export class MeshService {
     }
 
     mesh.material = material;
+    this.publishMeshDictionary();
 
     return id;
   }
@@ -58,6 +69,7 @@ export class MeshService {
     }
 
     mesh.geometry = geometry;
+    this.publishMeshDictionary();
 
     return id;
   }
@@ -66,5 +78,28 @@ export class MeshService {
   {
     const mesh: THREE.Mesh = this.meshDict[stMeshId];
     return mesh;
+  }
+
+  deleteMeshByStMeshId(stMeshId: number): boolean {
+    const deleteResult = delete this.meshDict[stMeshId];
+    this.publishMeshDictionary();
+    return deleteResult;
+  }
+
+  publishMeshDictionary(): boolean
+  {
+    const dictionaryJSON = JSON.stringify(this.meshDict);
+    let dictionaryHash: string = "";
+    const hashPromise = this.hashService.getHashString(dictionaryJSON);
+    this.publicMeshDictionary.set(this.meshDict);
+
+    hashPromise.then( (result: string) => {
+      dictionaryHash = result;
+
+      // publish new hash value
+      this.publicMeshDictionaryHash.set(dictionaryHash);
+    } );
+
+    return true;
   }
 }

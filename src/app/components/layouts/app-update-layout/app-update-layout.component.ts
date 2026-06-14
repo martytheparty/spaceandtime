@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { VizComponent } from '../../viz/viz.component';
 import { StRendererService } from '../../../services/entities/st/renderer/st-renderer.service';
 import { StPublisherService } from '../../../services/entities/st/publish/st-publisher.service';
-import { ThreePublisherService } from '../../../services/entities/three/publish/three-publisher.service';
+import { ThreePublisherService } from '../../../services/entities/three/attribute-publish/three-publisher.service';
 import { LayoutType } from '../../../interfaces/layout/layout-types';
 import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
 import { WViewPortResizeService } from '../../../services/ui/w-view-port-resize.service';

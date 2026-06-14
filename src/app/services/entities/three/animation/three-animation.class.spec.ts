@@ -4,11 +4,11 @@ import { TestBed } from '@angular/core/testing';
 
 import { ThreeAnimationClass } from './three-animation.class';
 import { StAnimation, StRenderer } from '../../../../interfaces/st';
-import { MeshService } from '../mesh/mesh.service';
+import { MeshService } from '../native/mesh/mesh.service';
 import { StAnimationService } from '../../st/animation/st-animation.service';
 import { StSceneService } from '../../st/scene/st-scene.service';
 import { StRendererService } from '../../st/renderer/st-renderer.service';
-import { RendererService } from '../renderer/renderer.service';
+import { RendererService } from '../native/renderer/renderer.service';
 
 
 describe('ThreeAnimationClass', () => {

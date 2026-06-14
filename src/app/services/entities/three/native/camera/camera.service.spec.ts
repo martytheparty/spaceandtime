@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import * as THREE from 'three';
 
-import { StTriple } from '../../../../interfaces/base/triple/st-triple';
+import { StTriple } from '../../../../../interfaces/base/triple/st-triple';
 
 import { CameraService } from './camera.service';
 

@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
-import { GeometryService } from '../../three/geometry/geometry.service';
+import { GeometryService } from '../../three/native/geometry/geometry.service';
 import { StGeometry } from '../../../../interfaces/st';
 
 import { StTriple } from '../../../../interfaces/base/triple/st-triple';
@@ -72,6 +72,9 @@ export class StGeometryService {
     if (otherMeshes.length === 0) {
       // removes 💥 it 📐 from local memory 📝.
       delete this.stGeometryDict[stGeometryId];
+
+      this.geometryService.deleteGeometryByStGeometryId(stGeometryId);
+
       // removes 💥 from sequences 🔢
       this.recyclableSequenceService.recycleId(stGeometryId);
     }
