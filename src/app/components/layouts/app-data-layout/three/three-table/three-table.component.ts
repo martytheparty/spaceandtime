@@ -85,8 +85,6 @@ export class ThreeTableComponent {
       const rendererRow: ThreeTableRecord = this.tableRowtransform('renderer', threeRendererDictionary);
       const sceneRow: ThreeTableRecord = this.tableRowtransform('scene', threeSceneDictionary)
 
-
-
       // Assign raw data to the data source for the table
       this.dataSource.data = [ 
         cameraRow,
@@ -97,10 +95,7 @@ export class ThreeTableComponent {
         sceneRow
       ];
 
-
-
       console.log("Three Camera Dictionary", threeCameraDictionary, this.dataSource.data);
-
     });
 
   }
