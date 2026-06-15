@@ -39,7 +39,7 @@ export class EntityService {
     const tableRecords: StEntityTableRecord[] = stIds.map( (stId) => {
       const stRecord: SequenceStTypes =  sequenceDictionary[Number.parseInt(stId)];
       const stType: StTypes = stRecord?.type as StTypes;
-      const json: string = JSON.stringify(stRecord, null, 1);
+      const json: string = JSON.stringify(stRecord, null, 2);
       const record: StEntityTableRecord = {
         stId,
         type: stType,
