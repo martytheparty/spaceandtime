@@ -29,6 +29,7 @@ describe('ThreeTableComponent', () => {
     };
     component.toggleRow(row);
     component.expandedRows = {'scene':true};
-    component.toggleRow(row);
+    const result = component.toggleRow(row);
+    expect(result).toBeFalse();
   })
 });

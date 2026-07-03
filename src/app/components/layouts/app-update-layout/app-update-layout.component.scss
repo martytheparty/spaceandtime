@@ -5,11 +5,23 @@
 
   .visualization,
   .editors {
-    flex: 1; // Each takes equal height
+    flex: 1 1 0; // Each takes equal height
+    min-height: 0;
+    overflow: auto;
+  }
+
+  .toolbar {
+    flex: 0 0 auto;
+    border: 1px solid black;
+    background-color: #FAF0E6;
   }
 
   .editors {
     background-color: #FAF0E6;
+  }
+
+  .visualization {
+    overflow: hidden;
   }
 }
 

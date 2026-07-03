@@ -3,32 +3,12 @@
         class="visualization"
         #viewer
     >
-        @if(stRendererId > 0 && afterInitComplete) {
-            <app-viz
-             [stRendererInputId]="stRendererId"
-             [vizWidth]="viewerWidth"
-             [vizHeight]="viewerHeight"
-            ></app-viz>
-        }
-
+        <app-update-layout-viewer></app-update-layout-viewer>
+    </div>
+    <div class="toolbar">
+        <app-update-layout-toolbar></app-update-layout-toolbar>
     </div>
     <div class="editors">
-
-        SET UP THREE PUBLISHED THAT WILL PUBLISH ACTUAL VALUES USED
-        <p>EDITOR</p> 
-         @if(stRendererId > 0 && afterInitComplete) {
-        <div>
-                Aspect Ratio SHOULD BE: {{viewerWidth/viewerHeight}} 
-        </div>
-        <div>
-                CALCULATED Aspect Ratio IS: {{stPublisherService.calculatedAspectRatioSignal()[this.stRendererId]}}
-        </div>
-        <div>
-                ACTUAL Aspect Ratio IS:
-                <span data-cy="three-aspect-ratio"> 
-                {{threePublisherService.threeAspectRatioSignal()[this.stRendererId]}}
-                </span>
-        </div>
-        }
+        <app-update-layout-editor></app-update-layout-editor>
     </div>
 </div>

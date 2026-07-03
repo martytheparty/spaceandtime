@@ -1,0 +1,7 @@
+ @if(appUpdateLayoutService.editRenderId() > 0 ) {
+    <app-viz
+        [stRendererInputId]="appUpdateLayoutService.editRenderId()"
+        [vizWidth]="appUpdateLayoutService.editVisualizationWidthSignal()"
+        [vizHeight]="appUpdateLayoutService.editVisualizationHeightSignal()"
+    ></app-viz>
+}

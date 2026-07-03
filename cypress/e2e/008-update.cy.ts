@@ -34,4 +34,34 @@ describe('update spec', () => {
 
 
   })
+
+  it('ensures that the top threee components exist', () => {
+        cy.visit('/');
+
+    cy.get('app-menu').should('exist');      // get a reference to the menu icon and click on it
+
+    cy.get('app-menu').click();
+
+          // click the add-button for three visualizations
+    cy.get('[data-cy="add-button"]')
+    .should('be.visible')
+    .click();
+
+    // close menu
+    cy.get('body').click();
+
+    // open layout menu
+    cy.get('[data-cy="toggle-layout-button"]')
+    .should('be.visible')
+    .click()
+
+    cy.get('[data-cy="update-viz-button"]')
+    .click();
+
+    cy.get('app-update-layout-viewer').should('exist');
+    cy.get('app-update-layout-toolbar').should('exist');
+    cy.get('app-update-layout-editor').should('exist');
+
+
+  })
 })
