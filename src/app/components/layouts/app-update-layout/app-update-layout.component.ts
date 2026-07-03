@@ -6,88 +6,46 @@ import {
   ViewChild
 } from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
-
-import { VizComponent } from '../../viz/viz.component';
-import { StRendererService } from '../../../services/entities/st/renderer/st-renderer.service';
-import { StPublisherService } from '../../../services/entities/st/publish/st-publisher.service';
-import { ThreePublisherService } from '../../../services/entities/three/attribute-publish/three-publisher.service';
-import { LayoutType } from '../../../interfaces/layout/layout-types';
 import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
 import { WViewPortResizeService } from '../../../services/ui/w-view-port-resize.service';
+import { AppUpdateLayoutService } from './services/app-update-layout.service';
+import { AppUpdateLayoutEditorComponent } from './app-update-layout-editor/app-update-layout-editor.component';
+import { AppUpdateLayoutToolbarComponent } from "./app-update-layout-toolbar/app-update-layout-toolbar.component";
+import { AppUpdateLayoutViewerComponent } from './app-update-layout-viewer/app-update-layout-viewer.component';
 
 @Component({
   selector: 'app-update-layout',
   imports: [
-    VizComponent
+    AppUpdateLayoutEditorComponent,
+    AppUpdateLayoutToolbarComponent,
+    AppUpdateLayoutEditorComponent,
+    AppUpdateLayoutViewerComponent
   ],
   templateUrl: './app-update-layout.component.html',
   styleUrl: './app-update-layout.component.scss'
 })
 export class AppUpdateLayoutComponent {
-
   @ViewChild('viewer') viewerView: ElementRef | undefined;
-
-  route: ActivatedRoute = inject(ActivatedRoute);
-  stRendererService: StRendererService = inject(StRendererService);
-  stPublisherService: StPublisherService = inject(StPublisherService);
-  threePublisherService: ThreePublisherService = inject(ThreePublisherService);
   currentRouteService: CurrentRouteService = inject(CurrentRouteService);
   wViewPortResizeService: WViewPortResizeService = inject( WViewPortResizeService);
-
-  stRendererId: number = 0;
-  viewPortHeight = 0;
-  viewPortWidth = 0;
-  viewerWidth = 0;
-  viewerHeight = 0;
-  afterInitComplete = false;
-  calculatedAspectRatio = 0;
+  appUpdateLayoutService: AppUpdateLayoutService = inject(AppUpdateLayoutService);
 
   constructor() {
     effect(() => {
-
-      // This effect is executed if:
-      // currentRoute() signal
-      // viewport() signal
-      // aspectRatioSignal() signal
-
-
-      const currentView: LayoutType = this.currentRouteService.currentRoute();
-      this.stRendererId = this.getCurrentRendererId(currentView, window.location.href);
-
-      const { width, height } = this.wViewPortResizeService.viewport();
-      this.viewPortWidth = width;
-      this.viewPortHeight = height;
-      this.viewerWidth = width;
+      // 📞 listening for route changes
+      this.currentRouteService.currentRoute();
+      // 📞 listening for screen size changes
+      this.wViewPortResizeService.viewport();
       this.processVisualization(this);
-      
-      const ar = this.stPublisherService.calculatedAspectRatioSignal()[this.stRendererId];
-
-      this.setCalculatedAspectRation(ar);
-
-      // stRenderers should be empty unless we are in tabular view
-
     });
   }
 
-  getCurrentRendererId(currentView: string, href: string): number {
-    let stRendererId = 0;
-
-    if (currentView === 'update') {
-        const url = new URL(href);
-        const segments = url.pathname.split('/');
-        stRendererId = Number(segments[segments.length - 1]);
-    }
-
-    return stRendererId;
-  }
-
-
   processVisualization(appLayoutComponent: AppUpdateLayoutComponent): boolean {
-    const isStRendererCreated = this.isStRendererCreated(appLayoutComponent);
+    const isStRendererCreated = this.isStRendererCreated();
     const editorDomElementExists = this.doesEditorViewDomElementExist(appLayoutComponent);
+    const wasUpdated = this.updateStVisualizationSize(appLayoutComponent, isStRendererCreated, editorDomElementExists);
 
-    return this.updateStVisualizationSize(appLayoutComponent, isStRendererCreated, editorDomElementExists);
+    return wasUpdated;
   }
 
   updateStVisualizationSize(
@@ -97,10 +55,10 @@ export class AppUpdateLayoutComponent {
   ): boolean {
     let updated = false;
     if (isStRendererCreated && editorDomElementExists) {
-      const viewerView: ElementRef<HTMLDivElement> = appLayoutComponent.viewerView as unknown as ElementRef<HTMLDivElement>;
-      const nativeElement: HTMLDivElement = viewerView.nativeElement as unknown as HTMLDivElement;
-      this.resizeVisualization(appLayoutComponent, nativeElement);
-      updated = true;
+          const viewerView: ElementRef<HTMLDivElement> = appLayoutComponent.viewerView as unknown as ElementRef<HTMLDivElement>;
+          const nativeElement: HTMLDivElement = viewerView.nativeElement as unknown as HTMLDivElement;
+          this.appUpdateLayoutService.publishVisualizationDimensions(nativeElement);
+          updated = true;
     }
     return updated;
   }
@@ -115,44 +73,13 @@ export class AppUpdateLayoutComponent {
     return exists;
   }
 
-  isStRendererCreated(appLayoutComponent: AppUpdateLayoutComponent): boolean {
+  isStRendererCreated(): boolean {
     let created = false;
 
-    if (appLayoutComponent.stRendererId > 0) {
+    if (this.appUpdateLayoutService.editRenderId() > 0) {
       created = true;
     }
 
     return created;
   }
-
-  resizeVisualization(
-    appUpdateLayoutComponent: AppUpdateLayoutComponent,
-    viewerViewDiv: HTMLDivElement
-  ): boolean
-  {
-      // VIEWER WIDTH DOES NOT WORK BECAUSE THE SCROLL BAR COMES AND GOES
-      // PROBABLY NEED TO USE THE VIEWPORT WIDTH
-      appUpdateLayoutComponent.viewerWidth = this.viewPortWidth;
-      appUpdateLayoutComponent.viewerHeight = viewerViewDiv.offsetHeight;
-      
-      setTimeout(appUpdateLayoutComponent.finalizeInitialization(appUpdateLayoutComponent), 0 );
-      return true;
-  }
-
-  setCalculatedAspectRation(ar: number | undefined): number | undefined {
-    if (ar) {
-      this.calculatedAspectRatio = ar;
-    }
-    return ar;
-  }
-
-  finalizeInitialization(component: AppUpdateLayoutComponent): Function {
-    return () => {
-        // const stRenderer: StRenderer = component.stRendererService.getRendererById(component.id);
-        component.afterInitComplete = true;
-    };
-  }
-
-
-
 }

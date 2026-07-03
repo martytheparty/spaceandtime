@@ -71,7 +71,11 @@
     "sappDataLayoutStService": "ng g s components/layouts/app-data-layout/st/services/entity",
     "iStTableRecord": "ng g i components/layouts/app-data-layout/st/interfaces/StEntityTableRecord",
     "iThreeCategoryDefinition": "ng g i interfaces/three/definitions/ThreeCategoryDefinition",
-    "cappDataLayoutThreeTable": "ng g c components/layouts/app-data-layout/three/threeTable"    
+    "cappDataLayoutThreeTable": "ng g c components/layouts/app-data-layout/three/threeTable",
+    "cappUpdateLayoutViewer": "ng g c components/layouts/app-update-layout/appUpdateLayoutViewer",
+    "cappUpdateLayoutToolbar": "ng g c components/layouts/app-update-layout/appUpdateLayoutToolbar",
+    "cappUpdateLayoutEditor": "ng g c components/layouts/app-update-layout/appUpdateLayoutEditor",
+    "cappUpdateLayoutService": "ng g s components/layouts/app-update-layout/services/appUpdateLayout"
   },
   "private": true,
   "dependencies": {

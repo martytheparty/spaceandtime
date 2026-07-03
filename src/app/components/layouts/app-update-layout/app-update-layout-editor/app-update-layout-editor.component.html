@@ -1,0 +1,16 @@
+SET UP THREE PUBLISHED THAT WILL PUBLISH ACTUAL VALUES USED
+
+<p>EDITOR {{ appUpdateLayoutService.editRenderId() }}</p> 
+
+@if(appUpdateLayoutService.editRenderId() > 0 ) {
+        <div>
+                CALCULATED Aspect Ratio IS: 
+                {{stPublisherService.calculatedAspectRatioSignal()[appUpdateLayoutService.editRenderId()]}}
+        </div>
+        <div>
+                ACTUAL Aspect Ratio IS:
+                <span data-cy="three-aspect-ratio"> 
+                {{threePublisherService.threeAspectRatioSignal()[appUpdateLayoutService.editRenderId()]}}
+                </span>
+        </div>
+}
