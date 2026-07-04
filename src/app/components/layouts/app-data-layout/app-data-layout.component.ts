@@ -1,7 +1,8 @@
-import { 
+import {
   Component,
   inject,
   effect,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
@@ -19,6 +20,7 @@ import { ThreeTableComponent } from './three/three-table/three-table.component';
     ThreeTableComponent
   ],
   templateUrl: './app-data-layout.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app-data-layout.component.scss',
 })
 export class AppDataLayoutComponent {

@@ -1,9 +1,10 @@
-import { 
+import {
   Component,
   effect,
   inject,
   QueryList,
-  ViewChildren
+  ViewChildren,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { Router } from '@angular/router';
@@ -29,6 +30,7 @@ import { VizComponentService } from '../../../services/angular/viz-component.ser
     MatIconModule
   ],
   templateUrl: './app-tabular-layout.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app-tabular-layout.component.scss'
 })
 export class AppTabularLayoutComponent {

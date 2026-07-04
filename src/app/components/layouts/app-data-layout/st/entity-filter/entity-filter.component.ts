@@ -1,7 +1,8 @@
-import { 
+import {
   Component,
   effect,
-  inject
+  inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +19,7 @@ import { EntityService } from '../services/entity-service.service';
     MatSelectModule,
   ],
   templateUrl: './entity-filter.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './entity-filter.component.scss',
 })
 export class EntityFilterComponent {

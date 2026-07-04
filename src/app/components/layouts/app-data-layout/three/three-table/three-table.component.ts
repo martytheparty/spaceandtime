@@ -1,7 +1,8 @@
 import {
   effect,
   inject,
-  Component
+  Component,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { THREE_NATIVE_CATEGORIES } from '../../../../../services/entities/three/native/constants';
 import { CommonModule } from '@angular/common';
@@ -24,6 +25,7 @@ import { SceneService } from '../../../../../services/entities/three/native/scen
     MatTableModule
 ],
   templateUrl: './three-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './three-table.component.scss',
 })
 export class ThreeTableComponent {

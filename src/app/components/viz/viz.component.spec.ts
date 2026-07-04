@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { VizComponent } from './viz.component';
 
 @Component({
   imports: [VizComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<app-viz [stRendererInputId]="1"></app-viz>`, // ✅ Provide input here
 })
 class TestHostComponent {}

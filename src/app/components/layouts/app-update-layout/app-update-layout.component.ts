@@ -3,7 +3,8 @@ import {
   ElementRef,
   effect,
   inject,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
@@ -22,6 +23,7 @@ import { AppUpdateLayoutViewerComponent } from './app-update-layout-viewer/app-u
     AppUpdateLayoutViewerComponent
   ],
   templateUrl: './app-update-layout.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app-update-layout.component.scss'
 })
 export class AppUpdateLayoutComponent {

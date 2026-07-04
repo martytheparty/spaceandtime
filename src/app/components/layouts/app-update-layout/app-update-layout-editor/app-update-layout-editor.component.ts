@@ -1,6 +1,7 @@
-import { 
+import {
   inject,
-  Component
+  Component,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { AppUpdateLayoutService } from '../services/app-update-layout.service';
@@ -11,6 +12,7 @@ import { ThreePublisherService } from '../../../../services/entities/three/attri
   selector: 'app-update-layout-editor',
   imports: [],
   templateUrl: './app-update-layout-editor.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app-update-layout-editor.component.scss',
 })
 export class AppUpdateLayoutEditorComponent {

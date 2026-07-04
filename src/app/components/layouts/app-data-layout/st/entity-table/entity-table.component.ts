@@ -1,7 +1,8 @@
 import {
   effect,
   inject,
-  Component
+  Component,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { EntityService } from '../services/entity-service.service';
 import { StPublisherService } from '../../../../../services/entities/st/publish/st-publisher.service';
@@ -18,6 +19,7 @@ import { StEntityTableRecord } from '../interfaces/st-entity-table-record';
     MatTableModule
   ],
   templateUrl: './entity-table.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './entity-table.component.scss',
 })
 export class EntityTableComponent {
