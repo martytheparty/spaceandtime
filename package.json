@@ -75,7 +75,9 @@
     "cappUpdateLayoutViewer": "ng g c components/layouts/app-update-layout/appUpdateLayoutViewer",
     "cappUpdateLayoutToolbar": "ng g c components/layouts/app-update-layout/appUpdateLayoutToolbar",
     "cappUpdateLayoutEditor": "ng g c components/layouts/app-update-layout/appUpdateLayoutEditor",
-    "cappUpdateLayoutService": "ng g s components/layouts/app-update-layout/services/appUpdateLayout"
+    "cappUpdateLayoutService": "ng g s components/layouts/app-update-layout/services/appUpdateLayout",
+    "clicore22": "ng update @angular/core@22 @angular/cli@22",
+    "mat22": "ng update @angular/material@22"
   },
   "private": true,
   "dependencies": {
