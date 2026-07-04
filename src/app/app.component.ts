@@ -1,6 +1,7 @@
 import {
   Component,
-  inject
+  inject,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
@@ -35,6 +36,7 @@ import { AppDataLayoutComponent } from './components/layouts/app-data-layout/app
     CommonModule
   ],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app.component.scss'
 })
 export class AppComponent

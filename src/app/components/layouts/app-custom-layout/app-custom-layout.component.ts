@@ -1,4 +1,4 @@
-import { Component, effect, inject, QueryList, ViewChildren } from '@angular/core';
+import { Component, effect, inject, QueryList, ViewChildren, ChangeDetectionStrategy } from '@angular/core';
 
 import { StRenderer } from '../../../interfaces/st';
 
@@ -15,6 +15,7 @@ import { VizComponentLayoutClass } from '../../../services/utilities/positioning
   selector: 'app-custom-layout',
   imports: [VizComponent],
   templateUrl: './app-custom-layout.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app-custom-layout.component.scss'
 })
 export class AppCustomLayoutComponent {

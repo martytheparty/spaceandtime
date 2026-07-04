@@ -1,4 +1,4 @@
-import { 
+import {
   AfterViewInit,
   Component,
   effect,
@@ -6,7 +6,8 @@ import {
   inject,
   input,
   OnDestroy,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { ComponentVisualizationService } from './viz.service';
@@ -21,6 +22,7 @@ import { StVizComponent } from '../../interfaces/st';
   imports: [],
   templateUrl: './viz.component.html',
   styleUrl: './viz.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ComponentVisualizationService]
 })
 export class VizComponent implements AfterViewInit, OnDestroy {

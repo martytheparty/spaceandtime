@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { Route, Routes } from '@angular/router';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '' // nothing gets rendered
 })
 export class DummyComponent {}

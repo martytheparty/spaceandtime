@@ -5,7 +5,8 @@ import {
   inject,
   Injector,
   runInInjectionContext,
-  ViewChild
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -28,6 +29,7 @@ import { StAnimationService } from '../../services/entities/st/animation/st-anim
     CommonModule
 ],
   templateUrl: './app-menu.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app-menu.component.scss'
 })
 export class AppMenuComponent 

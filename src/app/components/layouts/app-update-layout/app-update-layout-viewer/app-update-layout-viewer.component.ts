@@ -1,6 +1,7 @@
-import { 
+import {
   inject,
-  Component
+  Component,
+  ChangeDetectionStrategy
 } from '@angular/core';
 
 import { AppUpdateLayoutService } from '../services/app-update-layout.service';
@@ -14,6 +15,7 @@ import { VizComponent } from '../../../viz/viz.component';
     VizComponent
   ],
   templateUrl: './app-update-layout-viewer.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app-update-layout-viewer.component.scss',
 })
 export class AppUpdateLayoutViewerComponent {

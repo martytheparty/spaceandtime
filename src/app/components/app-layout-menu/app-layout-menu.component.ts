@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 
 import { Router, NavigationEnd, Event as RouterEventTypes, RouterModule } from '@angular/router';
 
@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
     RouterModule
    ],
   templateUrl: './app-layout-menu.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './app-layout-menu.component.scss'
 })
 export class AppLayoutMenuComponent implements OnDestroy {
