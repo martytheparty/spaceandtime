@@ -1,1 +1,0 @@
-The Example File is an example of how to store information that a cypress test could use... I think.

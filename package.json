@@ -8,8 +8,6 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch --code-coverage",
-    "cypress:open": "npx cypress open",
-    "cypress:run": "npx cypress run",
     "ngrs": "ng g s services/three/renderer",
     "nguis": "ng g s services/utilities/recyclableSequence",
     "irenderer": "ng g i interfaces/renderer",
@@ -77,7 +75,9 @@
     "cappUpdateLayoutEditor": "ng g c components/layouts/app-update-layout/appUpdateLayoutEditor",
     "cappUpdateLayoutService": "ng g s components/layouts/app-update-layout/services/appUpdateLayout",
     "clicore22": "ng update @angular/core@22 @angular/cli@22",
-    "mat22": "ng update @angular/material@22"
+    "mat22": "ng update @angular/material@22",
+    "cypress-uninstall": "npm uninstall cypress",
+    "cypresstab-uninstall": "npm uninstall cypress-plugin-tab"
   },
   "private": true,
   "dependencies": {
@@ -102,8 +102,6 @@
     "@angular/compiler-cli": "^22.0.5",
     "@types/jasmine": "~5.1.0",
     "@types/three": "^0.171.0",
-    "cypress": "^13.17.0",
-    "cypress-plugin-tab": "^1.0.5",
     "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "~5.4.0",
     "karma": "~6.4.0",
