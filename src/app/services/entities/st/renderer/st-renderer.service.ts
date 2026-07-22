@@ -19,6 +19,7 @@ import { SceneService } from '../../three/native/scene/scene.service';
 import { ThreeAnimationClass } from '../../three/animation/three-animation.class';
 import { MeshService } from '../../three/native/mesh/mesh.service';
 import { StAnimationService } from '../animation/st-animation.service';
+import { StGroupService } from '../group/st-group.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class StRendererService {
 
   private stCameraService: StCameraService = inject(StCameraService);
   private stSceneService: StSceneService = inject(StSceneService);
+  private stGroupService: StGroupService = inject(StGroupService);
   private stAnimationService: StAnimationService = inject(StAnimationService);
   private sceneService: SceneService = inject(SceneService);
 
@@ -74,6 +76,7 @@ export class StRendererService {
     .createAnimationFunctionForStrenderer(
       stRenderer, 
       this.stSceneService,
+      this.stGroupService,
       this.threeMeshService,
       this.stAnimationService,
       this.rendererService,

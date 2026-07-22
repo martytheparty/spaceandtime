@@ -11,10 +11,10 @@ import { StMaterialService } from '../material/st-material.service';
 
 import * as THREE from 'three';
 import { MaterialService } from '../../three/native/material/material.service';
-import { StSceneService } from '../scene/st-scene.service';
 import { StMeshDeferredDepsClass } from './st-mesh-deferred-deps.class';
 import { StMeshDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
 import { StAnimationService } from '../animation/st-animation.service';
+import { StGroupService } from '../group/st-group.service';
 
 
 @Injectable({
@@ -44,6 +44,7 @@ export class StMeshService {
 
   constructor() { }
 
+  //🐣 Base MESH
   createBaseMesh(): number
   {
     const stMeshId = this.recyclableSequenceService.generateStId();
@@ -86,27 +87,30 @@ export class StMeshService {
     return stMesh.stAnimationIds;
   }
 
-  deleteMeshForSceneId(stMeshId: number, stSceneId: number): boolean
+  deleteMeshForGroupId(stMeshId: number, stGroupId: number): boolean
   {
     let shouldDelete = false;
     // q1. who needs to be checked in with before a delete?
-    // a1. st scene service
-    const stSceneService: StSceneService = this.stMeshDeferredDepsClass.getStSceneService();
-    const allSceneIds = stSceneService.getScenesForMeshId(stMeshId);
+    // a1. st group service
 
+    const stGroupService: StGroupService = this.stMeshDeferredDepsClass.getStGroupService();
+    const allGroupIds = stGroupService.getGroupsForMeshId(stMeshId);
     // get a list 📋 of scenes using this meshId and if there are other than the passed in scene
-    const otherScenes = allSceneIds.filter( (stSceneIdValue: number) => stSceneIdValue !== stSceneId );
+    const otherGroups = allGroupIds.filter( (stGroupIdValue: number) => stGroupIdValue !== stGroupId );
      
     // then don't delete.... otherwise ❔ attempt to delete 💥 the children and delete & recycle both.
-    shouldDelete = !this.hasOtherScenes(otherScenes);
+    shouldDelete = !this.hasOtherGroups(otherGroups);
 
     this.deleteMesh(stMeshId);
-
-    return !this.hasOtherScenes(otherScenes);
+    return shouldDelete;
   }
 
   hasOtherScenes(sceneIds: number[]): boolean {
     return sceneIds.length > 0; 
+  }
+
+  hasOtherGroups(groupIds: number[]): boolean {
+    return groupIds.length > 0; 
   }
 
   deleteMesh(

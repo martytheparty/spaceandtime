@@ -3,12 +3,14 @@ import { StMeshService } from '../mesh/st-mesh.service';
 
 import * as THREE from 'three';
 import { RecyclableSequenceService } from '../../../utilities/general/recyclable-sequence-service.service';
-import { StMesh, StScene } from '../../../../interfaces/st';
+import { StScene } from '../../../../interfaces/st';
 import { SceneService } from '../../three/native/scene/scene.service';
 import { MeshService } from '../../three/native/mesh/mesh.service';
 import { StRendererService } from '../renderer/st-renderer.service';
 import { StSceneDeferredDepsClass } from './st-scene-deferred-deps.class';
 import { StSceneDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
+import { StGroupService } from '../group/st-group.service';
+import { GroupService } from '../../three/native/group/group.service';
 
 
 @Injectable({
@@ -21,14 +23,17 @@ export class StSceneService {
   // Construction Time Dependencies (100% guaranteed that this service WILL exist )
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   private sceneService: SceneService = inject(SceneService);
+  private stGroupService: StGroupService = inject(StGroupService);
   private stMeshService: StMeshService = inject(StMeshService);
-  private threeMeshService: MeshService = inject(MeshService); // Look into removing this Construction Time Dependency
+  // ⏰ We should not need the Mesh Service once the Group is integrated.
+  private threeMeshService: MeshService = inject(MeshService); // 👀 Look into removing this Construction Time Dependency
+  private threeGroupService: GroupService = inject(GroupService); // 👀 Look into removing this Construction Time Dependency
 
   // StScene Runtime Dependencies
   private stSceneDeferredDepsClass: StSceneDeferredDepsClass = new StSceneDeferredDepsClass();
 
   constructor() { }
-
+  // 🐣 Base SCENE
   createBaseScene(): number
   {
     const sceneId = this.recyclableSequenceService.generateStId();
@@ -36,19 +41,20 @@ export class StSceneService {
     const stScene: StScene = {
       type: 'st-scene',
       stSceneId: sceneId,
-      stMeshIds: []
+      stGroupIds: [],
     };
 
-    const baseMeshId: number = this.stMeshService.createBaseMesh();
-    const baseMesh: StMesh = this.stMeshService.getStMeshById(baseMeshId);
-    const threeMesh: THREE.Mesh = this.threeMeshService.getMeshByStMeshId(baseMeshId);
-    stScene.stMeshIds.push(baseMeshId);
+    const baseGroupId: number = this.stGroupService.createBaseGroup();
+    const threeGroup: THREE.Group = this.threeGroupService.getGroupByStGroupId(baseGroupId);
+    console.log("THREE GROUP", threeGroup);
+    stScene.stGroupIds.push(baseGroupId);
 
     this.sceneService.createScene(sceneId);
-    if (threeMesh) {
-      const mesh: THREE.Mesh = threeMesh;
 
-      this.sceneService.addMeshToScene(sceneId, mesh);
+    if (threeGroup) {
+      // 3️⃣ writes to ThreeJS
+      console.log("ADDING GROUP");
+      this.sceneService.addGroupToScene(sceneId, threeGroup)
     }
 
     this.stSceneDict[sceneId] = stScene;
@@ -90,9 +96,9 @@ export class StSceneService {
 
     // delete associated meshes
     const currentStScene: StScene = this.stSceneDict[stSceneId];
-    currentStScene.stMeshIds.forEach(
-      (stMeshId: number) => {
-        this.stMeshService.deleteMeshForSceneId(stMeshId, stSceneId);
+    currentStScene.stGroupIds.forEach(
+      (stGroupId: number) => {
+        this.stGroupService.deleteGroupForSceneId(stGroupId, stSceneId);
       }
     );
 
@@ -107,10 +113,10 @@ export class StSceneService {
     return deleted;
   }
 
-  getScenesForMeshId(stMeshId: number): number[]
+  getScenesForGroupId(stGroupId: number): number[]
   {
     const stScenes: StScene[] = Object.values(this.stSceneDict);
-    const foundScenes: StScene[] = stScenes.filter( this.checkStSceneForStMeshId.bind(this, stMeshId));
+    const foundScenes: StScene[] = stScenes.filter( this.checkStSceneForStGroupId.bind(this, stGroupId));
     const foundSceneIds: number[] = foundScenes.map( this.getIdForStScene );
 
     return foundSceneIds;
@@ -121,11 +127,11 @@ export class StSceneService {
     return stScene.stSceneId;
   }
 
-  checkStSceneForStMeshId(stMeshId: number, stScene: StScene): boolean
+  checkStSceneForStGroupId(stGroupId: number, stScene: StScene): boolean
   {
     let found = false;
     const emptyContext = {};
-    const foundIndex = stScene.stMeshIds.findIndex( this.checkForMeshIdMatch.bind(emptyContext, stMeshId));
+    const foundIndex = stScene.stGroupIds.findIndex( this.checkForGroupIdMatch.bind(emptyContext, stGroupId));
 
     if (foundIndex >= 0) {
       found = true;
@@ -134,8 +140,8 @@ export class StSceneService {
     return found;
   }
 
-  checkForMeshIdMatch(stMeshId: number, stMeshIdForStScene: number): boolean
+  checkForGroupIdMatch(stGroupId: number, stGroupIdForStScene: number): boolean
   {
-    return stMeshIdForStScene === stMeshId;
+    return stGroupIdForStScene === stGroupId;
   }
 }

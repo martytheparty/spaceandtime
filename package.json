@@ -77,7 +77,11 @@
     "clicore22": "ng update @angular/core@22 @angular/cli@22",
     "mat22": "ng update @angular/material@22",
     "cypress-uninstall": "npm uninstall cypress",
-    "cypresstab-uninstall": "npm uninstall cypress-plugin-tab"
+    "cypresstab-uninstall": "npm uninstall cypress-plugin-tab",
+    "iStGroup": "ng g i interfaces/st/three/group/stGroup",
+    "sstGroup": "ng g s services/entities/st/group/stGroup",
+    "sThreeGroup": "ng g s services/entities/three/native/group/group",
+    "classStGroupDeferredDeps": "ng g class services/entities/st/group/stGroupDeferredDeps.class"
   },
   "private": true,
   "dependencies": {

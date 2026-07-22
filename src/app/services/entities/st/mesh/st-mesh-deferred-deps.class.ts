@@ -3,6 +3,7 @@ import {
     Injector
 } from "@angular/core";
 import { StSceneService } from "../scene/st-scene.service";
+import { StGroupService } from "../group/st-group.service";
 
 
 /**
@@ -21,5 +22,9 @@ export class StMeshDeferredDepsClass {
     getStSceneService(): StSceneService 
     {
         return this.injector.get(StSceneService);
+    }
+
+    getStGroupService(): StGroupService {
+        return this.injector.get(StGroupService);
     }
 }

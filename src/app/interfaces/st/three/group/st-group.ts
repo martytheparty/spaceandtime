@@ -1,11 +1,10 @@
 import { StTriple } from "../../../base/triple/st-triple";
 
-export interface StMesh {
-    type: "st-mesh"
-    stMeshId: number;
+export interface StGroup {
+    type: "st-group"
+    stGroupId: number;
     stPosition: StTriple;
     stRotation: StTriple;
-    stGeometryId: number;
-    stMaterialId: number;
     stAnimationIds: number[];
+    stMeshIds: number[];
 }

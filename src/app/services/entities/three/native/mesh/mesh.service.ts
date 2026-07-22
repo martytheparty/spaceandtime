@@ -53,7 +53,7 @@ export class MeshService {
 
   dispose(mat: any): void {
     const material: THREE.MeshNormalMaterial = mat;
-    mat.dispose(); // call this if the material is not being used in the app
+    material.dispose(); // call this if the material is not being used in the app
   }
 
   updateMeshGeometry(
@@ -65,7 +65,7 @@ export class MeshService {
     const mesh: THREE.Mesh = this.getMeshByStMeshId(id);
 
     if (mesh.geometry && dispose) {
-      mesh.geometry.dispose(); // call this if the material is not being used in the app
+      mesh.geometry.dispose(); // call this if the geometry is not being used in the app
     }
 
     mesh.geometry = geometry;

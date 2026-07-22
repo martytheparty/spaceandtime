@@ -1,9 +1,10 @@
 import * as THREE from 'three';
-import { AnimatableObjects, StAnimation, StRenderer, StScene } from '../../../../interfaces/st';
+import { AnimatableObjects, StAnimation, StGroup, StRenderer, StScene } from '../../../../interfaces/st';
 import { MeshService } from '../native/mesh/mesh.service';
 import { StAnimationService } from '../../st/animation/st-animation.service';
 import { StSceneService } from '../../st/scene/st-scene.service';
 import { RendererService } from '../native/renderer/renderer.service';
+import { StGroupService } from '../../st/group/st-group.service';
 
 export class ThreeAnimationClass {
 
@@ -66,6 +67,7 @@ export class ThreeAnimationClass {
   updateAnimationsForRenderer(
     stRenderer: StRenderer,
     stSceneService: StSceneService,
+    stGroupService: StGroupService,
     threeMeshService: MeshService,
     stAnimationService: StAnimationService,
     threeRendererService: RendererService
@@ -73,9 +75,12 @@ export class ThreeAnimationClass {
     let rendered = true;
     // gets scene from ST
     const stScene: StScene = stSceneService.getSceneById(stRenderer.stSceneId);
+    const stGroupIds: number[] = stScene.stGroupIds;
+    const stGroupId: number = stGroupIds[0];
+    const stGroup: StGroup = stGroupService.getStGroupById(stGroupId);
 
     // get mesh IDs from ST
-    const stMeshIds: number[] = stScene.stMeshIds;
+    const stMeshIds: number[] = stGroup.stMeshIds;
 
     this.updateAnimationsForMeshIds(
       stMeshIds,
@@ -92,6 +97,7 @@ export class ThreeAnimationClass {
   createAnimationFunctionForStrenderer(
     stRenderer: StRenderer,
     stSceneService: StSceneService,
+    stGroupService: StGroupService,
     threeMeshService: MeshService,
     stAnimationService: StAnimationService,
     threeRendererService: RendererService
@@ -101,6 +107,7 @@ export class ThreeAnimationClass {
         this.updateAnimationsForRenderer(
           stRenderer,
           stSceneService,
+          stGroupService,
           threeMeshService,
           stAnimationService,
           threeRendererService,

@@ -17,6 +17,7 @@ import { MaterialService } from '../../../../../services/entities/three/native/m
 import { MeshService } from '../../../../../services/entities/three/native/mesh/mesh.service';
 import { RendererService } from '../../../../../services/entities/three/native/renderer/renderer.service';
 import { SceneService } from '../../../../../services/entities/three/native/scene/scene.service';
+import { GroupService } from '../../../../../services/entities/three/native/group/group.service';
 
 @Component({
   selector: 'app-three-table',
@@ -35,6 +36,7 @@ export class ThreeTableComponent {
   threeMeshService: MeshService = inject(MeshService);
   threeRendererService: RendererService = inject(RendererService);
   threeSceneService: SceneService = inject(SceneService);
+  threeGroupService: GroupService = inject(GroupService);
 
   readonly categoriesWithDictionaries = THREE_NATIVE_CATEGORIES;
   threeTableColumns: string[] = ["threeType", "count", "json"];
@@ -63,6 +65,9 @@ export class ThreeTableComponent {
       // 📞#️⃣ this.threeSceneService.publicSceneDictionaryHash();
       // 📞 this.threeSceneService.publicSceneDictionary()
 
+      // 📞#️⃣ this.threeGroupService.publicGroupDictionaryHash();
+      // 📞 this.threeGroupService.publicGroupDictionary()
+
       // 📞📞📞📞📞📞 - watch for changes
       this.threeCameraService.publicCameraDictionaryHash();
       this.threeGeometryService.publicGeometryDictionaryHash();
@@ -70,6 +75,7 @@ export class ThreeTableComponent {
       this.threeMeshService.publicMeshDictionaryHash();
       this.threeRendererService.publicRendererDictionaryHash();
       this.threeSceneService.publicSceneDictionaryHash();
+      this.threeGroupService.publicGroupDictionaryHash();
 
       // 📊 get raw data
       const threeCameraDictionary = this.threeCameraService.publicCameraDictionary();
@@ -78,6 +84,7 @@ export class ThreeTableComponent {
       const threeMeshDictionary = this.threeMeshService.publicMeshDictionary();
       const threeRendererDictionary = this.threeRendererService.publicRendererDictionary();
       const threeSceneDictionary = this.threeSceneService.publicSceneDictionary();
+      const threeGroupDictionary = this.threeGroupService.publicGroupDictionary();
 
       // 🚣 get table rows
       const cameraRow: ThreeTableRecord = this.tableRowtransform('camera', threeCameraDictionary);
@@ -85,16 +92,18 @@ export class ThreeTableComponent {
       const materialRow: ThreeTableRecord = this.tableRowtransform('material', threeMaterialDictionary);
       const meshRow: ThreeTableRecord = this.tableRowtransform('mesh', threeMeshDictionary);
       const rendererRow: ThreeTableRecord = this.tableRowtransform('renderer', threeRendererDictionary);
-      const sceneRow: ThreeTableRecord = this.tableRowtransform('scene', threeSceneDictionary)
+      const sceneRow: ThreeTableRecord = this.tableRowtransform('scene', threeSceneDictionary);
+      const groupRow: ThreeTableRecord = this.tableRowtransform('group', threeGroupDictionary);
 
       // Assign raw data to the data source for the table
       this.dataSource.data = [ 
+        rendererRow,
         cameraRow,
+        sceneRow,
+        groupRow,
+        meshRow,
         geometryRow,
         materialRow,
-        meshRow,
-        rendererRow,
-        sceneRow
       ];
 
       console.log("Three Camera Dictionary", threeCameraDictionary, this.dataSource.data);
