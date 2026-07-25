@@ -78,12 +78,6 @@ export class StGroupService {
         return group;
     }
 
-    getStAnimationIdsForStGroupId(stGroupId: number): number[]
-    {
-        const stGroup: StGroup = this.getStGroupById(stGroupId);
-        return stGroup.stAnimationIds;
-    }
-
     deleteGroupForSceneId(stGroupId: number, stSceneId: number): boolean
     {
         let shouldDelete = false;

@@ -105,10 +105,6 @@ export class StMeshService {
     return shouldDelete;
   }
 
-  hasOtherScenes(sceneIds: number[]): boolean {
-    return sceneIds.length > 0; 
-  }
-
   hasOtherGroups(groupIds: number[]): boolean {
     return groupIds.length > 0; 
   }

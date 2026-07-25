@@ -1,14 +1,17 @@
 import { TestBed } from '@angular/core/testing';
 
 import { StAnimationService } from './st-animation.service';
-import { StAnimation } from '../../../../interfaces/st';
+import { StAnimation, StMesh } from '../../../../interfaces/st';
+import { StMeshService } from '../mesh/st-mesh.service';
 
 describe('StAnimationService', () => {
   let service: StAnimationService;
+  let stMeshService: StMeshService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(StAnimationService);
+    stMeshService = TestBed.inject(StMeshService);
   });
 
   it('should be created', () => {
@@ -37,6 +40,15 @@ describe('StAnimationService', () => {
     const stAnimations: StAnimation[] = service.getStAnimationsForIds([stAnimationId]);
 
     expect(stAnimations.length).toEqual(1);
+  });
+
+  it('gets animations from a stMesh', () => {
+    const stMeshId: number = stMeshService.createBaseMesh();
+    // 📝 if/when auto animations are no long added this will need to
+    // be updated or it might actually break
+    const stMesh: StMesh = stMeshService.getStMeshById(stMeshId);
+
+    service.getAnimationsFromStMesh(stMesh);
   });
 
 });

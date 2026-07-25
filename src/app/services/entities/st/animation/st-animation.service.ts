@@ -71,22 +71,32 @@ export class StAnimationService {
       return stAnimation;
   }
   
-  getStAnimationsForStMeshId(meshId: number): StAnimation[] {
-    let stAnimations: StAnimation[] = [];
-    
+  getStAnimationsForStMeshId(stMeshId: number): StAnimation[] {
     // Execution Time Deferred ⏰ dependencies 💉.
     const stMeshService: StMeshService | undefined = this.stAnimationDeferredDepsClass.getStMeshService();
-
-    if (stMeshService !== undefined) {
-        const stMesh: StMesh = stMeshService.getStMeshById(meshId);
-
-       if (stMesh) {
-         const stAnimationIds: number[] = stMesh.stAnimationIds;
-
-         stAnimations = this.getStAnimationsForIds(stAnimationIds);
-       }
-    }
+    let stAnimations: StAnimation[] = this.getAnimationsForStMeshId(stMeshId, stMeshService);
   
+    return stAnimations;
+  }
+
+  getAnimationsForStMeshId(stMeshId: number, stMeshService: StMeshService | undefined): StAnimation[] {
+      let stAnimations: StAnimation[] = [];
+      if (stMeshService !== undefined) {
+        const stMesh: StMesh = stMeshService.getStMeshById(stMeshId);
+        stAnimations = this.getAnimationsFromStMesh(stMesh);
+      }
+      return stAnimations;
+  }
+
+  getAnimationsFromStMesh(stMesh: StMesh): StAnimation[] {
+    let stAnimations: StAnimation[] = [];
+
+    if (stMesh) {
+      const stAnimationIds: number[] = stMesh.stAnimationIds;
+
+      stAnimations = this.getStAnimationsForIds(stAnimationIds);
+    }
+
     return stAnimations;
   }
 

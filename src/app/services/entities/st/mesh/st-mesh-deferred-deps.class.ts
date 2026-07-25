@@ -19,11 +19,6 @@ export class StMeshDeferredDepsClass {
 
     private injector: Injector = inject(Injector);
 
-    getStSceneService(): StSceneService 
-    {
-        return this.injector.get(StSceneService);
-    }
-
     getStGroupService(): StGroupService {
         return this.injector.get(StGroupService);
     }
