@@ -15,11 +15,12 @@ import { UiService } from '../../services/ui/ui.service';
 import { AppModelService } from '../../services/appmodel/appmodel.service';
 import { ReflowType } from '../../interfaces/layout/reflow-types';
 import { CommonModule } from '@angular/common';
-import { StAnimation, StMesh, StRenderer, StScene } from '../../interfaces/st';
+import { StAnimation, StGroup, StMesh, StRenderer, StScene } from '../../interfaces/st';
 import { StRendererService } from '../../services/entities/st/renderer/st-renderer.service';
 import { StSceneService } from '../../services/entities/st/scene/st-scene.service';
 import { StMeshService } from '../../services/entities/st/mesh/st-mesh.service';
 import { StAnimationService } from '../../services/entities/st/animation/st-animation.service';
+import { StGroupService } from '../../services/entities/st/group/st-group.service';
 
 
 @Component({
@@ -39,6 +40,7 @@ export class AppMenuComponent
   uiService: UiService = inject(UiService);
   stRendererService: StRendererService = inject(StRendererService);
   stSceneService: StSceneService = inject(StSceneService);
+  stGroupService: StGroupService = inject(StGroupService);
   stMeshService : StMeshService = inject(StMeshService);
   appModelService: AppModelService = inject(AppModelService);
   injector: Injector = inject(Injector);
@@ -101,7 +103,11 @@ export class AppMenuComponent
 
     // assumes that there is only one mesh that should be automatically animated
 
-    const stMeshId = stScene.stMeshIds[0];
+    // ✅ get the mesh from the group insead of the scene.
+    const stGroupId: number = stScene.stGroupIds[0];
+    const stGroup: StGroup = this.stGroupService.getStGroupById(stGroupId);
+
+    const stMeshId = stGroup.stMeshIds[0];
     const stMesh: StMesh = this.stMeshService.getStMeshById(stMeshId);
 
     // step 3 add the animation to the Mesh

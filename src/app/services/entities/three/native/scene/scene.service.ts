@@ -32,11 +32,23 @@ export class SceneService {
     return stSceneId;
   }
 
+  // ⏰ We should not need this block of code once the Group is integrated.
   addMeshToScene(stSceneId: number, mesh: THREE.Mesh): number
   {
     const scene: THREE.Scene = this.getSceneById(stSceneId);
 
     scene.add(mesh);
+
+    this.publishSceneDictionary();
+
+    return stSceneId;
+  }
+
+  addGroupToScene(stSceneId: number, group: THREE.Group): number
+  {
+    const scene: THREE.Scene = this.getSceneById(stSceneId);
+
+    scene.add(group);
 
     this.publishSceneDictionary();
 

@@ -22,6 +22,5 @@ export class StSceneDeferredDepsClass {
         let stRendererService: StRendererService = this.injector.get(StRendererService);
 
         return stRendererService;
-
     }
 }

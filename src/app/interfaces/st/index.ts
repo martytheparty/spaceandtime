@@ -3,6 +3,7 @@ export * from  "./three/camera/st-camera";
 export * from "./three/geometry/st-geometry";
 export * from "./three/material/st-material";
 export * from "./three/mesh/st-mesh";
+export * from "./three/group/st-group";
 export * from "./three/renderer/st-renderer";
 export * from "./three/scene/st-scene";
 export * from "./layout/visualization/st-visualization";

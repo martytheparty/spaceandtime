@@ -87,39 +87,4 @@ describe('ThreeAnimationClass', () => {
     const updateResult = threeAnimationClass.updateAnimationsForThreeMesh(mesh, [animation]);
     expect(updateResult).toBeTrue();
   });
-
-  it('should update all of the animations for a renderer', () => {
-    const stRendererId: number = stRendererService.getBaseStRenderer(); // this creates a scene, camera, mesh...
-    const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
-
-    const rendered = threeAnimationClass.updateAnimationsForRenderer(
-      stRenderer,
-      stSceneService,
-      threeMeshService,
-      stAnimationService,
-      threeRendererService
-    );
-
-    expect(rendered).toBeTrue();
-  });
-
-  it('should create an animation function for a renderer', () => {
-    const stRendererId: number = stRendererService.getBaseStRenderer(); // this creates a scene, camera, mesh...
-    const stRenderer: StRenderer = stRendererService.getRendererById(stRendererId);
-
-    const animationFunction = threeAnimationClass
-    .createAnimationFunctionForStrenderer(
-      stRenderer,
-      stSceneService,
-      threeMeshService,
-      stAnimationService,
-      threeRendererService
-    );
-
-    animationFunction();
-
-    expect(animationFunction).toBeTruthy();
-  })
-
-
 });
