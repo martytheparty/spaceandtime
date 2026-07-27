@@ -1,0 +1,15 @@
+.toolbar-parent {
+    display: flex;
+
+    .left {
+    flex: 1;   /* Takes all remaining space */
+    }
+
+
+    mat-icon {
+        cursor: pointer;
+        vertical-align: middle;
+        margin: 2px;
+    }
+}
+
