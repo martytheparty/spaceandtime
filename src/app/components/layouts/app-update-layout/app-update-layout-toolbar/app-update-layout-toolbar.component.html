@@ -3,14 +3,29 @@
         <div>
                 <mat-icon
                         role="button"
+                        matTooltip="Regular View"
+                        data-cy="close-update-fullscreen-button"
+                >close_fullscreen</mat-icon>
+
+
+                <mat-icon
+                        role="button"
+                        matTooltip="Full Screen View"
+                        data-cy="open-update-fullscreen-button"
+                >open_in_full</mat-icon>
+
+                <mat-icon
+                        role="button"
                         matTooltip="Zoom Out"
+                        data-cy="zoom-out-update-fullscreen-button"
                 >zoom_out</mat-icon>
 
                 <mat-icon
                         role="button"
                         matTooltip="Zoom In"
+                        data-cy="zoom-in-update-fullscreen-button"
                 >zoom_in</mat-icon>
-                <span>(100%)</span>
+                <span data-cy="zoom-value">(100%)</span>
         </div>
 </div>
         
