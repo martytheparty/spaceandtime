@@ -19,6 +19,8 @@ import { VizComponent } from '../../../viz/viz.component';
   styleUrl: './app-update-layout-viewer.component.scss',
 })
 export class AppUpdateLayoutViewerComponent {
+    // scoped to the app-update-layout
     appUpdateLayoutService: AppUpdateLayoutService = inject(AppUpdateLayoutService);
+    // singleton
     wViewPortResizeService: WViewPortResizeService = inject( WViewPortResizeService);
 }

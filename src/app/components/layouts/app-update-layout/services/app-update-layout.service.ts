@@ -4,20 +4,20 @@ import {
   Injectable,
   Signal,
   WritableSignal,
-  signal
+  signal,
+  Service
 } from '@angular/core';
 
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { 
-  NavigationEnd,
   Event,
   Router
 } from '@angular/router';
-import { filter } from 'rxjs';
+import { UpdatePresentaionModes } from '../interfaces/update-settings';
 
-@Injectable({
-  providedIn: 'root',
+@Service({
+  autoProvided: false
 })
 export class AppUpdateLayoutService {
 
@@ -25,9 +25,19 @@ export class AppUpdateLayoutService {
   // Maintains and publishes editor state
   // first we need a signal that is the rendererId that is being displayed for update
   editRenderId: WritableSignal<number> = signal<number>(0);
+  
+  // Browser Driven Configs
   editVisualizationWidthSignal: WritableSignal<number> = signal<number>(0);
   editVisualizationHeightSignal: WritableSignal<number> = signal<number>(0);
   navigationSignal = toSignal( this.router.events );
+
+  // User Defined Update Configs
+  private readonly _zoomValueSignal: WritableSignal<number> = signal<number>(100);
+  readonly zoomValueSignal: Signal<number> = this._zoomValueSignal.asReadonly();
+
+  private readonly _presentationModeSignal: WritableSignal<UpdatePresentaionModes> = signal<UpdatePresentaionModes>("maximized");
+  readonly presentationModeSignal: Signal<UpdatePresentaionModes> = this._presentationModeSignal.asReadonly();
+
 
   constructor() {
     effect(() => {
@@ -39,7 +49,24 @@ export class AppUpdateLayoutService {
     });    
   }
 
+  togglePresentionMode(): UpdatePresentaionModes {
+    const presentationMode: UpdatePresentaionModes = this.presentationModeSignal();  
 
+    // 📢 publish signal
+    if (presentationMode === 'configured') {
+      this._presentationModeSignal.set('maximized');
+    } else {
+      this._presentationModeSignal.set('configured');
+    }
+
+    return this.presentationModeSignal();
+  }
+
+  changeZoomValue(zoomValue: number): number {
+    // 📢 publish signal
+    this._zoomValueSignal.set(zoomValue);
+    return zoomValue;
+  }
 
   publishEditUpdateRendererId(router: Router, event: Event): number {
     const routeInformation: string[] = router.url.split('/');
@@ -105,6 +132,7 @@ export class AppUpdateLayoutService {
     viewerViewDiv: HTMLDivElement
   ): boolean
   {
+    // 📢 publish signal
     this.editVisualizationHeightSignal.set(viewerViewDiv.offsetHeight);
     this.editVisualizationWidthSignal.set(viewerViewDiv.offsetWidth);
 

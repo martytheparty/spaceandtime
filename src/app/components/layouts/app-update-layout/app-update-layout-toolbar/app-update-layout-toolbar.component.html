@@ -2,30 +2,36 @@
         <div class="left">&nbsp;</div>
         <div>
                 <mat-icon
+                        (click)="appUpdateLayoutService.togglePresentionMode()"
+                        [class.hidden]="appUpdateLayoutService.presentationModeSignal() === 'configured'"
                         role="button"
-                        matTooltip="Regular View"
+                        matTooltip="Configured View"
                         data-cy="close-update-fullscreen-button"
                 >close_fullscreen</mat-icon>
 
 
                 <mat-icon
+                        (click)="appUpdateLayoutService.togglePresentionMode()"
+                        [class.hidden]="appUpdateLayoutService.presentationModeSignal() === 'maximized'"
                         role="button"
                         matTooltip="Full Screen View"
                         data-cy="open-update-fullscreen-button"
                 >open_in_full</mat-icon>
 
                 <mat-icon
+                        (click)="decrementZoom()"
                         role="button"
                         matTooltip="Zoom Out"
                         data-cy="zoom-out-update-fullscreen-button"
                 >zoom_out</mat-icon>
 
                 <mat-icon
+                        (click)="incrementZoom()"
                         role="button"
                         matTooltip="Zoom In"
                         data-cy="zoom-in-update-fullscreen-button"
                 >zoom_in</mat-icon>
-                <span data-cy="zoom-value">(100%)</span>
+                <span data-cy="zoom-value">({{appUpdateLayoutService.zoomValueSignal()}}%)</span>
         </div>
 </div>
         
