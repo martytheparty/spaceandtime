@@ -16,6 +16,9 @@ import { AppUpdateLayoutViewerComponent } from './app-update-layout-viewer/app-u
 
 @Component({
   selector: 'app-update-layout',
+  providers: [
+    AppUpdateLayoutService
+  ],
   imports: [
     AppUpdateLayoutEditorComponent,
     AppUpdateLayoutToolbarComponent,
