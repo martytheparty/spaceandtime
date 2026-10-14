@@ -55,13 +55,14 @@ export class AppTabularLayoutComponent {
         this.stRenderers = [...newRenderers];
 
         setTimeout( () => {
-          const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
-
-          this.vizComponentLayoutClass.updateVisualizationLayout(
-            vizCount,
-            this.visualizationService,
-            this.vizComponentService
-          );
+          if (this.visualizationItems.length > 0) {
+            const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
+            this.vizComponentLayoutClass.updateVisualizationLayout(
+              vizCount,
+              this.visualizationService,
+              this.vizComponentService
+            );
+          }
         });
       });
     }

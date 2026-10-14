@@ -16,6 +16,8 @@ import { RecyclableSequenceService } from '../../services/utilities/general/recy
 import { VizComponentService } from '../../services/angular/viz-component.service';
 import { DebounceService } from '../../services/utilities/timing/debounce.service';
 import { StVizComponent } from '../../interfaces/st';
+import { StRendererService } from '../../services/entities/st/renderer/st-renderer.service';
+import { NgVizComponentService } from '../../services/entities/ng/ng-viz-component.service';
 
 @Component({
   selector: 'app-viz',
@@ -30,11 +32,13 @@ export class VizComponent implements AfterViewInit, OnDestroy {
 
   // service that provcides functionality for THIS instance of a viz component.
   componentVisualizationService: ComponentVisualizationService = inject(ComponentVisualizationService);
-  // service that operates accross ALL viz components.
+  // service that operates as a singleton (equally available to all components)
   vizComponentService: VizComponentService = inject(VizComponentService);
   visualizationService: VisualizationService = inject(VisualizationService);
   recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
   debounceService: DebounceService = inject(DebounceService);
+  stRendererService: StRendererService = inject(StRendererService);
+  ngVizComponentService: NgVizComponentService = inject(NgVizComponentService);
 
   stRendererInputId = input.required<number>();
   stVizComponentId: number;
@@ -53,6 +57,7 @@ export class VizComponent implements AfterViewInit, OnDestroy {
 
   constructor() {
     this.stVizComponentId = this.recyclableSequenceService.generateStId();
+    this.vizComponentService.setVizComponentByStComponentId(this);
 
     effect(() => {
       // 1) This effect is triggered by the vizWidth Signal
@@ -63,37 +68,6 @@ export class VizComponent implements AfterViewInit, OnDestroy {
 
       this.updateOld(this.componentInitialized, this.vizWidth(), this.vizHeight());
     })
-  }
-
-  dimensionChangeHandler(isInitialized: boolean): boolean {
-    if (isInitialized) {
-        // Edge case - the user resized the UI, but the actual element is wrong at this time
-        // so the AR had to be update for the future width.
-        this.debounceService.debounce(
-          "viz-component-update-dims-redraw",
-          this.updateVisualizationDimensions.bind(this),
-          100
-        )
-    } else {
-      isInitialized = true;
-      this.updateDimensionsSignalHandler(
-          this.rendererViewChild,
-          this.vizWidth(),
-          this.vizHeight(),
-          this.oldWidth,
-          this.oldHeight,
-          this.stRendererInputId()
-        );
-
-        const stVizComponent: StVizComponent = { 
-          type: 'st-viz-component',
-          stVizComponentId: this.stVizComponentId
-        };
-        
-        this.recyclableSequenceService.associateStObjectToId(this.stVizComponentId, stVizComponent);
-    }
-    
-    return isInitialized;
   }
 
   ngAfterViewInit(): void {
@@ -119,8 +93,40 @@ export class VizComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {    
+    this.ngVizComponentService.deleteNgVizComponent(this.stVizComponentId);
     this.vizComponentService.deleteVizComponentByStComponentId(this.stVizComponentId);
     this.recyclableSequenceService.recycleId(this.stVizComponentId);
+  }
+
+  dimensionChangeHandler(isInitialized: boolean): boolean {
+    // At this point check for the component existing
+    if (isInitialized) {
+        // Edge case - the user resized the UI, but the actual element is wrong at this time
+        // so the AR had to be update for the future width.
+        this.debounceService.debounce(
+          "viz-component-update-dims-redraw",
+          this.updateVisualizationDimensions.bind(this),
+          100
+        )
+    } else {
+      isInitialized = true;
+      this.updateDimensionsSignalHandler(
+          this.rendererViewChild,
+          this.vizWidth(),
+          this.vizHeight(),
+          this.oldWidth,
+          this.oldHeight,
+          this.stRendererInputId()
+        );
+
+        // The StVisualization is not created until after the first ngVisualizatoin is created to it's starts as a -1
+        const stVisualizationId = this.visualizationService.getStVisualizationIdForRendererId(this.stRendererInputId());
+        this.visualizationService.setNgVizComponentIdForStVisualizationId(stVisualizationId, this.stVizComponentId)
+        // Get the viz component here: NgVizComponentService
+        const ngVizComponent: StVizComponent = this.ngVizComponentService.createNgVizComponent(this.stVizComponentId, stVisualizationId);
+
+    }    
+    return isInitialized;
   }
 
   updateVisualizationDimensions(): boolean {

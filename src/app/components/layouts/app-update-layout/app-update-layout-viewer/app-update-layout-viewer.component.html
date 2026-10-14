@@ -1,5 +1,7 @@
  @if(appUpdateLayoutService.editRenderId() > 0 ) {
     <app-viz
+        #visualizationItem
+        [class]="appUpdateLayoutService.presentationModeSignal()"
         [stRendererInputId]="appUpdateLayoutService.editRenderId()"
         [vizWidth]="appUpdateLayoutService.editVisualizationWidthSignal()"
         [vizHeight]="appUpdateLayoutService.editVisualizationHeightSignal()"

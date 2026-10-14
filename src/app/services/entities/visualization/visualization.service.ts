@@ -1,4 +1,9 @@
-import { inject, Injectable, QueryList } from '@angular/core';
+import {
+  effect,
+  inject,
+  Injectable,
+  QueryList
+} from '@angular/core';
 import { StVisualization } from '../../../interfaces/st/layout/visualization/st-visualization';
 import { VizComponent } from '../../../components/viz/viz.component';
 import { RecyclableSequenceService } from '../../utilities/general/recyclable-sequence-service.service';
@@ -6,6 +11,7 @@ import { HashService } from '../../utilities/general/hash.service';
 import { AppModelService } from '../../appmodel/appmodel.service';
 import { VizComponentService } from '../../angular/viz-component.service';
 import { WViewPortService } from '../../ui/w-view-port.service';
+import { StPublisherService } from '../st/publish/st-publisher.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +23,13 @@ export class VisualizationService {
   private appModelService: AppModelService = inject(AppModelService); 
   private vizComponentService: VizComponentService = inject(VizComponentService);
   private wViewPortService: WViewPortService = inject(WViewPortService);
+  private stPublisherService: StPublisherService = inject(StPublisherService);
 
   // save the width when the visualization was rendered
   viewPortWidth = this.wViewPortService.getViewPortWidth();
   viewPortHeight = this.wViewPortService.getViewPortHeight();
 
-  stVisualizations: StVisualization[] = [];
+  private stVisualizations: StVisualization[] = [];
 
   visualizationHashValue = "";
   renderedLayoutHash = "";
@@ -38,8 +45,61 @@ export class VisualizationService {
     return true;
   }
 
-  getStVisualizations(): StVisualization[] {
+  public getStVisualizations(): StVisualization[] {
     return this.stVisualizations;
+  }
+
+  private getStVisualizationByVizComponentId(vizComponentId: number): StVisualization | null {
+    let result = null;
+    const visualizations: StVisualization[] = this.getStVisualizations();
+
+    visualizations.forEach( (stVisualization: StVisualization) => {
+      if (stVisualization.stVizComponentId === vizComponentId) {
+        result = stVisualization;
+      }
+    } );
+
+    return result;
+  } 
+
+  public getStVisualizationByStVisualizationId(stVisualizationId: number): StVisualization | null {
+    let stVisualization: StVisualization | null = null;
+
+    this.stVisualizations.forEach(
+      (stVisualizationItem) => {
+        if (stVisualizationItem.stVisualizationId === stVisualizationId) {
+          stVisualization = stVisualizationItem;
+        }
+      }
+    );
+
+    return stVisualization;
+  }
+
+  getStVisualizationByRendererId(rendererId: number): StVisualization | null {
+    const getStVisualizations: StVisualization[] = this.getStVisualizations();
+    let stVisualization: StVisualization | null = null;
+
+    for(let i = 0; i < getStVisualizations.length; i++) {
+      if (getStVisualizations[i].stRendererId === rendererId) {
+        stVisualization = getStVisualizations[i];
+        break;
+      }
+    }
+
+    return stVisualization;
+  }
+
+  public setNgVizComponentIdForStVisualizationId(stVisualizationId: number, ngVizComponentId: number): boolean {
+    let updated = false;
+    const stVisualization = this.getStVisualizationByStVisualizationId(stVisualizationId);
+
+    if (stVisualization !== null) {
+      stVisualization.stVizComponentId = ngVizComponentId;
+      updated = true;
+    }
+
+    return updated;
   }
 
   createStVisualization(stRendererId: number, vizComponent: VizComponent): number {
@@ -69,6 +129,7 @@ export class VisualizationService {
 
       // push viz into array
       this.stVisualizations.push(stVisualization);
+      this.stPublisherService.publishNewStVisualization(stVisualization);
       this.recyclableSequenceService.associateStObjectToId(stVisualizationId, stVisualization);
 
       stVisualization.stWidth = vizWidth;
@@ -94,7 +155,7 @@ export class VisualizationService {
     return count;
   }
 
-  setupVisualizations(vizComponents: VizComponent[]): void {
+  private setupVisualizations(vizComponents: VizComponent[]): void {
     // const vizComponents: VizComponent[] = this.visualizationItems.toArray();
 
     this.setupVisualizationItems(vizComponents);
@@ -108,7 +169,7 @@ export class VisualizationService {
     return vizComponents.length;
   }
 
-  upsertStVisualizationForComponent(
+  private upsertStVisualizationForComponent(
     vizComponent: VizComponent,
     index: number,
     vizComponents: VizComponent[]
@@ -117,19 +178,21 @@ export class VisualizationService {
     let createdStVisualization = false;
 
     // we have a new component and it has not been attached to an StVisualization
-    if (!vizComponent.isAttached()) {
+    const detached = !vizComponent.isAttached();
+    if (detached) { 
       // Finds the first visualization that has a refence to a component that no 
       // long exists.
       const staleStVisualization = this.getFirstStaleStVisualization(vizComponents); 
 
-      if (staleStVisualization) {
+      const stVisualization: StVisualization | null = this.getStVisualizationByVizComponentId(vizComponent.stVizComponentId); 
+      if (staleStVisualization && stVisualization === null) { // Recycle a old component
         // we need to delete the reference to the old visualizaton component from the dictionary
         this.vizComponentService.deleteVizComponentByStComponentId(staleStVisualization.stVizComponentId);
         // we need to add a new reference to the component in the dictionary
         this.vizComponentService.setVizComponentByStComponentId(vizComponent);
         // update the StVisualization's component id accordingly
         staleStVisualization.stVizComponentId = vizComponent.stVizComponentId;
-      } else {
+      } else if(stVisualization === null) { // ensures that the stVisualization done not already exist
         // A new visualization was added but there is not an empty StVisualization
         // so a new StVisualization needs to be added.
         this.createStVisualization(vizComponent.stRendererInputId(), vizComponent);
@@ -138,13 +201,25 @@ export class VisualizationService {
       }
 
       vizComponent.setAsAttached();
-
-
-
     }
 
     return createdStVisualization;
 
+  }
+
+  getStVisualizationIdForRendererId(stRendererId: number): number {
+    let stVisualizationId = -1;
+
+    // Examine each record and find the matching record
+    this.stVisualizations.forEach(
+      (stVisualization: StVisualization) => {
+        if (stVisualization.stRendererId === stRendererId) {
+          stVisualizationId = stVisualization.stVisualizationId;
+        }
+      }
+    );
+
+    return stVisualizationId;
   }
 
   getStVisualizationForComponent(vizComponent: VizComponent, stVisualizations: StVisualization[]): StVisualization | undefined
@@ -153,7 +228,7 @@ export class VisualizationService {
     let findFunction = this.findComponentFactoryFunction(vizComponent);
 
     // find the visualization
-    let stVisualization: StVisualization | undefined = stVisualizations.find(findFunction);;
+    let stVisualization: StVisualization | undefined = stVisualizations.find(findFunction);
 
     // return the visualization
     return stVisualization;
@@ -169,7 +244,7 @@ export class VisualizationService {
 
 
   getFirstStaleStVisualization(vizComponents: VizComponent[]): StVisualization | undefined {
-    // determine if there is a StVisualization that has a component id that no long exists
+    // determine if there is a StVisualization that has a component id that no longer exists
 
     let stVisualization: StVisualization | undefined;
 
@@ -404,7 +479,7 @@ export class VisualizationService {
 
   resetHash(width: number, height: number): Promise<void>
   {
-    // create hash string
+    // create hash string (not necessary if I just change the object reference/pointer)
     const data: any[] = this.stVisualizations.map( 
       (viz: StVisualization) => {
         return {

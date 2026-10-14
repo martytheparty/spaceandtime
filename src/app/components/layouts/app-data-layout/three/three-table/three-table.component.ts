@@ -105,8 +105,6 @@ export class ThreeTableComponent {
         geometryRow,
         materialRow,
       ];
-
-      console.log("Three Camera Dictionary", threeCameraDictionary, this.dataSource.data);
     });
 
   }

@@ -82,7 +82,8 @@
     "sstGroup": "ng g s services/entities/st/group/stGroup",
     "sThreeGroup": "ng g s services/entities/three/native/group/group",
     "classStGroupDeferredDeps": "ng g class services/entities/st/group/stGroupDeferredDeps.class",
-    "iAppUpdateSettings": "ng g i components/layouts/app-update-layout/interfaces/update-settings"
+    "iAppUpdateSettings": "ng g i components/layouts/app-update-layout/interfaces/update-settings",
+    "sNgVizComponent": "ng g s services/entities/ng/ngVizComponent"
   },
   "private": true,
   "dependencies": {

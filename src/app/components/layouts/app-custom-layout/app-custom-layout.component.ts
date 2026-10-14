@@ -38,13 +38,15 @@ export class AppCustomLayoutComponent {
         this.stRenderers = [...this.getRenderers(currentView)];
 
         setTimeout( () => {
-          const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
+          if (this.visualizationItems.length > 0) {
+            const vizCount = this.visualizationService.setupDomVisualizations(this.visualizationItems);
 
-          this.vizComponentLayoutClass.updateVisualizationLayout(
-            vizCount,
-            this.visualizationService,
-            this.vizComponentService
-          ); // not sure if this is necessary
+            this.vizComponentLayoutClass.updateVisualizationLayout(
+              vizCount,
+              this.visualizationService,
+              this.vizComponentService
+            );
+          }
         });
       });
     }

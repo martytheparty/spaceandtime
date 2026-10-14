@@ -30,6 +30,10 @@ export interface BooleanDictionary {
 }
 
 // Holds VizComponents
+
+export interface NgVizComponentDictionary {
+  [id: number]: StVizComponent;
+}
 export interface VizComponentDictionary {
   [id: number]: VizComponent;
 }

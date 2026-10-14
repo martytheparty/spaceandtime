@@ -1,5 +1,10 @@
-import { Injectable, signal, inject } from '@angular/core';
-import { CalculatedAspectRatioDict } from '../../../../interfaces/st';
+import {
+  Injectable,
+  signal,
+  inject,
+  WritableSignal
+} from '@angular/core';
+import { CalculatedAspectRatioDict, StVisualization } from '../../../../interfaces/st';
 import { SequenceDictionary } from '../../../../interfaces/base/dictionary/base-dicts';
 import { HashService } from '../../../utilities/general/hash.service';
 
@@ -16,8 +21,14 @@ export class StPublisherService {
   visualizationIds = signal<SequenceDictionary>({});
   visualizationIdsHash = signal<string>("");
 
+  private _newStVisualizationCreated: WritableSignal<StVisualization | undefined> = signal<StVisualization | undefined>(undefined);
+  readonly newStVisualizationCreated = this._newStVisualizationCreated.asReadonly();
 
   constructor() { }
+
+  publishNewStVisualization(stVisualization: StVisualization): void {
+    this._newStVisualizationCreated.set(stVisualization);
+  }
 
   setCalculatedAspectRatio(stRendererId: number, aspectRatio: number): CalculatedAspectRatioDict {
     // make a new shallow copy of the arDictionary

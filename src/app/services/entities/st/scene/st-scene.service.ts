@@ -46,14 +46,12 @@ export class StSceneService {
 
     const baseGroupId: number = this.stGroupService.createBaseGroup();
     const threeGroup: THREE.Group = this.threeGroupService.getGroupByStGroupId(baseGroupId);
-    console.log("THREE GROUP", threeGroup);
     stScene.stGroupIds.push(baseGroupId);
 
     this.sceneService.createScene(sceneId);
 
     if (threeGroup) {
       // 3️⃣ writes to ThreeJS
-      console.log("ADDING GROUP");
       this.sceneService.addGroupToScene(sceneId, threeGroup)
     }
 
@@ -80,13 +78,7 @@ export class StSceneService {
                                   .getRenderersBySceneId(stSceneId)
                                   .filter( (rendererId: number) => rendererId !== stRendererId );
 
-
-    // at this time you can not have more than one scene per renderer
-    //if (rendererIds.length > 0) { // we found a renderer that is using this stSceneId
-    //  deleted = false;
-    //} else {
-      this.deleteSceneById(stSceneId);
-    //}
+    this.deleteSceneById(stSceneId);
 
     return deleted;
   }
