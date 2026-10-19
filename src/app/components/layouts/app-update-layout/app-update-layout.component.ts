@@ -46,6 +46,9 @@ export class AppUpdateLayoutComponent {
   }
 
   processVisualization(appLayoutComponent: AppUpdateLayoutComponent): boolean {
+    if (!this.currentRouteService.currentRoute().includes('update')) {
+      this.appUpdateLayoutService.reset();
+    }
     const isStRendererCreated = this.isStRendererCreated();
     const editorDomElementExists = this.doesEditorViewDomElementExist(appLayoutComponent);
     const wasUpdated = this.updateStVisualizationSize(appLayoutComponent, isStRendererCreated, editorDomElementExists);

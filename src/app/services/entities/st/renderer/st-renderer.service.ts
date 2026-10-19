@@ -1,9 +1,14 @@
-import { inject, Injectable } from '@angular/core';
+import {
+  effect,
+  inject,
+  Injectable
+} from '@angular/core';
 import { 
   CalculatedValues,
   StCamera,
   StRenderer,
-  StScene
+  StScene,
+  StVisualization
 } from '../../../../interfaces/st';
 
 import { StCameraService } from '../camera/st-camera.service';
@@ -33,7 +38,6 @@ export class StRendererService {
   private sceneService: SceneService = inject(SceneService);
 
   private recyclableSequenceService: RecyclableSequenceService = inject(RecyclableSequenceService);
-  private stRenderersDict: any = {};
   private rendererService: RendererService = inject(RendererService);
   private threeCameraService: CameraService = inject(CameraService);
   private stPublisherService: StPublisherService = inject(StPublisherService);
@@ -41,7 +45,19 @@ export class StRendererService {
 
   threeAnimationClass: ThreeAnimationClass = new ThreeAnimationClass();
 
-  constructor() { }
+  private stRenderersDict: any = {};
+
+  constructor() {
+    effect( () => {
+       if (this.stPublisherService.newStVisualizationCreated()) {
+        const stVisualization: StVisualization = 
+          this.stPublisherService.newStVisualizationCreated() as StVisualization;
+          if (stVisualization.stRendererId) {
+            this.stRenderersDict[stVisualization.stRendererId].stVisualizationId = stVisualization.stVisualizationId;
+          }
+       }
+    } )
+  }
 
   getBaseStRenderer(): number
   {
@@ -65,10 +81,11 @@ export class StRendererService {
     const stRenderer: StRenderer = { 
       type: 'st-renderer',
       stRendererId,
-      stWidth: startWidth, 
-      stHeight: startHeight,
+      stCanvasWidth: startWidth, 
+      stCanvasHeight: startHeight,
       stCameraId: stCamera.stCameraId,
       stSceneId: stScene.stSceneId,
+      stVisualizationId: -1,
       deleted: false
     };
         
@@ -218,5 +235,10 @@ export class StRendererService {
       }
     }
     return deleted;
+  }
+
+  setStVisualizationIdForRendererByRendererId(stRendererId: number, stVisualizationId: number): void {
+    const stRenderer: StRenderer = this.getRendererById(stRendererId);
+    stRenderer.stVisualizationId = stVisualizationId;
   }
 }

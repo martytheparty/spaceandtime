@@ -30,7 +30,6 @@ export class StAnimationDeferredDepsClass {
                 if (this.errorCount === 0)
                 {
                     this.errorCount++;
-                    console.log("Attempted to access the injector after it was gone - StAnimationDefferedClass");
                 }
             }
             

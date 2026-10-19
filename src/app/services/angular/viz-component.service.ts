@@ -12,21 +12,21 @@ export class VizComponentService {
 
   constructor() { }
 
-  setVizComponentByStComponentId(vizComponent: VizComponent): number
+  setVizComponentByStComponentId(ngVizComponent: VizComponent): number
   {
-    this.vizComponentDictionary[vizComponent.stVizComponentId] = vizComponent;
-    return vizComponent.stVizComponentId;
+    this.vizComponentDictionary[ngVizComponent.stVizComponentId] = ngVizComponent;
+    return ngVizComponent.stVizComponentId;
   }
 
-  getVizComponentByStComponentId(stComponentId: number): VizComponent
+  getVizComponentByStComponentId(ngComponentId: number): VizComponent
   {
-    return this.vizComponentDictionary[stComponentId];
+    return this.vizComponentDictionary[ngComponentId];
   }
 
-  deleteVizComponentByStComponentId(stComponentId: number): boolean
+  deleteVizComponentByStComponentId(ngComponentId: number): boolean
   {
     // remember this does not delete the component, just the reference
-    delete this.vizComponentDictionary[stComponentId];
+    delete this.vizComponentDictionary[ngComponentId];
     return true;
   }
 

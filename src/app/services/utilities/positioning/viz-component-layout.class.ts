@@ -25,17 +25,20 @@ export class VizComponentLayoutClass {
     vizComponentService: VizComponentService,
     ignoreHash = false): void
   {
-    // console.log("visualizationsLayout");
     if (
       visualizationService.visualizationHashValue !== visualizationService.renderedLayoutHash
       || ignoreHash
     ) {
       // this function runs around 60 times per second
       // avoid doing any calculations in this function
+      let count = 0;
       visualizationService
             .getStVisualizations()
               .forEach((stVisualization: StVisualization) => {
-                this.setPosition(stVisualization, vizComponentService);
+                count++;
+                if (stVisualization.stVizComponentId !== -1) {
+                  this.setPosition(stVisualization, vizComponentService);
+                }
               });
       
       visualizationService.renderedLayoutHash = visualizationService.visualizationHashValue;
@@ -50,14 +53,13 @@ export class VizComponentLayoutClass {
   {
     const vizComponent = vizComponentService.getVizComponentByStComponentId(stVisualization.stVizComponentId);
     //this.setPostionForVizComponent(vizComponent, stVisualization);
-    this.setPostionForVizComponent(vizComponent, stVisualization);
+    this.setPositionForVizComponent(vizComponent, stVisualization);
   }
 
-  setPostionForVizComponent(vizComponent: VizComponent, stVisualization: StVisualization): boolean
+  setPositionForVizComponent(vizComponent: VizComponent, stVisualization: StVisualization): boolean
   {
     let wasSet = false;
     if (vizComponent?.rendererViewChild?.nativeElement) {
-      console.log("This is were we set the left and top!");
       const ele: HTMLDivElement = vizComponent?.rendererViewChild.nativeElement.parentElement;
       ele.style.left = stVisualization.stLeft.toString() + 'px';
       ele.style.top = stVisualization.stTop.toString() + 'px';

@@ -43,7 +43,6 @@ export class RendererService {
   }
 
   setAnimationFunctionForStId(stId: number, fun: () => void) {
-    console.log("TODO", "Determine If Setting The Animation Function Should Result In A PUBLISH");
     // BASICALLY, if the function is visible in the renderer's JSON publish, if not there is no point.
     const renderer: THREE.WebGLRenderer = this.getRendererById(stId);
     renderer.setAnimationLoop(fun);
