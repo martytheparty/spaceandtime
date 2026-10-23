@@ -7,9 +7,18 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 
+// Routing Service
 import { CurrentRouteService } from '../../../services/utilities/routing/current-route.service';
+
+// UI Specific Service
 import { WViewPortResizeService } from '../../../services/ui/w-view-port-resize.service';
+
+// App Layout Service
 import { AppUpdateLayoutService } from './services/app-update-layout.service';
+
+// Three Service (interact with 3JS directly)
+import { CameraService } from '../../../services/entities/three/native/camera/camera.service';
+
 import { AppUpdateLayoutEditorComponent } from './app-update-layout-editor/app-update-layout-editor.component';
 import { AppUpdateLayoutToolbarComponent } from "./app-update-layout-toolbar/app-update-layout-toolbar.component";
 import { AppUpdateLayoutViewerComponent } from './app-update-layout-viewer/app-update-layout-viewer.component';
@@ -34,6 +43,7 @@ export class AppUpdateLayoutComponent {
   currentRouteService: CurrentRouteService = inject(CurrentRouteService);
   wViewPortResizeService: WViewPortResizeService = inject( WViewPortResizeService);
   appUpdateLayoutService: AppUpdateLayoutService = inject(AppUpdateLayoutService);
+  threeCameraService: CameraService = inject(CameraService);
 
   constructor() {
     effect(() => {
@@ -48,6 +58,7 @@ export class AppUpdateLayoutComponent {
   processVisualization(appLayoutComponent: AppUpdateLayoutComponent): boolean {
     if (!this.currentRouteService.currentRoute().includes('update')) {
       this.appUpdateLayoutService.reset();
+      this.threeCameraService.resetAllCameraZoom();
     }
     const isStRendererCreated = this.isStRendererCreated();
     const editorDomElementExists = this.doesEditorViewDomElementExist(appLayoutComponent);

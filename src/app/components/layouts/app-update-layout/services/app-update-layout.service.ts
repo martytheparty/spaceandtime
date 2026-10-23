@@ -1,7 +1,6 @@
 import {
   effect,
   inject,
-  Injectable,
   Signal,
   WritableSignal,
   signal,
@@ -19,6 +18,7 @@ import { StRendererService } from '../../../../services/entities/st/renderer/st-
 import { StRenderer, StVisualization } from '../../../../interfaces/st';
 import { VisualizationService } from '../../../../services/entities/visualization/visualization.service';
 import { VizComponentLayoutClass } from '../../../../services/utilities/positioning/viz-component-layout.class';
+import { CameraService } from '../../../../services/entities/three/native/camera/camera.service';
 
 @Service({
   autoProvided: false
@@ -27,8 +27,13 @@ export class AppUpdateLayoutService {
 
   private router: Router = inject(Router);
 
+  // Space And Time Services (This is how we change things in ST - Persist)
   stRendererService: StRendererService = inject(StRendererService);
   stVisualizationService: VisualizationService = inject(VisualizationService);
+
+  // Three Service (This is how we change things in Three for Update)
+  cameraService: CameraService = inject(CameraService);
+
 
   // Maintains and publishes editor state
   // first we need a signal that is the rendererId that is being displayed for update
@@ -73,8 +78,10 @@ export class AppUpdateLayoutService {
 
     // 📢 publish signal
     if (presentationMode === 'configured') {
+      this.setThreeZoom();
       this._presentationModeSignal.set('maximized');
     } else {
+      this.resetThreeZoom();
       this._presentationModeSignal.set('configured');
     }
 
@@ -84,7 +91,22 @@ export class AppUpdateLayoutService {
   changeZoomValue(zoomValue: number): number {
     // 📢 publish signal
     this._zoomValueSignal.set(zoomValue);
+    this.setThreeZoom();
     return zoomValue;
+  }
+
+  private setThreeZoom(): void {
+    const stRenderer: StRenderer = this.stRendererService.getRendererById(this.editRenderId());
+    if (stRenderer) {
+      this.cameraService.setZoomByStCameraId(stRenderer.stCameraId, this.zoomValueSignal()/100);
+    }
+  }
+
+  private resetThreeZoom(): void {
+    const stRenderer: StRenderer = this.stRendererService.getRendererById(this.editRenderId());
+    if (stRenderer) {
+      this.cameraService.setZoomByStCameraId(stRenderer.stCameraId, 1);
+    }
   }
 
   publishEditUpdateRendererId(router: Router, event: Event): number {
@@ -202,6 +224,8 @@ export class AppUpdateLayoutService {
   reset(): void {
     // reset to default
     this._presentationModeSignal.set('maximized');
+    this._zoomValueSignal.set(100);
+    this.setThreeZoom();
   }
 }
 

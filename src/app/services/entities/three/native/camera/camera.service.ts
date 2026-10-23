@@ -56,6 +56,24 @@ export class CameraService {
     return camera;
   }
 
+  setZoomByStCameraId(stCameraId: number, zoom: number): void
+  {
+    const camera: THREE.PerspectiveCamera = this.getCameraByStCameraId(stCameraId);
+    camera.zoom = zoom;
+    camera.updateProjectionMatrix();
+  }
+
+  resetAllCameraZoom(): void {
+    const cameras: THREE.PerspectiveCamera[] = Object.values(this.cameraDict);
+
+    cameras.forEach(
+      (camera: THREE.PerspectiveCamera) => {
+        camera.zoom = 1;
+      }
+    );
+
+  }
+
   deleteCameraByStCameraId(stCameraId: number): boolean
   {
     // In the future we will probably need multiple cameras for the same
